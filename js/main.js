@@ -8,17 +8,5 @@ const resize = () => {
 window.onresize = resize;
 window.onload = resize;
 
-
-
-// SvgJS ----------------------------------------------
-
-/*
-const svg = SVG().addTo('body').size(window.innerWidth, window.innerHeight);
-
-window.onresize = () => {
-    svg.size(window.innerWidth, window.innerHeight);
-}
-
-svg.image("src/sprites/Background.png");
-
-svg.rect(100, 100).attr({ fill: "#ff0066"});*/
+const cow = new Cow({x: 0, y: 0}, "right");
+console.log(cow);
