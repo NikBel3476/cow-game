@@ -1,5 +1,50 @@
 body {
-    margin: 0px;
-    width: 100vh;
+    margin: 0;
+    width: 100vw;
     height: 100vh;
+    background: #006400 url("src/sprites/svg/Background.svg") no-repeat fixed center center;
+    background-size: contain;
+}
+
+#menu-container {
+    display: block;
+    position: absolute;
+    width: 20vw;
+    max-width: calc(10vw + 10vh);
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    text-align: center;
+}
+
+#game-container {
+    display: none;
+    position: absolute;
+    width: 20vw;
+    height: 20vh;
+}
+
+.game-menu-button {
+    display: inline;
+    background: none;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    width: 100%;
+    height: 100%;
+    border: 2px solid black;
+    border-radius: 20px;
+    outline: none;
+    padding: 0;
+    font: bold italic 100% sans-serif;
+    font-size: calc(1vh + 1vw);
+}
+
+#start-game-button:hover {
+    cursor: pointer;
+}
+
+#cow-object {
+    position: absolute;
+    width: 100px;
+    height: 100px;
 }

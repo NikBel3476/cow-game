@@ -13,8 +13,13 @@ const objRes = {
     fieldHeight: canvas.height / 14
 }
 
+document.getElementById("start-game-button").addEventListener("click", (e) => {
+    // start a game
+});
+
 // On resize ---------------
 
+/*
 const resize = () => {
     canvas.setWidth(window.innerWidth);
     canvas.setHeight(window.innerHeight);
@@ -60,4 +65,4 @@ window.onload = () => {
     resize();
     setBackground(imgPaths.background);
     render();
-};
+};*/

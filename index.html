@@ -8,8 +8,16 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <canvas id="scene"></canvas>
+    <div id="menu-container">
+        <button class="game-menu-button" id="start-game-button">Начать игру</button>
+        <button class="game-menu-button" id="choose-level-button">Выбрать уровень</button>
+    </div>
+    <!--<div id="game-container">
+        <object type="image/svg+xml" data="src/sprites/svg/Cow.svg." id="cow-object"></object>
+    </div>-->
+<!--    <canvas id="scene"></canvas>-->
     <script src="js/Thirdparty/FabricJS/fabric.min.js"></script>
+    <script src="js/Render.js"></script>
     <script src="js/Game/Conf.js"></script>
     <script src="js/Game/Entities/Entity.js"></script>
     <script src="js/Game/Entities/Cow.js"></script>

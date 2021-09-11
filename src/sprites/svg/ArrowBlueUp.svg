@@ -3,9 +3,9 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FF0000;}
-	.st1{fill:#FF0000;stroke:#FF0000;stroke-miterlimit:10;}
+	.st0{fill:#0000FF;}
+	.st1{fill:#0000FF;stroke:#0000FF;stroke-miterlimit:10;}
 </style>
-<polygon class="st0" points="93.5,49 66.5,22.35 66.5,75.65 "/>
-<rect x="26" y="19" transform="matrix(-5.947439e-07 1 -1 -5.947439e-07 85.5 12.5)" class="st1" width="21" height="60"/>
+<polygon class="st0" points="50,5.5 23.35,32.5 76.65,32.5 "/>
+<rect x="39.5" y="32.5" class="st1" width="21" height="60"/>
 </svg>
