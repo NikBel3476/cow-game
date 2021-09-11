@@ -1,4 +1,11 @@
-const canvas = new fabric.Canvas("scene");
+function deleteBackgroundImage() {
+    document.body.style.backgroundColor = "#006400";
+}
+
+
+// FabricJS --------------------------------
+
+/*const canvas = new fabric.Canvas("scene");
 
 const imgPaths = {
     background: "src/sprites/png/Background.png",
@@ -11,13 +18,9 @@ const IMGPaths = {
 const objRes = {
     fieldWidth: canvas.width / 20,
     fieldHeight: canvas.height / 14
-}
+}*/
 
-document.getElementById("start-game-button").addEventListener("click", (e) => {
-    // start a game
-});
-
-// On resize ---------------
+// On resize
 
 /*
 const resize = () => {
