@@ -2,7 +2,7 @@ body {
     margin: 0;
     width: 100vw;
     height: 100vh;
-    background: #006400 url("src/sprites/svg/Background.svg") no-repeat fixed center center;
+    background: #006400 url("src/sprites/svg/MainMenuBackground.svg") no-repeat fixed center center;
     background-size: contain;
 }
 

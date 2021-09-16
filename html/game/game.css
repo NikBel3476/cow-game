@@ -4,6 +4,12 @@ body {
     height: 100vh;
 }
 
+.game-object-wrapper {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+}
+
 #game-container {
     display: flex;
     position: absolute;
@@ -41,4 +47,20 @@ body {
     overflow: hidden;
     display: inline-block;
     white-space: nowrap;
+}
+
+#cow-right {
+    background: url("../../src/sprites/svg/CowRight.svg") no-repeat center;
+}
+
+#cow-down {
+    background: url("../../src/sprites/svg/CowDown.svg") no-repeat center;
+}
+
+#cow-left {
+    background: url("../../src/sprites/svg/CowLeft.svg") no-repeat center;
+}
+
+#cow-up {
+    background: url("../../src/sprites/svg/CowUp.svg") no-repeat center;
 }
