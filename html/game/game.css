@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+#game-container {
+    display: flex;
+    position: absolute;
+    background: #006400 url("../../src/sprites/svg/PlayingField.svg") no-repeat center;
+    background-size: contain;
+    width: 80%;
+    height: 100%;
+}
+
+#ui-container {
+    position: absolute;
+    right: 0;
+    background: #006480 no-repeat;
+    background-size: contain;
+    width: 20%;
+    height: 100%;
+}
+
+#game-table {
+    width: 100%;
+    padding: 0;
+    border-spacing: 0;
+    margin: auto;
+    height: calc(14 / 20 * 80vw);
+    width: calc(20 / 14 * 100vh);
+   /* max-height: calc(14 / 20 * 80vw);
+    max-width: calc(20 / 14 * 100vh);*/
+}
+
+#game-table td {
+    width: 5%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+}
