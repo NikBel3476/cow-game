@@ -12,10 +12,18 @@
 <div id="game-container">
     <table id="game-table">
         <tr>
-            <td><div class="game-object-wrapper" id="cow-right"></div></td>
-            <td><div class="game-object-wrapper" id="cow-down"></div></td>
-            <td><div class="game-object-wrapper" id="cow-left"></div></td>
-            <td><div class="game-object-wrapper" id="cow-up"></div></td>
+            <td>
+                <div class="game-object-wrapper" id="cow-right"></div>
+            </td>
+            <td>
+                <div class="game-object-wrapper" id="cow-down"></div>
+            </td>
+            <td>
+                <div class="game-object-wrapper" id="cow-left"></div>
+            </td>
+            <td>
+                <div class="game-object-wrapper" id="cow-up"></div>
+            </td>
             <td></td>
             <td></td>
             <td></td>
@@ -321,10 +329,59 @@
         </tr>
     </table>
 </div>
-<div id="ui-container"></div>
+<div id="ui-container">
+    <div id="ui-button-wrapper">
+        <button id="start-game-button" onclick="startGame()">Начать игру</button>
+        <button id="end-game-button" onClick="endGame()">Завершить игру</button>
+    </div>
+    <table id="ui-table">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <div id="low-background-wrapper">
+
+    </div>
+</div>
 <script src="../../js/Game/Conf.js"></script>
 <script src="../../js/Game/Entities/Entity.js"></script>
 <script src="../../js/Game/Entities/Field.js"></script>
 <script src="../../js/Game/Entities/Cow.js"></script>
+<script src="../../js/Render/Render.js"></script>
+<script src="../../js/levels/lvl1.js"></script>
+<script src="../../js/Game/Game.js"></script>
+<script src="../../js/main.js"></script>
 </body>
 </html>
