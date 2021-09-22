@@ -4,13 +4,16 @@ const CONF = {
         height: 14
     },
     ImgPath: {
-        CowBrownUp: "/src/svg/CowBrownUp.svg",
-        CowBrownRight: "/src/svg/CowBrownRight.svg",
-        CowBrownDown: "/src/svg/CowBrownDown.svg",
-        CowBrownLeft: "/src/svg/CowBrownLeft.svg",
-        CowGreyUp: "/src/svg/CowGreyUp.svg",
-        CowGreyRight: "/src/svg/CowGreyRight.svg",
-        CowGreyDown: "/src/svg/CowGreyDown.svg",
-        CowGreyLeft: "/src/svg/CowGreyLeft.svg",
+        CowBrownUp: "src/sprites/svg/CowBrownUp.svg",
+        CowBrownRight: "src/sprites/svg/CowBrownRight.svg",
+        CowBrownDown: "src/sprites/svg/CowBrownDown.svg",
+        CowBrownLeft: "src/sprites/svg/CowBrownLeft.svg",
+        CowGreyUp: "src/sprites/svg/CowGreyUp.svg",
+        CowGreyRight: "src/sprites/svg/CowGreyRight.svg",
+        CowGreyDown: "src/sprites/svg/CowGreyDown.svg",
+        CowGreyLeft: "src/sprites/svg/CowGreyLeft.svg",
+        FenceH: "src/sprites/svg/FenceH.svg",
+        FenceV: "src/sprites/svg/FenceV.svg",
+        Pillar: "src/sprites/svg/Pillar.svg"
     }
 }

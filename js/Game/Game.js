@@ -4,13 +4,15 @@ class Game {
     arrows;
     render;
 
-    constructor({ level = {}, render = {}}) {
-        ({ fields: this.fields, gameObjects: this.gameObjects, arrows: this.arrows } = level);
+    constructor({ fields = {}, gameObjects = {}, arrows = {} }, render = {}) {
+        this.fields = fields;
+        this.gameObjects = gameObjects;
+        this.arrows = arrows;
         this.render = render;
     }
 
     renderScene() {
-
+        this.render.drawScene(this.fields, this.gameObjects);
     }
 
     startGame() {

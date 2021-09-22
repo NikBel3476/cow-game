@@ -1,5 +1,7 @@
 const render = new Render();
-const game = new Game({ lvl1 , render });
+const game = new Game(lvl1 , render);
+
+game.renderScene();
 
 function startGame() {
     game.startGame();
