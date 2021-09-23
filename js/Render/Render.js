@@ -1,6 +1,4 @@
 class Render {
-    fields;
-    gameObjects;
     gameTable;
 
     constructor(level = {}) {
@@ -17,7 +15,22 @@ class Render {
         });
     }
 
+    drawGameObjects(gameObjects = {}) {
+        Object.entries(gameObjects).forEach((objArr) => {
+            this.gameTable[objArr[1].coordinates.y - 1][objArr[1].coordinates.x - 1].style.background = `url("../../${objArr[1].imgUrl}") no-repeat center`;
+        });
+    }
+
+    clearScene() {
+        this.gameTable.forEach((row) => {
+            row.forEach((field) => {
+                field.style.background = "";
+            });
+        });
+    }
+
     drawScene(fields = {}, gameObjects = {}) {
         this.drawStaticObjects(fields);
+        this.drawGameObjects(gameObjects);
     }
 }
