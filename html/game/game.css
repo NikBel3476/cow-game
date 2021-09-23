@@ -20,6 +20,9 @@ body {
 }
 
 #ui-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: absolute;
     right: 0;
     background: #006480 no-repeat;
@@ -33,10 +36,10 @@ body {
     padding: 0;
     border-spacing: 0;
     margin: auto;
-    height: calc(14 / 20 * 80vw);
-    width: calc(20 / 14 * 100vh);
-   /* max-height: calc(14 / 20 * 80vw);
-    max-width: calc(20 / 14 * 100vh);*/
+    width: 100%;
+    height: 100%;
+    max-height: calc(14 / 20 * 80vw);
+    max-width: calc(20 / 14 * 100vh);
 }
 
 #game-table td {
@@ -49,18 +52,59 @@ body {
     white-space: nowrap;
 }
 
+#ui-table {
+    padding: 0;
+    border-spacing: 0;
+    margin: auto;
+    width: 100%;
+    height: 50%;
+    max-height: calc(7 / 3 * 20vw);
+    max-width: calc(3 / 7 * 33.3%);
+}
+
+#ui-table td {
+    width: 33.3%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#ui-button-wrapper {
+    width: 100%;
+    height: 25%;
+}
+
+#start-game-button {
+    display: block;
+    max-width: 100%;
+}
+
+#end-game-button {
+    display: block;
+    margin-left: auto;
+    max-width: 100%;
+}
+
+#low-background-wrapper {
+    width: 100%;
+    height: 25%;
+}
+
 #cow-right {
-    background: url("../../src/sprites/svg/CowRight.svg") no-repeat center;
+    background: url("../../src/sprites/svg/CowGreyRight.svg") no-repeat center;
 }
 
 #cow-down {
-    background: url("../../src/sprites/svg/CowDown.svg") no-repeat center;
+    background: url("../../src/sprites/svg/CowGreyDown.svg") no-repeat center;
 }
 
 #cow-left {
-    background: url("../../src/sprites/svg/CowLeft.svg") no-repeat center;
+    background: url("../../src/sprites/svg/CowGreyLeft.svg") no-repeat center;
 }
 
 #cow-up {
-    background: url("../../src/sprites/svg/CowUp.svg") no-repeat center;
+    background: url("../../src/sprites/svg/CowGreyUp.svg") no-repeat center;
 }

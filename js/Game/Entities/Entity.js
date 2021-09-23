@@ -4,4 +4,6 @@ class Entity {
     constructor(imgUrl = "") {
         this.ImgURL = imgUrl;
     }
+
+
 }
