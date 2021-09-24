@@ -33,7 +33,7 @@ class Game {
     checkArrows(coords, cow) {
         Object.values(this.mapArrows).forEach(arrows => {
             arrows.forEach(arrow => {
-                if (coords[0] === arrow[0] && coords[1] === arrow[1]) {
+                if (coords[0] === arrow[1] && coords[1] === arrow[0]) {
                     cow.direction = arrow[2];
                 }
             });
@@ -44,7 +44,6 @@ class Game {
         if (!this.loop) {
             this.loop = setInterval(() => {
                 console.log("game is running");
-                console.log(this.gameObjects);
                 this.renderScene();
                 let canmove;
                 Object.values(this.gameObjects).forEach((obj) => {
@@ -53,7 +52,7 @@ class Game {
                             canmove = true;
                             Object.values(this.fields).forEach(fields => {
                                 fields.forEach(field => {
-                                    if (obj.coordinates.x === field[1] && (obj.coordinates.y - 1) === field[0]) {
+                                    if (obj.coordinates.x === field[0] && (obj.coordinates.y - 1) === field[1]) {
                                         canmove = false;
                                     }
                                 })
@@ -66,9 +65,8 @@ class Game {
                         case "right":
                             canmove = true;
                             Object.values(this.fields).forEach(fields => {
-                                console.log(fields);
                                 fields.forEach(field => {
-                                    if ((obj.coordinates.x + 1) === field[1] && obj.coordinates.y === field[0]) {
+                                    if ((obj.coordinates.x + 1) === field[0] && obj.coordinates.y === field[1]) {
                                         canmove = false;
                                     }
                                 })
@@ -82,7 +80,7 @@ class Game {
                             canmove = true;
                             Object.values(this.fields).forEach(fields => {
                                 fields.forEach(field => {
-                                    if (obj.coordinates.x === field[1] && (obj.coordinates.y + 1) === field[0]) {
+                                    if (obj.coordinates.x === field[0] && (obj.coordinates.y + 1) === field[1]) {
                                         canmove = false;
                                     }
                                 })
@@ -96,7 +94,7 @@ class Game {
                             canmove = true;
                             Object.values(this.fields).forEach(fields => {
                                 fields.forEach(field => {
-                                    if ((obj.coordinates.x - 1) === field[1] && obj.coordinates.y === field[0]) {
+                                    if ((obj.coordinates.x - 1) === field[0] && obj.coordinates.y === field[1]) {
                                         canmove = false;
                                     }
                                 })

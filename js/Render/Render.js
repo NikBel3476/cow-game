@@ -10,13 +10,13 @@ class Render {
     drawStaticObjects(fields = {}, mapArrows = {}) {
         Object.keys(fields).forEach((fieldName) => {
             fields[fieldName].forEach((coordinates) => {
-                this.gameTable[coordinates[0] - 1][coordinates[1] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
+                this.gameTable[coordinates[1] - 1][coordinates[0] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
             });
         });
 
         Object.keys(mapArrows).forEach((fieldName) => {
             mapArrows[fieldName].forEach((coordinates) => {
-                this.gameTable[coordinates[0] - 1][coordinates[1] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
+                this.gameTable[coordinates[1] - 1][coordinates[0] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
             });
         });
     }
