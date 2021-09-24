@@ -7,7 +7,7 @@ class Render {
         this.gameTable = rows.map((row) => Array.from(row.getElementsByTagName("td")));
     }
 
-    drawStaticObjects(fields = {}, mapArrows = {}) {
+    drawStaticObjects(fields = {}, mapArrows = {}, goblet = {}) {
         Object.keys(fields).forEach((fieldName) => {
             fields[fieldName].forEach((coordinates) => {
                 this.gameTable[coordinates[1] - 1][coordinates[0] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
@@ -15,10 +15,12 @@ class Render {
         });
 
         Object.keys(mapArrows).forEach((fieldName) => {
-            mapArrows[fieldName].forEach((coordinates) => {
-                this.gameTable[coordinates[1] - 1][coordinates[0] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
+            mapArrows[fieldName].forEach((arrow) => {
+                this.gameTable[arrow.y - 1][arrow.x - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
             });
         });
+
+        this.gameTable[goblet.y - 1][goblet.x - 1].style.background = `url("../../${CONF.ImgPath.Goblet}") no-repeat center`;
     }
 
     drawGameObjects(gameObjects = {}) {
@@ -35,8 +37,8 @@ class Render {
         });
     }
 
-    drawScene(fields = {}, gameObjects = {}, mapArrows = {}) {
-        this.drawStaticObjects(fields, mapArrows);
+    drawScene(fields = {}, gameObjects = {}, mapArrows = {}, goblet = {}) {
+        this.drawStaticObjects(fields, mapArrows, goblet);
         this.drawGameObjects(gameObjects);
     }
 }

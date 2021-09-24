@@ -4,12 +4,14 @@ class Game {
     arrows;
     render;
     mapArrows;
+    goblet;
 
-    constructor({ fields = {}, mapArrows = {}, gameObjects = {}, arrows = {} }, render = {}) {
+    constructor({ mapObjects: { fields = {}, mapArrows = {}, goblet = {} } , gameObjects = {}, arrows = {} }, render = {}) {
         this.fields = fields;
         this.gameObjects = this.createObjClasses(gameObjects);
         this.arrows = arrows;
         this.mapArrows = mapArrows;
+        this.goblet = goblet;
         this.render = render;
     }
 
@@ -23,21 +25,30 @@ class Game {
 
     renderScene() {
         this.clearScene();
-        this.render.drawScene(this.fields, this.gameObjects, this.mapArrows);
+        this.render.drawScene(this.fields, this.gameObjects, this.mapArrows, this.goblet);
     }
 
     clearScene() {
         this.render.clearScene();
     }
 
-    checkArrows(coords, cow) {
+    checkArrows(cow) {
         Object.values(this.mapArrows).forEach(arrows => {
-            arrows.forEach(arrow => {
-                if (coords[0] === arrow[1] && coords[1] === arrow[0]) {
-                    cow.direction = arrow[2];
-                }
+            arrows.forEach((arrow) => {
+                if (cow.coordinates.x === arrow.x && cow.coordinates.y === arrow.y) {
+                    cow.direction = arrow.direction;
+                    arrows.splice(arrows.indexOf(arrow), 1);
+                };
             });
         });
+        console.log(this.mapArrows);
+    }
+
+    checkGoblet(cow) {
+        if (this.goblet.x === cow.coordinates.x && this.goblet.y === cow.coordinates.y) {
+            alert("YOU WIN!!!");
+            this.endGame();
+        }
     }
 
     startGame() {
@@ -55,10 +66,11 @@ class Game {
                                     if (obj.coordinates.x === field[0] && (obj.coordinates.y - 1) === field[1]) {
                                         canmove = false;
                                     }
-                                })
+                                });
                             });
                             if (canmove) {
-                                this.checkArrows([(obj.coordinates.y), obj.coordinates.x], obj);
+                                this.checkArrows(obj);
+                                this.checkGoblet(obj);
                                 obj.move();
                             }
                             break;
@@ -69,10 +81,11 @@ class Game {
                                     if ((obj.coordinates.x + 1) === field[0] && obj.coordinates.y === field[1]) {
                                         canmove = false;
                                     }
-                                })
+                                });
                             });
                             if (canmove) {
-                                this.checkArrows([obj.coordinates.y, (obj.coordinates.x)], obj);
+                                this.checkArrows(obj);
+                                this.checkGoblet(obj);
                                 obj.move();
                             }
                             break;
@@ -83,10 +96,11 @@ class Game {
                                     if (obj.coordinates.x === field[0] && (obj.coordinates.y + 1) === field[1]) {
                                         canmove = false;
                                     }
-                                })
+                                });
                             });
                             if (canmove) {
-                                this.checkArrows([(obj.coordinates.y), obj.coordinates.x], obj);
+                                this.checkArrows(obj);
+                                this.checkGoblet(obj);
                                 obj.move();
                             }
                             break;
@@ -97,10 +111,11 @@ class Game {
                                     if ((obj.coordinates.x - 1) === field[0] && obj.coordinates.y === field[1]) {
                                         canmove = false;
                                     }
-                                })
+                                });
                             });
                             if (canmove) {
-                                this.checkArrows([obj.coordinates.y, (obj.coordinates.x)], obj);
+                                this.checkArrows(obj);
+                                this.checkGoblet(obj);
                                 obj.move();
                             }
                             break;
@@ -112,6 +127,7 @@ class Game {
 
     endGame() {
         clearInterval(this.loop);
+        this.loop = 0;
         this.clearScene();
         this.renderScene();
     }
