@@ -14,6 +14,7 @@ const CONF = {
         CowGreyLeft: "src/sprites/svg/CowGreyLeft.svg",
         FenceH: "src/sprites/svg/FenceH.svg",
         FenceV: "src/sprites/svg/FenceV.svg",
-        Pillar: "src/sprites/svg/Pillar.svg"
+        Pillar: "src/sprites/svg/Pillar.svg",
+        ArrowRedUp: "src/sprites/svg/ArrowRedUp.svg",
     }
 }

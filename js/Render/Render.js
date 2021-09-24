@@ -7,9 +7,15 @@ class Render {
         this.gameTable = rows.map((row) => Array.from(row.getElementsByTagName("td")));
     }
 
-    drawStaticObjects(fields = {}) {
+    drawStaticObjects(fields = {}, mapArrows = {}) {
         Object.keys(fields).forEach((fieldName) => {
             fields[fieldName].forEach((coordinates) => {
+                this.gameTable[coordinates[0] - 1][coordinates[1] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
+            });
+        });
+
+        Object.keys(mapArrows).forEach((fieldName) => {
+            mapArrows[fieldName].forEach((coordinates) => {
                 this.gameTable[coordinates[0] - 1][coordinates[1] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
             });
         });
@@ -29,8 +35,8 @@ class Render {
         });
     }
 
-    drawScene(fields = {}, gameObjects = {}) {
-        this.drawStaticObjects(fields);
+    drawScene(fields = {}, gameObjects = {}, mapArrows = {}) {
+        this.drawStaticObjects(fields, mapArrows);
         this.drawGameObjects(gameObjects);
     }
 }

@@ -1,8 +1,8 @@
 class Entity {
-    ImgURL;
+    imgUrl;
 
     constructor(imgUrl = "") {
-        this.ImgURL = imgUrl;
+        this.imgUrl = imgUrl;
     }
 
 
