@@ -52,7 +52,7 @@ const lvl1 = Object.freeze({
         "MainCow": {
             coordinates: { x: 5, y: 8 },
             direction: "right",
-            imgUrl: CONF.ImgPath.CowGreyRight
+            type: "main"
         }
     }),
     arrows: Object.freeze({

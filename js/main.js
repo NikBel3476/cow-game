@@ -10,3 +10,5 @@ function startGame() {
 function endGame() {
     game.endGame();
 }
+
+console.log();

@@ -36,16 +36,15 @@ class Game {
         Object.values(this.mapArrows).forEach(arrows => {
             arrows.forEach((arrow) => {
                 if (cow.coordinates.x === arrow.x && cow.coordinates.y === arrow.y) {
-                    cow.direction = arrow.direction;
+                    cow.setDirection(arrow.direction);
                     arrows.splice(arrows.indexOf(arrow), 1);
                 };
             });
         });
-        console.log(this.mapArrows);
     }
 
     checkGoblet(cow) {
-        if (this.goblet.x === cow.coordinates.x && this.goblet.y === cow.coordinates.y) {
+        if (cow.type === "main" && this.goblet.x === cow.coordinates.x && this.goblet.y === cow.coordinates.y) {
             alert("YOU WIN!!!");
             this.endGame();
         }
@@ -63,7 +62,11 @@ class Game {
                             canmove = true;
                             Object.values(this.fields).forEach(fields => {
                                 fields.forEach(field => {
-                                    if (obj.coordinates.x === field[0] && (obj.coordinates.y - 1) === field[1]) {
+                                    if (obj.coordinates.x === field[0] &&
+                                        (obj.coordinates.y - 1) === field[1] &&
+                                        obj.coordinates.y > 1 && 
+                                        obj.coordinates.y < 14
+                                    ) {
                                         canmove = false;
                                     }
                                 });
@@ -78,7 +81,11 @@ class Game {
                             canmove = true;
                             Object.values(this.fields).forEach(fields => {
                                 fields.forEach(field => {
-                                    if ((obj.coordinates.x + 1) === field[0] && obj.coordinates.y === field[1]) {
+                                    if ((obj.coordinates.x + 1) === field[0] &&
+                                        obj.coordinates.y === field[1] &&
+                                        obj.coordinates.x > 1 &&
+                                        obj.coordinates.x < 20
+                                    ) {
                                         canmove = false;
                                     }
                                 });
@@ -93,7 +100,11 @@ class Game {
                             canmove = true;
                             Object.values(this.fields).forEach(fields => {
                                 fields.forEach(field => {
-                                    if (obj.coordinates.x === field[0] && (obj.coordinates.y + 1) === field[1]) {
+                                    if (obj.coordinates.x === field[0] &&
+                                        (obj.coordinates.y + 1) === field[1] &&
+                                        obj.coordinates.y > 1 &&
+                                        obj.coordinates.y < 14
+                                    ) {
                                         canmove = false;
                                     }
                                 });
@@ -108,7 +119,11 @@ class Game {
                             canmove = true;
                             Object.values(this.fields).forEach(fields => {
                                 fields.forEach(field => {
-                                    if ((obj.coordinates.x - 1) === field[0] && obj.coordinates.y === field[1]) {
+                                    if ((obj.coordinates.x - 1) === field[0] &&
+                                        obj.coordinates.y === field[1] &&
+                                        obj.coordinates.x > 1 &&
+                                        obj.coordinates.x < 20
+                                    ) {
                                         canmove = false;
                                     }
                                 });
@@ -121,7 +136,7 @@ class Game {
                             break;
                     }
                 });
-            }, 700);
+            }, 500);
         }
     }
 
