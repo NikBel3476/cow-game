@@ -48,8 +48,6 @@ body {
 
 #cow-wrapper {
     position: absolute;
-    width: 50px;
-    height: 50px;
 }
 
 #game-table {
@@ -61,18 +59,21 @@ body {
 }
 
 #game-table td {
+    position: relative;
     width: 5%;
     height: 100%;
     padding: 0;
     margin: 0;
-    overflow: hidden;
+    overflow: visible;
     display: inline-block;
-    white-space: nowrap;
 }
 
 #game-table td div {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: -20%;
+    right: -20%;
+    width: 140%;
+    height: 140%;
 }
 
 #ui-table-wrapper {

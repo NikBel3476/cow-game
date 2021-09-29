@@ -5,8 +5,9 @@ class Render {
         // this.drawGameTable("#game-table-wrapper");
         this.htmlGameTable = this.createGameTable();
         document.getElementById("game-table-wrapper").appendChild(this.htmlGameTable);
+        this.divCow = this.createDivCow();
+        document.getElementById("game-table-wrapper").appendChild(this.divCow);
         this.gameTable = this.getHtmlTable(this.htmlGameTable);
-        const divCow = document.getElementById("cow-wrapper");
     }
 
     getHtmlTable(htmlTable) {
@@ -31,29 +32,20 @@ class Render {
         return table;
     }
 
-    // Net of divs
-    /* drawGameTable(parentCssSelector = "") {
-        if (typeof parentCssSelector === "string" && parentCssSelector.length !== 0) {
-            const parentNode = document.querySelector(parentCssSelector);
-            for (let i = 0; i < CONF.Map.width; i++) {
-                for (let j = 0; j < CONF.Map.height; j++) {
-                    let div = document.createElement("div");
-                    div.style.width = `${parentNode.clientWidth / CONF.Map.width}px`;
-                    div.style.height = `${parentNode.clientHeight / CONF.Map.height}px`;
-                    div.style.display = "inline-block";
-                    parentNode.appendChild(div);
-                }
-                parentNode.appendChild("br");
-            }
-        } else {
-            throw new Error("Wrong css selector on Render[drawGameTable]");
-        }
-    } */
+    createDivCow() {
+        const divCow = document.createElement("div");
+        divCow.id = "cow-wrapper";
+        console.log(this.htmlGameTable.querySelector("td").clientWidth);
+        divCow.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+        divCow.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+        divCow.style.top = `${this.htmlGameTable.querySelector("td")}`;
+        return divCow;
+    }
 
     drawStaticObjects(fields = {}, mapArrows = {}, goblet = {}) {
         Object.keys(fields).forEach((fieldName) => {
             fields[fieldName].forEach((coordinates) => {
-                this.gameTable[coordinates[1] - 1][coordinates[0] - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
+                this.gameTable[coordinates[1] - 1][coordinates[0] - 1].firstChild.style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
             });
         });
 
