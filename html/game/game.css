@@ -33,7 +33,8 @@ body {
     overflow: hidden;
 }
 
-#game-table {
+#game-table-wrapper {
+    position: relative;
     width: 100%;
     padding: 0;
     border-spacing: 0;
@@ -42,6 +43,21 @@ body {
     height: 100%;
     max-height: calc(14 / 20 * 80vw);
     max-width: calc(20 / 14 * 100vh);
+    line-height: 0px;
+}
+
+#cow-wrapper {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+}
+
+#game-table {
+    padding: 0;
+    border-spacing: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
 }
 
 #game-table td {
@@ -52,6 +68,11 @@ body {
     overflow: hidden;
     display: inline-block;
     white-space: nowrap;
+}
+
+#game-table td div {
+    width: 100%;
+    height: 100%;
 }
 
 #ui-table-wrapper {

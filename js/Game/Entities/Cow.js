@@ -39,28 +39,28 @@ class Cow extends Entity {
     move(direction = this.direction) {
         switch(direction) {
             case "up":
-                this.coordinates.y--;
+                this.coordinates.y = Math.round((this.coordinates.y - 0.1) * 100) / 100;
                 if (this.direction !== "up") {
                     this.direction = "up";
                     this.imgUrl = this.getImgUrl();
                 }
                 break;
             case "right":
-                this.coordinates.x++;
+                this.coordinates.x = Math.round((this.coordinates.x + 0.1) * 100) / 100;
                 if (this.direction !== "right") {
                     this.direction = "right";
                     this.imgUrl = this.getImgUrl();
                 }
                 break;
             case "down":
-                this.coordinates.y++;
+                this.coordinates.y = Math.round((this.coordinates.y + 0.1) * 100) / 100;
                 if (this.direction !== "down") {
                     this.direction = "down";
                     this.imgUrl = this.getImgUrl();
                 }
                 break;
             case "left":
-                this.coordinates.x--;
+                this.coordinates.x = Math.round((this.coordinates.x - 0.1) * 100) / 100;
                 if (this.direction !== "left") {
                     this.direction = "left";
                     this.imgUrl = this.getImgUrl();

@@ -5,6 +5,7 @@ class Game {
     render;
     mapArrows;
     goblet;
+    count = 0;
 
     constructor({ mapObjects: { fields = {}, mapArrows = {}, goblet = {} } , gameObjects = {}, arrows = {} }, render = {}) {
         this.fields = fields;
@@ -54,7 +55,6 @@ class Game {
         if (!this.loop) {
             this.loop = setInterval(() => {
                 console.log("game is running");
-                this.renderScene();
                 let canmove;
                 Object.values(this.gameObjects).forEach((obj) => {
                     switch (obj.direction) {
@@ -135,7 +135,9 @@ class Game {
                             }
                             break;
                     }
+                    console.log(obj.coordinates.x, obj.coordinates.y);
                 });
+                this.renderScene();
             }, 500);
         }
     }

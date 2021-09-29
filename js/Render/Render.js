@@ -2,10 +2,53 @@ class Render {
     gameTable;
 
     constructor(level = {}) {
-        const htmlTable = document.getElementById("game-table");
-        const rows = Array.from(htmlTable.getElementsByTagName("tr"));
-        this.gameTable = rows.map((row) => Array.from(row.getElementsByTagName("td")));
+        // this.drawGameTable("#game-table-wrapper");
+        this.htmlGameTable = this.createGameTable();
+        document.getElementById("game-table-wrapper").appendChild(this.htmlGameTable);
+        this.gameTable = this.getHtmlTable(this.htmlGameTable);
+        const divCow = document.getElementById("cow-wrapper");
     }
+
+    getHtmlTable(htmlTable) {
+        const rows = Array.from(htmlTable.getElementsByTagName("tr"));
+        return rows.map((row) => Array.from(row.getElementsByTagName("td")));
+    }
+
+    createGameTable() {
+        const table = document.createElement("table");
+        table.id = "game-table";
+        const tBody = document.createElement("tbody");
+        for (let i = 0; i < CONF.Map.height; i++) {
+            let tr = document.createElement("tr");
+            for (let j = 0; j < CONF.Map.width; j++) {
+                const td = document.createElement("td");
+                td.appendChild(document.createElement("div"));
+                tr.appendChild(td);
+            }
+            tBody.appendChild(tr);
+        }
+        table.appendChild(tBody);
+        return table;
+    }
+
+    // Net of divs
+    /* drawGameTable(parentCssSelector = "") {
+        if (typeof parentCssSelector === "string" && parentCssSelector.length !== 0) {
+            const parentNode = document.querySelector(parentCssSelector);
+            for (let i = 0; i < CONF.Map.width; i++) {
+                for (let j = 0; j < CONF.Map.height; j++) {
+                    let div = document.createElement("div");
+                    div.style.width = `${parentNode.clientWidth / CONF.Map.width}px`;
+                    div.style.height = `${parentNode.clientHeight / CONF.Map.height}px`;
+                    div.style.display = "inline-block";
+                    parentNode.appendChild(div);
+                }
+                parentNode.appendChild("br");
+            }
+        } else {
+            throw new Error("Wrong css selector on Render[drawGameTable]");
+        }
+    } */
 
     drawStaticObjects(fields = {}, mapArrows = {}, goblet = {}) {
         Object.keys(fields).forEach((fieldName) => {
@@ -25,7 +68,7 @@ class Render {
 
     drawGameObjects(gameObjects = {}) {
         Object.entries(gameObjects).forEach((objArr) => {
-            this.gameTable[objArr[1].coordinates.y - 1][objArr[1].coordinates.x - 1].style.background = `url("../../${objArr[1].imgUrl}") no-repeat center`;
+            this.gameTable[Math.round(objArr[1].coordinates.y) - 1][Math.round(objArr[1].coordinates.x) - 1].style.background = `url("../../${objArr[1].imgUrl}") no-repeat center`;
         });
     }
 
