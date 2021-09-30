@@ -55,6 +55,8 @@ class Render {
                     let cowDiv = document.getElementsByClassName(`cow-${count++}`);
                     cowDiv[0].style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (obj.coordinates.y - 1)}px`;
                     cowDiv[0].style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (obj.coordinates.x - 1)}px`;
+                    cowDiv[0].style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+                    cowDiv[0].style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
                     cowDiv[0].style.background = `url("../../${obj.imgUrl}") no-repeat center`;
                 })
             });
