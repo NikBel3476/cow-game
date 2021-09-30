@@ -16,7 +16,7 @@ const lvl1 = Object.freeze({
         ["Pillar", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "Pillar"],
     ], */
     mapObjects: {
-        fields: Object.freeze({
+        fixedFields: Object.freeze({
             "Pillar": [
                 [1, 1],
                 [20, 1],
@@ -35,7 +35,9 @@ const lvl1 = Object.freeze({
                 [11, 6], [11, 7], [11, 8], [11, 9], [11, 10]
             ]
         }),
-    
+        mobileFields: Object.freeze({
+
+        }),
         mapArrows: Object.freeze({
             "ArrowRedUp": [
                 { x: 7, y: 8, direction: "up"}
@@ -48,12 +50,14 @@ const lvl1 = Object.freeze({
             x: 16, y: 3
         })
     },
-    gameObjects: Object.freeze({ // cows
-        "MainCow": {
-            coordinates: { x: 5, y: 8 },
-            direction: "right",
-            type: "main"
-        }
+    gameObjects: Object.freeze({
+        "MainCow": [
+            { 
+                coordinates: { x: 5, y: 8 },
+                direction: "right",
+                type: "main"
+            }
+        ]
     }),
     arrows: Object.freeze({
         "up": 1,
