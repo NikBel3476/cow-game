@@ -60,7 +60,7 @@ const lvl1 = Object.freeze({
         ]
     }),
     arrows: Object.freeze({
-        "up": 1,
-        "right": 1
+        "RedUp": 1,
+        "RedRight": 1
     })
 });

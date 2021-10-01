@@ -1,4 +1,4 @@
-const render = new Render("#game-table-wrapper");
+const render = new Render("#game-table-wrapper", "#ui-table-wrapper");
 const game = new Game(lvl1 , render);
 
 function startGame() {
@@ -11,6 +11,7 @@ function endGame() {
 
 window.onload = () => { 
     game.renderScene();
+    game.drawArrows();
 }
 
 window.onresize = () => {

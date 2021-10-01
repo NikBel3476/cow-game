@@ -19,9 +19,13 @@ class Game {
     createGameObjectClasses(gameObjects = {}) {
         let gameObjs = {};
         Object.keys(gameObjects).forEach((objName) => {
-            gameObjs[objName] = gameObjects[objName].map((obj) => new Cow(obj));
+            gameObjs[objName] = gameObjects[objName].map(obj => new Cow(obj));
         });
         return gameObjs;
+    }
+
+    drawArrows() {
+        this.render.drawArrows(this.arrows);
     }
 
     renderScene() {

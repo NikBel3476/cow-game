@@ -1,11 +1,13 @@
 class Render {
     gameTable;
 
-    constructor(parentCssSelector = "") {
-        // this.drawGameTable("#game-table-wrapper");
+    constructor(gameContainerCssSelector = "", arrowsTableCssSelector = "") {
         this.htmlGameTable = this.createGameTable();
-        document.querySelector(parentCssSelector).appendChild(this.htmlGameTable);
+        document.querySelector(gameContainerCssSelector).appendChild(this.htmlGameTable);
+        this.htmlArrowsTable = this.createArrowsTable();
+        document.querySelector(arrowsTableCssSelector).appendChild(this.htmlArrowsTable);
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
+        this.arrowTable = this.htmlTableToArray(this.htmlArrowsTable);
     }
 
     htmlTableToArray(htmlTable) {
@@ -21,7 +23,30 @@ class Render {
             let tr = document.createElement("tr");
             for (let j = 0; j < CONF.Map.width; j++) {
                 const td = document.createElement("td");
-                td.appendChild(document.createElement("div"));
+                const div = document.createElement("div");
+                div.className = `game-field x-${j+1} y-${i+1}`;
+                td.appendChild(div);
+                tr.appendChild(td);
+            }
+            tBody.appendChild(tr);
+        }
+        table.appendChild(tBody);
+        return table;
+    }
+
+    createArrowsTable() {
+        const table = document.createElement("table");
+        table.id = "ui-table";
+        const tBody = document.createElement("tbody");
+        for (let i = 0; i < CONF.ArrowsTable.height; i++) {
+            let tr = document.createElement("tr");
+            for (let j = 0; j < CONF.ArrowsTable.width; j++) {
+                const td = document.createElement("td");
+                td.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+                td.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                const div = document.createElement("div");
+                div.className = `arrow-field x-${j+1} y-${i+1}`;
+                td.appendChild(div);
                 tr.appendChild(td);
             }
             tBody.appendChild(tr);
@@ -82,6 +107,18 @@ class Render {
             row.forEach((field) => {
                 field.style.background = "";
             });
+        });
+    }
+
+    drawArrows(arrows = {}) {
+        let index = 0;
+        Object.keys(arrows).forEach(type => {
+            for (let count = 0 ; count < arrows[type]; count++) {
+                if (index < CONF.ArrowsTable.width * CONF.ArrowsTable.height) {
+                    this.arrowTable[Math.floor(index / CONF.ArrowsTable.width)][index % CONF.ArrowsTable.width].style.background = `url("../../src/sprites/svg/Arrow${type}.svg") no-repeat center`;
+                    index++;
+                }
+            }
         });
     }
 

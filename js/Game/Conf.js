@@ -3,6 +3,10 @@ const CONF = {
         width: 20,
         height: 14
     },
+    ArrowsTable: {
+        width: 3,
+        height: 7
+    },
     ImgPath: {
         CowBrownUp: "src/sprites/svg/CowBrownUp.svg",
         CowBrownRight: "src/sprites/svg/CowBrownRight.svg",
