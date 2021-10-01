@@ -7,7 +7,7 @@ class Render {
         this.htmlArrowsTable = this.createArrowsTable();
         document.querySelector(arrowsTableCssSelector).appendChild(this.htmlArrowsTable);
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
-        this.arrowTable = this.htmlTableToArray(this.htmlArrowsTable);
+        this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
     }
 
     htmlTableToArray(htmlTable) {
@@ -115,15 +115,25 @@ class Render {
         Object.keys(arrows).forEach(type => {
             for (let count = 0 ; count < arrows[type]; count++) {
                 if (index < CONF.ArrowsTable.width * CONF.ArrowsTable.height) {
-                    this.arrowTable[Math.floor(index / CONF.ArrowsTable.width)][index % CONF.ArrowsTable.width].style.background = `url("../../src/sprites/svg/Arrow${type}.svg") no-repeat center`;
+                    this.arrowsTable[Math.floor(index / CONF.ArrowsTable.width)][index % CONF.ArrowsTable.width].style.background = `url("../../src/sprites/svg/Arrow${type}.svg") no-repeat center`;
                     index++;
                 }
             }
         });
     }
 
+    scaleArrowsTable() {
+        this.arrowsTable.forEach(row => {
+            row.forEach(td => {
+                td.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+                td.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+            });
+        });
+    }
+
     drawScene(fixedFields = {}, gameObjects = {}, mapArrows = {}, goblet = {}) {
         this.drawStaticObjects(fixedFields, mapArrows, goblet);
         this.drawGameObjects(gameObjects);
+        this.scaleArrowsTable();
     }
 }
