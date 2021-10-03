@@ -39,12 +39,12 @@ const lvl1 = Object.freeze({
 
         }),
         mapArrows: Object.freeze({
-            "ArrowRedUp": [
+            /* "ArrowRedUp": [
                 { x: 7, y: 8, direction: "up"}
             ],
             "ArrowRedRight": [
                 {x: 7, y: 3, direction: "right"}
-            ]
+            ] */
         }),
         goblet: Object.freeze({
             x: 16, y: 3

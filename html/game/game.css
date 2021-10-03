@@ -93,12 +93,18 @@ body {
 }
 
 #ui-table td {
+    position: relative;
     padding: 0;
     margin: 0;
     overflow: visible;
-    display: inline-block;
     white-space: nowrap;
     border: 1px solid black;
+}
+
+#ui-table td div {
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
 
 #ui-button-wrapper {
