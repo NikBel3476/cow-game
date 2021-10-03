@@ -3,17 +3,19 @@ class Game {
     fixedFields;
     arrows;
     render;
+    ui;
     mapArrows;
     goblet;
     count = 0;
 
-    constructor({ mapObjects: { fixedFields = {}, mapArrows = {}, goblet = {} } , gameObjects = {}, arrows = {} }, render = {}) {
+    constructor({ mapObjects: { fixedFields = {}, mapArrows = {}, goblet = {} } , gameObjects = {}, arrows = {} }, render = {}, ui = {}) {
         this.fixedFields = fixedFields;
         this.gameObjects = this.createGameObjectClasses(gameObjects);
         this.arrows = arrows;
         this.mapArrows = mapArrows;
         this.goblet = goblet;
         this.render = render;
+        this.ui = ui;
     }
 
     createGameObjectClasses(gameObjects = {}) {
@@ -39,7 +41,7 @@ class Game {
 
     checkArrows(cow) {
         Object.values(this.mapArrows).forEach(arrows => {
-            arrows.forEach((arrow) => {
+            arrows.forEach(arrow => {
                 if (cow.coordinates.x === arrow.x && cow.coordinates.y === arrow.y) {
                     cow.setDirection(arrow.direction);
                     arrows.splice(arrows.indexOf(arrow), 1);

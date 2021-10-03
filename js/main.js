@@ -1,6 +1,6 @@
 const ui = new UI("#game-table-wrapper", "#ui-table-wrapper");
 const render = new Render(ui);
-const game = new Game(lvl1 , render);
+const game = new Game(lvl1 , render, ui);
 
 function startGame() {
     game.startGame();

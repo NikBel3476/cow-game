@@ -16,6 +16,9 @@ class UI {
         // EventListeners
         this.addEventListenerToElement(document, "mouseup", (e) => {
             if (this.selectedItem) {
+                console.log(e.path[0]);
+                let gameTable = game.gameTable;
+                this.selectedItem.style.pointerEvents = "";
                 this.selectedItem.style.top = "0";
                 this.selectedItem.style.left = "0";
                 this.selectedItem = null;
@@ -23,10 +26,8 @@ class UI {
         });
         this.addEventListenerToElement(document, "mousemove", (e) => {
             if (this.selectedItem) {
-                console.log(e);
                 const styleTop = this.selectedItem.style.top;
                 const styleLeft = this.selectedItem.style.left;
-                console.log(styleTop, styleLeft);
                 this.selectedItem.style.top = `${Number(styleTop.slice(0, styleTop.length - 2)) + e.movementY}px`;
                 this.selectedItem.style.left = `${Number(styleLeft.slice(0, styleLeft.length - 2)) + e.movementX}px`;
             }
@@ -37,7 +38,7 @@ class UI {
         if (htmlElement instanceof (Document || HTMLElement)) {
             htmlElement.addEventListener(eventName, callback);
         } else {
-            throw new Error("htmlElement if not a htmlElement on UI[addEventListenerToElement]");
+            throw new Error("htmlElement if not a document or htmlElement on UI[addEventListenerToElement]");
         }
     }
 
@@ -81,6 +82,7 @@ class UI {
                 div.style.left = "0";
                 div.addEventListener("mousedown", (e) => {
                     this.selectedItem = e.path[0];
+                    this.selectedItem.style.pointerEvents = "none";
                 });
                 td.appendChild(div);
                 tr.appendChild(td);
