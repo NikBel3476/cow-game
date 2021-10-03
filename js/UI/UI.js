@@ -15,7 +15,11 @@ class UI {
 
         // EventListeners
         this.addEventListenerToElement(document, "mouseup", (e) => {
-            this.selectedItem = null;
+            if (this.selectedItem) {
+                this.selectedItem.style.top = "0";
+                this.selectedItem.style.left = "0";
+                this.selectedItem = null;
+            }
         });
         this.addEventListenerToElement(document, "mousemove", (e) => {
             if (this.selectedItem) {
