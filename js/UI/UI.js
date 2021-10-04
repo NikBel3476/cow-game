@@ -16,8 +16,10 @@ class UI {
         // EventListeners
         this.addEventListenerToElement(document, "mouseup", (e) => {
             if (this.selectedItem) {
-                console.log(e.path[0]);
-                let gameTable = game.gameTable;
+                if (e.path[0].className.includes("game-field")) {
+                    let mapArrows = game.mapArrows;
+
+                }
                 this.selectedItem.style.pointerEvents = "";
                 this.selectedItem.style.top = "0";
                 this.selectedItem.style.left = "0";

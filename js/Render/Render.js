@@ -12,15 +12,17 @@ class Render {
     }
 
     drawStaticObjects(fields = {}, mapArrows = {}, goblet = {}) {
-        Object.keys(fields).forEach(fieldName => {
-            fields[fieldName].forEach(coordinates => {
-                this.gameTable[coordinates[1] - 1][coordinates[0] - 1].firstChild.style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
+        Object.values(fields).forEach(fieldsArray => {
+            fieldsArray.forEach(field => {
+                this.gameTable[field.coordinates.y - 1][field.coordinates.x - 1].firstChild.style.background = `url("../../${field.imgUrl}") no-repeat center`;
             });
         });
 
         Object.keys(mapArrows).forEach(fieldName => {
             mapArrows[fieldName].forEach(arrow => {
-                this.gameTable[arrow.y - 1][arrow.x - 1].style.background = `url("../../${CONF.ImgPath[fieldName]}") no-repeat center`;
+                let elem = this.gameTable[arrow.y - 1][arrow.x - 1];
+                elem.className += `${fieldName}`;
+                elem.style.background = `url("../../${CONF.ImgPath[`Arrow${fieldName}`]}") no-repeat center`;
             });
         });
 
@@ -58,23 +60,24 @@ class Render {
         }
     }
 
-    clearScene() {
-        this.gameTable.forEach(row => {
-            row.forEach((field) => {
-                field.style.background = "";
-            });
-        });
-    }
-
     drawArrows(arrows = {}) {
         let index = 0;
         Object.keys(arrows).forEach(type => {
             for (let count = 0 ; count < arrows[type]; count++) {
                 if (index < CONF.ArrowsTable.width * CONF.ArrowsTable.height) {
-                    this.arrowsTable[Math.floor(index / CONF.ArrowsTable.width)][index % CONF.ArrowsTable.width].firstChild.style.background = `url("../../src/sprites/svg/Arrow${type}.svg") no-repeat center`;
+                    let htmlElem = this.arrowsTable[Math.floor(index / CONF.ArrowsTable.width)][index % CONF.ArrowsTable.width]
+                        .firstChild.style.background = `url("../../src/sprites/svg/Arrow${type}.svg") no-repeat center`;
                     index++;
                 }
             }
+        });
+    }
+
+    clearScene() {
+        this.gameTable.forEach(row => {
+            row.forEach((field) => {
+                field.style.background = "";
+            });
         });
     }
 

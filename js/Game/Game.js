@@ -9,7 +9,11 @@ class Game {
     count = 0;
 
     constructor({ mapObjects: { fixedFields = {}, mapArrows = {}, goblet = {} } , gameObjects = {}, arrows = {} }, render = {}, ui = {}) {
-        this.fixedFields = fixedFields;
+        this.fixedFields = Object.keys(fixedFields).map(fieldName => 
+            fixedFields[fieldName].map(fieldCoordinates => 
+                new Field(fieldName, { x: fieldCoordinates[0], y: fieldCoordinates[1]})
+            )
+        );
         this.gameObjects = this.createGameObjectClasses(gameObjects);
         this.arrows = arrows;
         this.mapArrows = mapArrows;

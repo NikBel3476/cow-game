@@ -39,10 +39,10 @@ const lvl1 = Object.freeze({
 
         }),
         mapArrows: Object.freeze({
-            /* "ArrowRedUp": [
+            /* "RedUp": [
                 { x: 7, y: 8, direction: "up"}
             ],
-            "ArrowRedRight": [
+            "RedRight": [
                 {x: 7, y: 3, direction: "right"}
             ] */
         }),
