@@ -18,15 +18,15 @@ class Render {
             });
         });
 
-        Object.keys(mapArrows).forEach(fieldName => {
-            mapArrows[fieldName].forEach(arrow => {
-                let elem = this.gameTable[arrow.y - 1][arrow.x - 1];
-                elem.className += `${fieldName}`;
-                elem.style.background = `url("../../${CONF.ImgPath[`Arrow${fieldName}`]}") no-repeat center`;
+        Object.values(mapArrows).forEach(arrowArr => {
+            arrowArr.forEach(arrow => {
+                let elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1];
+                elem.className += `${arrow.name}`;
+                elem.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
             });
         });
 
-        this.gameTable[goblet.y - 1][goblet.x - 1].style.background = `url("../../${CONF.ImgPath.Goblet}") no-repeat center`;
+        this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild.style.background = `url("../../${goblet.imgUrl}") no-repeat center`;
     }
 
     drawGameObjects(gameObjects = {}) {
@@ -65,7 +65,7 @@ class Render {
         Object.keys(arrows).forEach(type => {
             for (let count = 0 ; count < arrows[type]; count++) {
                 if (index < CONF.ArrowsTable.width * CONF.ArrowsTable.height) {
-                    let htmlElem = this.arrowsTable[Math.floor(index / CONF.ArrowsTable.width)][index % CONF.ArrowsTable.width]
+                    this.arrowsTable[Math.floor(index / CONF.ArrowsTable.width)][index % CONF.ArrowsTable.width]
                         .firstChild.style.background = `url("../../src/sprites/svg/Arrow${type}.svg") no-repeat center`;
                     index++;
                 }

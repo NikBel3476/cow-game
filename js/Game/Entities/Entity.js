@@ -3,8 +3,9 @@ class Entity {
     imgUrl = "";
     linkedHtmlElement = "";
 
-    constructor(name = "") {
+    constructor(name = "", linkedHtmlElement = "") {
         this.name = name;
+        this.linkedHtmlElement = linkedHtmlElement;
     }
 
 }

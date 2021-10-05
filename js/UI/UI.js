@@ -12,14 +12,12 @@ class UI {
         document.querySelector(arrowsTableCssSelector).appendChild(this.htmlArrowsTable);
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
+        console.log(this.gameTable);
 
         // EventListeners
         this.addEventListenerToElement(document, "mouseup", (e) => {
             if (this.selectedItem) {
-                if (e.path[0].className.includes("game-field")) {
-                    let mapArrows = game.mapArrows;
-
-                }
+                console.log(e.path[0]);
                 this.selectedItem.style.pointerEvents = "";
                 this.selectedItem.style.top = "0";
                 this.selectedItem.style.left = "0";
@@ -45,8 +43,9 @@ class UI {
     }
 
     htmlTableToArray(htmlTable) {
-        const rows = Array.from(htmlTable.getElementsByTagName("tr"));
-        return rows.map((row) => Array.from(row.getElementsByTagName("td")));
+        return [...htmlTable.rows].map(row => 
+            [...row.cells]
+        );
     }
 
     createGameTable() {

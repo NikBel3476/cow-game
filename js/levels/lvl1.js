@@ -1,20 +1,4 @@
 const lvl1 = Object.freeze({
-    /* fields: [
-        ["Pillar", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "Pillar"],
-        ["FenceV", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, "FenceV", null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, "FenceV", null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, "FenceV", null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, "FenceV", null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, "FenceV", null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        ["FenceV", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        ["Pillar", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "FenceH", "Pillar"],
-    ], */
     mapObjects: {
         fixedFields: Object.freeze({
             "Pillar": [
@@ -39,15 +23,21 @@ const lvl1 = Object.freeze({
 
         }),
         mapArrows: Object.freeze({
-            /* "RedUp": [
-                { x: 7, y: 8, direction: "up"}
+            "RedUp": [
+                { 
+                    coordinates: { x: 7, y: 8 },
+                    direction: "up"
+                }
             ],
             "RedRight": [
-                {x: 7, y: 3, direction: "right"}
-            ] */
+                {
+                    coordinates: { x: 7, y: 3 },
+                    direction: "right"
+                }
+            ]
         }),
         goblet: Object.freeze({
-            x: 16, y: 3
+            coordinates: { x: 16, y: 3 }
         })
     },
     gameObjects: Object.freeze({

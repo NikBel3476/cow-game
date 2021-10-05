@@ -15,6 +15,6 @@ window.onload = () => {
     game.drawArrows();
 }
 
-window.onresize = () => {
+window.onresize = () => { 
     game.renderScene();
 }

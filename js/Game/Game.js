@@ -6,20 +6,23 @@ class Game {
     ui;
     mapArrows;
     goblet;
-    count = 0;
 
     constructor({ mapObjects: { fixedFields = {}, mapArrows = {}, goblet = {} } , gameObjects = {}, arrows = {} }, render = {}, ui = {}) {
+        this.render = render;
+        this.ui = ui;
         this.fixedFields = Object.keys(fixedFields).map(fieldName => 
             fixedFields[fieldName].map(fieldCoordinates => 
-                new Field(fieldName, { x: fieldCoordinates[0], y: fieldCoordinates[1]})
+                new Field(fieldName, { x: fieldCoordinates[0], y: fieldCoordinates[1]}, true, false, this.ui.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild)
             )
         );
         this.gameObjects = this.createGameObjectClasses(gameObjects);
+        this.mapArrows = Object.keys(mapArrows).map(arrowTypeName => 
+            mapArrows[arrowTypeName].map(arrow =>
+                new Arrow(arrowTypeName, arrow, this.ui.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild)  
+            )
+        );
         this.arrows = arrows;
-        this.mapArrows = mapArrows;
-        this.goblet = goblet;
-        this.render = render;
-        this.ui = ui;
+        this.goblet = new Goblet(goblet, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1]);
     }
 
     createGameObjectClasses(gameObjects = {}) {
@@ -35,7 +38,7 @@ class Game {
     }
 
     renderScene() {
-        this.clearScene();
+        // this.clearScene();
         this.render.drawScene(this.fixedFields, this.gameObjects, this.mapArrows, this.goblet);
     }
 
@@ -46,7 +49,7 @@ class Game {
     checkArrows(cow) {
         Object.values(this.mapArrows).forEach(arrows => {
             arrows.forEach(arrow => {
-                if (cow.coordinates.x === arrow.x && cow.coordinates.y === arrow.y) {
+                if (cow.coordinates.x === arrow.coordinates.x && cow.coordinates.y === arrow.coordinates.y) {
                     cow.setDirection(arrow.direction);
                     arrows.splice(arrows.indexOf(arrow), 1);
                 };
@@ -55,7 +58,7 @@ class Game {
     }
 
     checkGoblet(cow) {
-        return cow.type === "main" && this.goblet.x === cow.coordinates.x && this.goblet.y === cow.coordinates.y ?
+        return cow.type === "main" && this.goblet.coordinates.x === cow.coordinates.x && this.goblet.coordinates.y === cow.coordinates.y ?
             true :
             false;
     }
@@ -64,6 +67,8 @@ class Game {
         if (!this.loop) {
             this.loop = setInterval(() => {
                 console.log("game is running");
+
+                // логика ходьбы коровы
                 let canmove;
                 let isVictory = false;
                 Object.values(this.gameObjects).forEach((objArr) => {
@@ -73,8 +78,8 @@ class Game {
                                 canmove = true;
                                 Object.values(this.fixedFields).forEach(fields => {
                                     fields.forEach(field => {
-                                        if (obj.coordinates.x === field[0] &&
-                                            (obj.coordinates.y - 1) === field[1] &&
+                                        if (obj.coordinates.x === field.coordinates.x &&
+                                            (obj.coordinates.y - 1) === field.coordinates.y &&
                                             obj.coordinates.y > 1 && 
                                             obj.coordinates.y < 14
                                         ) {
@@ -92,8 +97,8 @@ class Game {
                                 canmove = true;
                                 Object.values(this.fixedFields).forEach(fields => {
                                     fields.forEach(field => {
-                                        if ((obj.coordinates.x + 1) === field[0] &&
-                                            obj.coordinates.y === field[1] &&
+                                        if ((obj.coordinates.x + 1) === field.coordinates.x &&
+                                            obj.coordinates.y === field.coordinates.y &&
                                             obj.coordinates.x > 1 &&
                                             obj.coordinates.x < 20
                                         ) {
@@ -111,8 +116,8 @@ class Game {
                                 canmove = true;
                                 Object.values(this.fixedFields).forEach(fields => {
                                     fields.forEach(field => {
-                                        if (obj.coordinates.x === field[0] &&
-                                            (obj.coordinates.y + 1) === field[1] &&
+                                        if (obj.coordinates.x === field.coordinates.x &&
+                                            (obj.coordinates.y + 1) === field.coordinates.y &&
                                             obj.coordinates.y > 1 &&
                                             obj.coordinates.y < 14
                                         ) {
@@ -130,8 +135,8 @@ class Game {
                                 canmove = true;
                                 Object.values(this.fixedFields).forEach(fields => {
                                     fields.forEach(field => {
-                                        if ((obj.coordinates.x - 1) === field[0] &&
-                                            obj.coordinates.y === field[1] &&
+                                        if ((obj.coordinates.x - 1) === field.coordinates.x &&
+                                            obj.coordinates.y === field.coordinates.y &&
                                             obj.coordinates.x > 1 &&
                                             obj.coordinates.x < 20
                                         ) {

@@ -4,8 +4,8 @@ class Field extends Entity {
     imgUrl = "";
     movable; // true - можно двигать
 
-    constructor(name = "", coordinates = {x: null, y: null}, impassable = true, movable = false) {
-        super(name);
+    constructor(name = "", coordinates = {x: null, y: null}, impassable = true, movable = false, linkedHtmlElement = "") {
+        super(name, linkedHtmlElement);
         this.coordinates = coordinates;
         this.impassable = impassable;
         this.movable = movable;
