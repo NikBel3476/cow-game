@@ -12,19 +12,31 @@ class UI {
         document.querySelector(arrowsTableCssSelector).appendChild(this.htmlArrowsTable);
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
-        console.log(this.gameTable);
 
         // EventListeners
-        this.addEventListenerToElement(document, "mouseup", (e) => {
+        document.addEventListener("mouseup", (e) => {
             if (this.selectedItem) {
-                console.log(e.path[0]);
+                console.log(game.getAllMapObjects());
+                console.log("field", game.findMapFieldByHtmlElement(e.path[0]));
+                console.log("obj", game.findGameObjectByHtmlElement(e.path[0]));
+                if (
+                    e.path[0].className.includes("game-field") &&
+                    !game.findMapFieldByHtmlElement(e.path[0]) &&
+                    !game.findGameObjectByHtmlElement(e.path[0])
+                ) {
+                    // можно поставить на поле
+                    console.log("can take place");
+                } else {
+                    // нельзя поставить на поле
+                    console.log("can not take place");
+                }
                 this.selectedItem.style.pointerEvents = "";
                 this.selectedItem.style.top = "0";
                 this.selectedItem.style.left = "0";
                 this.selectedItem = null;
             }
         });
-        this.addEventListenerToElement(document, "mousemove", (e) => {
+        document.addEventListener("mousemove", (e) => {
             if (this.selectedItem) {
                 const styleTop = this.selectedItem.style.top;
                 const styleLeft = this.selectedItem.style.left;
@@ -32,14 +44,6 @@ class UI {
                 this.selectedItem.style.left = `${Number(styleLeft.slice(0, styleLeft.length - 2)) + e.movementX}px`;
             }
         });
-    }
-
-    addEventListenerToElement(htmlElement = null, eventName = "", callback = () => {}) {
-        if (htmlElement instanceof (Document || HTMLElement)) {
-            htmlElement.addEventListener(eventName, callback);
-        } else {
-            throw new Error("htmlElement if not a document or htmlElement on UI[addEventListenerToElement]");
-        }
     }
 
     htmlTableToArray(htmlTable) {

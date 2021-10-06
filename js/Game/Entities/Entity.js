@@ -7,5 +7,4 @@ class Entity {
         this.name = name;
         this.linkedHtmlElement = linkedHtmlElement;
     }
-
 }

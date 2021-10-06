@@ -3,12 +3,31 @@ class Render {
     htmlArrowsTable;
     gameTable;
     arrowsTable;
+    cowHtmlElements;
 
     constructor(ui = {}) {
         this.htmlGameTable = ui.htmlGameTable;
         this.htmlArrowsTable = ui.htmlArrowsTable;
         this.gameTable = ui.gameTable;
         this.arrowsTable = ui.arrowsTable;
+    }
+
+    createCowHtmlElements(cows = {}) {
+        let count = 0;
+        const htmlElements = [];
+        Object.values(cows).forEach(objArr => {
+            objArr.forEach(obj => {
+                const divCow = document.createElement("div");
+                divCow.className = `cow-wrapper cow-${count++}`;
+                divCow.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (obj.coordinates.y - 1)}px`;
+                divCow.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (obj.coordinates.x - 1)}px`;
+                divCow.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+                divCow.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                htmlElements.push(divCow);
+                document.getElementById("game-table-wrapper").appendChild(divCow);
+            });
+        });
+        this.cowHtmlElements = htmlElements;
     }
 
     drawStaticObjects(fields = {}, mapArrows = {}, goblet = {}) {
@@ -29,47 +48,22 @@ class Render {
         this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild.style.background = `url("../../${goblet.imgUrl}") no-repeat center`;
     }
 
+    // draw cows only
     drawGameObjects(gameObjects = {}) {
-        const cowDivArr = Array.from(document.getElementsByClassName("cow-wrapper"));
-        if (cowDivArr.length !== 0) { // если div-ы уже есть, то передвигаем их
-            let count = 0;
-            Object.values(gameObjects).forEach(objArr => {
-                objArr.forEach(obj => {
-                    let cowDiv = document.getElementsByClassName(`cow-${count++}`);
-                    cowDiv[0].style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (obj.coordinates.y - 1)}px`;
-                    cowDiv[0].style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (obj.coordinates.x - 1)}px`;
-                    cowDiv[0].style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
-                    cowDiv[0].style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
-                    cowDiv[0].style.background = `url("../../${obj.imgUrl}") no-repeat center`;
-                })
-            });
-        } else { // иначе добавляем div-ы
-            let count = 0;
-            Object.values(gameObjects).forEach(objArr => {
-                objArr.forEach(obj => {
-                    let divCow = document.createElement("div");
-                    divCow.className = `cow-wrapper cow-${count++}`;
-                    divCow.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (obj.coordinates.y - 1)}px`;
-                    divCow.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (obj.coordinates.x - 1)}px`;
-                    divCow.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
-                    divCow.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
-                    divCow.style.background = `url("../../${obj.imgUrl}") no-repeat center`;
-                    document.getElementById("game-table-wrapper").appendChild(divCow);
-                });
-            });
-        }
+        Object.values(gameObjects).forEach(objArr => {
+            objArr.forEach(obj => {
+                obj.linkedHtmlElement.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (obj.coordinates.y - 1)}px`;
+                obj.linkedHtmlElement.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (obj.coordinates.x - 1)}px`;
+                obj.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+                obj.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                obj.linkedHtmlElement.style.background = `url("../../${obj.imgUrl}") no-repeat center`;
+            })
+        });
     }
 
     drawArrows(arrows = {}) {
-        let index = 0;
-        Object.keys(arrows).forEach(type => {
-            for (let count = 0 ; count < arrows[type]; count++) {
-                if (index < CONF.ArrowsTable.width * CONF.ArrowsTable.height) {
-                    this.arrowsTable[Math.floor(index / CONF.ArrowsTable.width)][index % CONF.ArrowsTable.width]
-                        .firstChild.style.background = `url("../../src/sprites/svg/Arrow${type}.svg") no-repeat center`;
-                    index++;
-                }
-            }
+        arrows.flat(Infinity).forEach(arrow => {
+            arrow.linkedHtmlElement.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
         });
     }
 

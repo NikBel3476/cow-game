@@ -1,6 +1,6 @@
 const lvl1 = Object.freeze({
     mapObjects: {
-        fixedFields: Object.freeze({
+        staticFields: Object.freeze({
             "Pillar": [
                 [1, 1],
                 [20, 1],
@@ -40,7 +40,7 @@ const lvl1 = Object.freeze({
             coordinates: { x: 16, y: 3 }
         })
     },
-    gameObjects: Object.freeze({
+    cows: Object.freeze({
         "MainCow": [
             { 
                 coordinates: { x: 5, y: 8 },
@@ -50,7 +50,9 @@ const lvl1 = Object.freeze({
         ]
     }),
     arrows: Object.freeze({
-        "RedUp": 1,
-        "RedRight": 1,
+        "Red": {
+            "Up": 1,
+            "Right": 1
+        }
     })
 });

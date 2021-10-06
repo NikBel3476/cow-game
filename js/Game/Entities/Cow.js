@@ -3,8 +3,8 @@ class Cow extends Entity {
     direction;
     type;
 
-    constructor({ coordinates = {x: null, y: null}, direction = "right", type = "main", imgUrl = "" }) {
-        super(imgUrl);
+    constructor(name = "mainCow", { coordinates = {x: null, y: null}, direction = "right", type = "main" }, linkedHtmlElement = "" ) {
+        super(name, linkedHtmlElement);
         this.coordinates = coordinates;
         this.direction = direction;
         this.type = type;
