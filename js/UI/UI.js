@@ -16,16 +16,20 @@ class UI {
         // EventListeners
         document.addEventListener("mouseup", (e) => {
             if (this.selectedItem) {
-                console.log(game.getAllMapObjects());
-                console.log("field", game.findMapFieldByHtmlElement(e.path[0]));
-                console.log("obj", game.findGameObjectByHtmlElement(e.path[0]));
                 if (
                     e.path[0].className.includes("game-field") &&
                     !game.findMapFieldByHtmlElement(e.path[0]) &&
                     !game.findGameObjectByHtmlElement(e.path[0])
                 ) {
                     // можно поставить на поле
-                    console.log("can take place");
+                    const coordinates = e.path[0].className.split(" ").filter(str => str.match(/^(x|y)-\d+$/g)).map(str => Number(str.slice(2)));
+                    const selectedArrow = game.arrows.splice(game.arrows.indexOf(game.arrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement)), 1)[0];
+                    selectedArrow.coordinates.x = coordinates[0];
+                    selectedArrow.coordinates.y = coordinates[1];
+                    selectedArrow.linkedHtmlElement = e.path[0];
+                    game.mapArrows.push(selectedArrow);
+                    game.drawArrows();
+                    game.renderScene();
                 } else {
                     // нельзя поставить на поле
                     console.log("can not take place");

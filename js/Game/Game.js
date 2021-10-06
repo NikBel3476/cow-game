@@ -54,7 +54,7 @@ class Game {
             mapArrows[arrowTypeName].map(arrow =>
                 new Arrow(arrowTypeName, arrow, this.ui.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild)  
             )
-        );
+        ).flat(Infinity);
     }
 
     initCows(cows = {}) {
@@ -83,7 +83,7 @@ class Game {
                 }
                 return arrowsArray;
             }) 
-        );
+        ).flat(Infinity);
     }
 
     getAllMapObjects() {
@@ -110,6 +110,10 @@ class Game {
             this.cows,
             this.arrows
         ].flat(Infinity);
+    }
+
+    getArrows() {
+        return this.arrows.flat(Infinity);
     }
 
     findMapFieldByHtmlElement(htmlElement) {
@@ -142,13 +146,11 @@ class Game {
     }
 
     checkArrows(cow) {
-        Object.values(this.mapArrows).forEach(arrows => {
-            arrows.forEach(arrow => {
-                if (cow.coordinates.x === arrow.coordinates.x && cow.coordinates.y === arrow.coordinates.y) {
-                    cow.setDirection(arrow.direction);
-                    arrows.splice(arrows.indexOf(arrow), 1);
-                };
-            });
+        Object.values(this.mapArrows).forEach(arrow => {
+            if (cow.coordinates.x === arrow.coordinates.x && cow.coordinates.y === arrow.coordinates.y) {
+                cow.setDirection(arrow.direction);
+                this.mapArrows.splice(this.mapArrows.indexOf(arrow), 1);
+            };
         });
     }
 
@@ -259,5 +261,6 @@ class Game {
     endGame() {
         clearInterval(this.loop);
         this.loop = null;
+        alert("YOU WIN!!!");
     }
 }

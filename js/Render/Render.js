@@ -37,12 +37,10 @@ class Render {
             });
         });
 
-        Object.values(mapArrows).forEach(arrowArr => {
-            arrowArr.forEach(arrow => {
+        Object.values(mapArrows).forEach(arrow => {
                 let elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1];
                 elem.className += `${arrow.name}`;
                 elem.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
-            });
         });
 
         this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild.style.background = `url("../../${goblet.imgUrl}") no-repeat center`;
@@ -62,7 +60,8 @@ class Render {
     }
 
     drawArrows(arrows = {}) {
-        arrows.flat(Infinity).forEach(arrow => {
+        this.clearArrowsTable();
+        arrows.forEach(arrow => {
             arrow.linkedHtmlElement.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
         });
     }
@@ -73,6 +72,14 @@ class Render {
                 field.style.background = "";
             });
         });
+    }
+
+    clearArrowsTable() {
+        this.arrowsTable.forEach(row => {
+            row.forEach(field => 
+                field.firstChild.style.background = ""    
+            )
+        })
     }
 
     scaleArrowsTable() {

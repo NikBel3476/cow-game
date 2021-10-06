@@ -23,7 +23,7 @@ const lvl1 = Object.freeze({
 
         }),
         mapArrows: Object.freeze({
-            "RedUp": [
+            /* "RedUp": [
                 { 
                     coordinates: { x: 7, y: 8 },
                     direction: "up"
@@ -34,7 +34,7 @@ const lvl1 = Object.freeze({
                     coordinates: { x: 7, y: 3 },
                     direction: "right"
                 }
-            ]
+            ] */
         }),
         goblet: Object.freeze({
             coordinates: { x: 16, y: 3 }

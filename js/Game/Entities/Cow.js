@@ -70,7 +70,7 @@ class Cow extends Entity {
     }
 
     setDirection(direction = "") {
-        switch(direction) {
+        switch(direction.toLowerCase()) {
             case "up":
                 this.direction = "up";
                 this.imgUrl = this.getImgUrl();
