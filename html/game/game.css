@@ -1,7 +1,10 @@
 body {
+    max-width: 100%;
+    max-height: 100%;
     margin: 0;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
 
 .game-object-wrapper {
@@ -21,6 +24,7 @@ body {
 
 #ui-container {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
     position: absolute;
@@ -29,9 +33,11 @@ body {
     background-size: contain;
     width: 20%;
     height: 100%;
+    overflow: visible;
 }
 
-#game-table {
+#game-table-wrapper {
+    position: relative;
     width: 100%;
     padding: 0;
     border-spacing: 0;
@@ -40,41 +46,75 @@ body {
     height: 100%;
     max-height: calc(14 / 20 * 80vw);
     max-width: calc(20 / 14 * 100vh);
+    line-height: 0px;
 }
 
-#game-table td {
-    width: 5%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    display: inline-block;
-    white-space: nowrap;
+.cow-wrapper {
+    position: absolute;
 }
 
-#ui-table {
+#game-table {
     padding: 0;
     border-spacing: 0;
     margin: auto;
     width: 100%;
-    height: 50%;
-    max-height: calc(7 / 3 * 20vw);
-    max-width: calc(3 / 7 * 33.3%);
+    height: 100%;
 }
 
-#ui-table td {
-    width: 33.3%;
+#game-table td {
+    position: relative;
+    width: 5%;
     height: 100%;
     padding: 0;
     margin: 0;
-    overflow: hidden;
+    overflow: visible;
     display: inline-block;
+}
+
+#game-table td div {
+    position: absolute;
+    /* top: -20%;
+    right: -20%; */
+    width: 100%;
+    height: 100%;
+}
+
+#ui-table-wrapper {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 50%;
+    overflow: visible;
+}
+
+#ui-table {
+    border-spacing: 0;
+    margin: auto;
+    background: #5faa00;
+}
+
+#ui-table td {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
     white-space: nowrap;
+    border: 1px solid black;
+}
+
+#ui-table td div {
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
 
 #ui-button-wrapper {
     width: 100%;
     height: 25%;
+    /* user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; */
 }
 
 #start-game-button {
