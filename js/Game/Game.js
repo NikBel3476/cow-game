@@ -164,8 +164,6 @@ class Game {
         if (!this.loop) {
             this.loop = setInterval(() => {
                 console.log("game is running");
-
-                // логика ходьбы коровы
                 let canmove;
                 let isVictory = false;
                 Object.values(this.cows).forEach((objArr) => {
@@ -253,6 +251,7 @@ class Game {
                 this.renderScene();
                 if (isVictory) {
                     this.endGame();
+                    alert("YOU WIN!!!");
                 }
             }, 40);
         }
@@ -261,6 +260,5 @@ class Game {
     endGame() {
         clearInterval(this.loop);
         this.loop = null;
-        alert("YOU WIN!!!");
     }
 }

@@ -38,8 +38,7 @@ class Render {
         });
 
         Object.values(mapArrows).forEach(arrow => {
-                let elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1];
-                elem.className += `${arrow.name}`;
+                let elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild;
                 elem.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
         });
 
@@ -69,7 +68,7 @@ class Render {
     clearScene() {
         this.gameTable.forEach(row => {
             row.forEach((field) => {
-                field.style.background = "";
+                field.firstChild.style.background = "";
             });
         });
     }

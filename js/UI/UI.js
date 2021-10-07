@@ -14,38 +14,70 @@ class UI {
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
 
         // EventListeners
-        document.addEventListener("mouseup", (e) => {
-            if (this.selectedItem) {
-                if (
-                    e.path[0].className.includes("game-field") &&
-                    !game.findMapFieldByHtmlElement(e.path[0]) &&
-                    !game.findGameObjectByHtmlElement(e.path[0])
-                ) {
-                    // можно поставить на поле
-                    const coordinates = e.path[0].className.split(" ").filter(str => str.match(/^(x|y)-\d+$/g)).map(str => Number(str.slice(2)));
-                    const selectedArrow = game.arrows.splice(game.arrows.indexOf(game.arrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement)), 1)[0];
-                    selectedArrow.coordinates.x = coordinates[0];
-                    selectedArrow.coordinates.y = coordinates[1];
-                    selectedArrow.linkedHtmlElement = e.path[0];
-                    game.mapArrows.push(selectedArrow);
-                    game.drawArrows();
-                    game.renderScene();
-                } else {
-                    // нельзя поставить на поле
-                    console.log("can not take place");
-                }
-                this.selectedItem.style.pointerEvents = "";
-                this.selectedItem.style.top = "0";
-                this.selectedItem.style.left = "0";
-                this.selectedItem = null;
-            }
-        });
         document.addEventListener("mousemove", (e) => {
             if (this.selectedItem) {
                 const styleTop = this.selectedItem.style.top;
                 const styleLeft = this.selectedItem.style.left;
                 this.selectedItem.style.top = `${Number(styleTop.slice(0, styleTop.length - 2)) + e.movementY}px`;
                 this.selectedItem.style.left = `${Number(styleLeft.slice(0, styleLeft.length - 2)) + e.movementX}px`;
+            }
+        });
+        // TODO: it needs to be refactored
+        document.addEventListener("mouseup", (e) => {
+            if (this.selectedItem) {
+                if (e.path[0].className.includes("game-field")) {
+                    if (
+                        !game.findMapFieldByHtmlElement(e.path[0]) &&
+                        !game.findGameObjectByHtmlElement(e.path[0])
+                    ) {
+                        // можно поставить на поле
+                        const coordinates = e.path[0].className.split(" ").filter(str => str.match(/^(x|y)-\d+$/g)).map(str => Number(str.slice(2)));
+                        const arrow = game.arrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement);
+                        let selectedArrow;
+                        if (arrow) {
+                            selectedArrow = game.arrows.splice(game.arrows.indexOf(arrow), 1)[0];
+                            game.mapArrows.push(selectedArrow);
+                        } else {
+                            selectedArrow = game.mapArrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement);
+                        }
+                        if (selectedArrow) {
+                            selectedArrow.coordinates.x = coordinates[0];
+                            selectedArrow.coordinates.y = coordinates[1];
+                            selectedArrow.linkedHtmlElement = e.path[0];
+                            selectedArrow.linkedHtmlElement.addEventListener("mousedown", (e) => {
+                                this.selectedItem = e.path[0];
+                                this.selectedItem.style.pointerEvents = "none";
+                            });
+                            selectedArrow.linkedHtmlElement.addEventListener("mousemove", (e) => {
+                                if (this.selectedItem) {
+                                    const styleTop = this.selectedItem.style.top;
+                                    const styleLeft = this.selectedItem.style.left;
+                                    this.selectedItem.style.top = `${Number(styleTop.slice(0, styleTop.length - 2)) + e.movementY}px`;
+                                    this.selectedItem.style.left = `${Number(styleLeft.slice(0, styleLeft.length - 2)) + e.movementX}px`;
+                                }
+                            });
+                        }
+                    } else {
+                        // нельзя поставить на поле
+                        console.log("can not take place");
+                    }
+                } else if (e.path[0].className.includes("arrow-field")) {
+                    const arrow = game.mapArrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement);
+                    if (arrow) {
+                        const selectedArrow = game.mapArrows.splice(game.mapArrows.indexOf(arrow), 1)[0];
+                        selectedArrow.coordinates.x = null;
+                        selectedArrow.coordinates.y = null;
+                        selectedArrow.linkedHtmlElement = e.path[0];
+                        game.arrows.push(selectedArrow);
+                        console.log(game.arrows);   
+                    }
+                }
+                this.selectedItem.style.pointerEvents = "";
+                this.selectedItem.style.top = "0";
+                this.selectedItem.style.left = "0";
+                this.selectedItem = null;
+                game.drawArrows();
+                game.renderScene();
             }
         });
     }

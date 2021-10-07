@@ -20,6 +20,7 @@ body {
     background-size: contain;
     width: 80%;
     height: 100%;
+    overflow: visible;
 }
 
 #ui-container {
@@ -47,6 +48,7 @@ body {
     max-height: calc(14 / 20 * 80vw);
     max-width: calc(20 / 14 * 100vh);
     line-height: 0px;
+    overflow: visible;
 }
 
 .cow-wrapper {
@@ -59,6 +61,11 @@ body {
     margin: auto;
     width: 100%;
     height: 100%;
+    overflow: visible;
+}
+
+#game-table tbody {
+    overflow: visible;
 }
 
 #game-table td {
