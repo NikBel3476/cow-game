@@ -40,6 +40,7 @@ class Render {
         Object.values(mapArrows).forEach(arrow => {
                 let elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild;
                 elem.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
+                elem.style.zIndex = 10;
         });
 
         this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild.style.background = `url("../../${goblet.imgUrl}") no-repeat center`;

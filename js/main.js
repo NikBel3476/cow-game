@@ -2,6 +2,10 @@ const ui = new UI("#game-table-wrapper", "#ui-table-wrapper");
 const render = new Render(ui);
 const game = new Game(lvl1 , render, ui);
 
+document.ondragstart = function() {
+    return false;
+}
+
 function startGame() {
     game.startGame();
 }

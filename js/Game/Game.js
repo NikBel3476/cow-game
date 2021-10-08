@@ -108,7 +108,7 @@ class Game {
     getGameObjects() {
         return [
             this.cows,
-            this.arrows
+            this.mapArrows
         ].flat(Infinity);
     }
 
@@ -125,11 +125,9 @@ class Game {
     }
 
     findGameObjectByHtmlElement(htmlElement) {
-        if (htmlElement instanceof HTMLElement) {
-            return this.getGameObjects().find(obj =>
-                htmlElement === obj.linkedHtmlElement
-            );
-        }
+        return this.getGameObjects().find(obj =>
+            htmlElement === obj?.linkedHtmlElement
+        );
     }
 
     drawArrows() {

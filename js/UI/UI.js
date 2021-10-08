@@ -4,6 +4,8 @@ class UI {
     gameTable;
     arrowsTable;
     selectedItem;
+    mouseX;
+    mouseY;
 
     constructor(gameContainerCssSelector = "", arrowsTableCssSelector = "") {
         this.htmlGameTable = this.createGameTable();
@@ -14,12 +16,14 @@ class UI {
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
 
         // EventListeners
+        document.addEventListener("mousedown", (e) => {
+            this.mouseX = e.clientX;
+            this.mouseY = e.clientY;
+        }); 
         document.addEventListener("mousemove", (e) => {
             if (this.selectedItem) {
-                const styleTop = this.selectedItem.style.top;
-                const styleLeft = this.selectedItem.style.left;
-                this.selectedItem.style.top = `${Number(styleTop.slice(0, styleTop.length - 2)) + e.movementY}px`;
-                this.selectedItem.style.left = `${Number(styleLeft.slice(0, styleLeft.length - 2)) + e.movementX}px`;
+                this.selectedItem.style.top = `${-this.mouseY + e.clientY}px`;
+                this.selectedItem.style.left = `${-this.mouseX + e.clientX}px`;
             }
         });
         // TODO: it needs to be refactored
@@ -48,18 +52,7 @@ class UI {
                                 this.selectedItem = e.path[0];
                                 this.selectedItem.style.pointerEvents = "none";
                             });
-                            selectedArrow.linkedHtmlElement.addEventListener("mousemove", (e) => {
-                                if (this.selectedItem) {
-                                    const styleTop = this.selectedItem.style.top;
-                                    const styleLeft = this.selectedItem.style.left;
-                                    this.selectedItem.style.top = `${Number(styleTop.slice(0, styleTop.length - 2)) + e.movementY}px`;
-                                    this.selectedItem.style.left = `${Number(styleLeft.slice(0, styleLeft.length - 2)) + e.movementX}px`;
-                                }
-                            });
                         }
-                    } else {
-                        // нельзя поставить на поле
-                        console.log("can not take place");
                     }
                 } else if (e.path[0].className.includes("arrow-field")) {
                     const arrow = game.mapArrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement);
@@ -69,7 +62,6 @@ class UI {
                         selectedArrow.coordinates.y = null;
                         selectedArrow.linkedHtmlElement = e.path[0];
                         game.arrows.push(selectedArrow);
-                        console.log(game.arrows);   
                     }
                 }
                 this.selectedItem.style.pointerEvents = "";
@@ -119,6 +111,7 @@ class UI {
                 td.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
                 const div = document.createElement("div");
                 div.className = `arrow-field x-${j+1} y-${i+1}`;
+                div.style.zIndex = 10;
                 div.style.top = "0";
                 div.style.left = "0";
                 div.addEventListener("mousedown", (e) => {
