@@ -170,7 +170,8 @@ class Game {
                                 isVictory = this.checkGoblet(obj);
                                 Object.values(this.staticFields).forEach(fields => {
                                     fields.forEach(field => {
-                                        if (obj.coordinates.x === field.coordinates.x &&
+                                        if (
+                                            obj.coordinates.x === field.coordinates.x &&
                                             (obj.coordinates.y - 1) === field.coordinates.y &&
                                             obj.coordinates.y > 1 && 
                                             obj.coordinates.y < 14
@@ -188,7 +189,8 @@ class Game {
                                 isVictory = this.checkGoblet(obj);
                                 Object.values(this.staticFields).forEach(fields => {
                                     fields.forEach(field => {
-                                        if ((obj.coordinates.x + 1) === field.coordinates.x &&
+                                        if (
+                                            (obj.coordinates.x + 1) === field.coordinates.x &&
                                             obj.coordinates.y === field.coordinates.y &&
                                             obj.coordinates.x > 1 &&
                                             obj.coordinates.x < 20
@@ -206,12 +208,14 @@ class Game {
                                 isVictory = this.checkGoblet(obj);
                                 Object.values(this.staticFields).forEach(fields => {
                                     fields.forEach(field => {
-                                        if (obj.coordinates.x === field.coordinates.x &&
+                                        if (
+                                            obj.coordinates.x === field.coordinates.x &&
                                             (obj.coordinates.y + 1) === field.coordinates.y &&
                                             obj.coordinates.y > 1 &&
                                             obj.coordinates.y < 14
                                         ) {
                                             canmove = false;
+
                                         }
                                     });
                                 });
@@ -224,7 +228,8 @@ class Game {
                                 isVictory = this.checkGoblet(obj);
                                 Object.values(this.staticFields).forEach(fields => {
                                     fields.forEach(field => {
-                                        if ((obj.coordinates.x - 1) === field.coordinates.x &&
+                                        if (
+                                            (obj.coordinates.x - 1) === field.coordinates.x &&
                                             obj.coordinates.y === field.coordinates.y &&
                                             obj.coordinates.x > 1 &&
                                             obj.coordinates.x < 20
