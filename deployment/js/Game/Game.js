@@ -1,6 +1,5 @@
 class Game {
     loop;
-    mapObjects;
     staticFields;
     mobileFields;
     mapArrows;
@@ -11,28 +10,28 @@ class Game {
     ui;
 
     constructor(
-            { 
-                mapObjects: {
-                    staticFields = {},
-                    mobileFields = {},
-                    mapArrows = {},
-                    goblet = {}
-                },
-                cows = {},
-                arrows = {}
-            },
             render = {},
             ui = {}
         ) {
 
         this.render = render;
         this.ui = ui;
+    }
 
+    loadLevel({
+      mapObjects: {
+          staticFields = {},
+          mobileFields = {},
+          mapArrows = {},
+          goblet = {}
+      },
+      cows = {},
+      arrows = {}
+    }) {
         this.render.createCowHtmlElements(cows);
-
-        // initialization
         // map fields
         this.staticFields = this.initStaticFields(staticFields);
+        this.mobileFields = this.initMobileFields();
         this.mapArrows = this.initMapArrows(mapArrows);
         this.goblet = new Goblet(goblet, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild);
         this.mapFields = this.getMapFields();
@@ -49,7 +48,7 @@ class Game {
         );
     }
 
-    initMapArrows(mapArrows = {}) {
+    initMapArrows(mapArrows) {
         return Object.keys(mapArrows).map(arrowTypeName => 
             mapArrows[arrowTypeName].map(arrow =>
                 new Arrow(arrowTypeName, arrow, this.ui.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild)  
@@ -57,13 +56,17 @@ class Game {
         ).flat(Infinity);
     }
 
-    initCows(cows = {}) {
+    initCows(cows) {
         let count = 0;
         return Object.keys(cows).map(cowName => 
             cows[cowName].map(cow => 
                 new Cow(cowName, cow, this.render.cowHtmlElements[count++])
             )
         );
+    }
+
+    initMobileFields(mobileFields) {
+        return [];
     }
 
     initArrows(arrows) {
