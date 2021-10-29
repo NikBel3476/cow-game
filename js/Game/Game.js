@@ -29,6 +29,7 @@ class Game {
       arrows = {}
     }) {
         this.render.createCowHtmlElements(cows);
+        this.render.createMobileFieldsHtmlElements(this.mobileFields);
         // map fields
         this.staticFields = this.initStaticFields(staticFields);
         this.mobileFields = this.initMobileFields();
@@ -66,7 +67,9 @@ class Game {
     }
 
     initMobileFields(mobileFields) {
-        return [];
+        return Object.keys(mobileFields).map(objName =>
+            new HayBale(objName, , mobileFields[objName].coordinates);
+        );
     }
 
     initArrows(arrows) {
@@ -139,7 +142,7 @@ class Game {
 
     renderScene() {
         this.clearScene();
-        this.render.drawScene(this.staticFields, this.cows, this.mapArrows, this.goblet);
+        this.render.drawScene(this.staticFields, { mobileFields: this.mobileFields, cows: this.cows }, this.mapArrows, this.goblet);
     }
 
     clearScene() {

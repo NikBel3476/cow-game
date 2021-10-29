@@ -23,6 +23,7 @@ class Render {
                 divCow.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (obj.coordinates.x - 1)}px`;
                 divCow.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
                 divCow.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                divCow.style.zIndex = 20;
                 htmlElements.push(divCow);
                 document.getElementById("game-table-wrapper").appendChild(divCow);
             });
@@ -46,16 +47,17 @@ class Render {
         this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild.style.background = `url("../../${goblet.imgUrl}") no-repeat center`;
     }
 
-    // draw cows only
     drawGameObjects(gameObjects) {
-        Object.values(gameObjects).forEach(objArr => {
-            objArr.forEach(obj => {
-                obj.linkedHtmlElement.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (obj.coordinates.y - 1)}px`;
-                obj.linkedHtmlElement.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (obj.coordinates.x - 1)}px`;
-                obj.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
-                obj.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
-                obj.linkedHtmlElement.style.background = `url("../../${obj.imgUrl}") no-repeat center`;
-            })
+        Object.values(gameObjects).forEach(objType => {
+            Object.values(objType).forEach(objArr => {
+                objArr.forEach(obj => {
+                    obj.linkedHtmlElement.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (obj.coordinates.y - 1)}px`;
+                    obj.linkedHtmlElement.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (obj.coordinates.x - 1)}px`;
+                    obj.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+                    obj.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                    obj.linkedHtmlElement.style.background = `url("../../${obj.imgUrl}") no-repeat center`;
+                })
+            });
         });
     }
 

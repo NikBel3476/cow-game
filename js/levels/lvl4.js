@@ -28,8 +28,13 @@ const lvl4 = Object.freeze({
             ]
         }),
         mobileFields: Object.freeze({
-            "HaleBale": [
-                [11, 10]
+            "HayBale": [
+                {
+                    coordinates: {
+                        x: 11,
+                        y: 10
+                    }
+                }
             ]
         }),
         mapArrows: Object.freeze({

@@ -1,7 +1,7 @@
 class Entity {
     name;
-    imgUrl = "";
-    linkedHtmlElement = "";
+    imgUrl;
+    linkedHtmlElement;
 
     constructor(name = "", linkedHtmlElement = "") {
         this.name = name;
