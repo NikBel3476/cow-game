@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #006400 url("assets/sprites/svg/MainMenuBackground.svg") no-repeat fixed center center;
+    background-size: contain;
+}
+
+a {
+    text-decoration: none;
+}
+
+#menu-container {
+    display: block;
+    position: absolute;
+    width: 25vw;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    text-align: center;
+}
+
+#game-container {
+    display: none;
+    position: absolute;
+    width: 20vw;
+    height: 20vh;
+}
+
+.game-menu-link {
+    display: block;
+    background: none;
+    margin: 3%;
+    color: #fff;
+    font: bold italic 100% cursive;
+    font-size: calc(1.25vw + 1.25vh);
+}
+
+#start-game-button:hover {
+    cursor: pointer;
+}
+
+#cow-object {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+}
