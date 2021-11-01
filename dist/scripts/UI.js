@@ -21,7 +21,7 @@ class UI {
         document.addEventListener("mouseup", (e) => {
             if (this.selectedItem) {
                 if (e.target.className.includes("game-field")) {
-                    if (!game.findMapFieldByHtmlElement(e.target) &&
+                    if (!game.findFieldByHtmlElement(e.target) &&
                         !game.findGameObjectByHtmlElement(e.target)) {
                         // можно поставить на поле
                         const coordinates = e.target.className.split(" ")

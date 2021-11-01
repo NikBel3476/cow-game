@@ -85,7 +85,10 @@ class Game {
     getArrows() {
         return this.arrows;
     }
-    findMapFieldByHtmlElement(htmlElement) {
+    findFieldByCoordinates(coordinates) {
+        return this.staticFields.find((field) => field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y);
+    }
+    findFieldByHtmlElement(htmlElement) {
         return this.mapFields.find((field) => htmlElement === (field === null || field === void 0 ? void 0 : field.linkedHtmlElement));
     }
     findGameObjectByHtmlElement(htmlElement) {
@@ -110,12 +113,13 @@ class Game {
         });
     }
     checkGoblet(cow) {
-        return cow.color === "Brown" && this.goblet.coordinates.x === cow.coordinates.x && this.goblet.coordinates.y === cow.coordinates.y;
+        return cow.color === "Brown" &&
+            this.goblet.coordinates.x === cow.coordinates.x &&
+            this.goblet.coordinates.y === cow.coordinates.y;
     }
     startGame() {
         if (!this.loop) {
             this.loop = setInterval(() => {
-                console.log("game is running");
                 let canmove = true;
                 let isVictory = false;
                 Object.values(this.cows).forEach((cow) => {
@@ -123,62 +127,26 @@ class Game {
                         case "Up":
                             this.checkArrows(cow);
                             isVictory = this.checkGoblet(cow);
-                            Object.values(this.staticFields).forEach((field) => {
-                                if (cow.coordinates.x === field.coordinates.x &&
-                                    (cow.coordinates.y - 1) === field.coordinates.y &&
-                                    cow.coordinates.y > 1 &&
-                                    cow.coordinates.y < 14) {
-                                    canmove = false;
-                                }
-                            });
-                            if (canmove) {
+                            if (!this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1 }))
                                 cow.move();
-                            }
                             break;
                         case "Right":
                             this.checkArrows(cow);
                             isVictory = this.checkGoblet(cow);
-                            Object.values(this.staticFields).forEach((field) => {
-                                if ((cow.coordinates.x + 1) === field.coordinates.x &&
-                                    cow.coordinates.y === field.coordinates.y &&
-                                    cow.coordinates.x > 1 &&
-                                    cow.coordinates.x < 20) {
-                                    canmove = false;
-                                }
-                            });
-                            if (canmove) {
+                            if (!this.findFieldByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y }))
                                 cow.move();
-                            }
                             break;
                         case "Down":
                             this.checkArrows(cow);
                             isVictory = this.checkGoblet(cow);
-                            Object.values(this.staticFields).forEach((field) => {
-                                if (cow.coordinates.x === field.coordinates.x &&
-                                    (cow.coordinates.y + 1) === field.coordinates.y &&
-                                    cow.coordinates.y > 1 &&
-                                    cow.coordinates.y < 14) {
-                                    canmove = false;
-                                }
-                            });
-                            if (canmove) {
+                            if (!this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1 }))
                                 cow.move();
-                            }
                             break;
                         case "Left":
                             this.checkArrows(cow);
                             isVictory = this.checkGoblet(cow);
-                            Object.values(this.staticFields).forEach((field) => {
-                                if ((cow.coordinates.x - 1) === field.coordinates.x &&
-                                    cow.coordinates.y === field.coordinates.y &&
-                                    cow.coordinates.x > 1 &&
-                                    cow.coordinates.x < 20) {
-                                    canmove = false;
-                                }
-                            });
-                            if (canmove) {
+                            if (!this.findFieldByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y }))
                                 cow.move();
-                            }
                             break;
                     }
                 });

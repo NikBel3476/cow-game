@@ -24,18 +24,15 @@ class Render {
     drawStaticObjects(fields, mapArrows, goblet) {
         Object.values(fields).forEach((field) => {
             const elem = this.gameTable[field.coordinates.y - 1][field.coordinates.x - 1].firstChild;
-            elem.style.background = `url("../../${field.imgUrl}") no-repeat center`;
-            elem.style.backgroundSize = 'contain';
+            elem.style.background = `url("../../${field.imgUrl}") center/contain no-repeat`;
         });
         Object.values(mapArrows).forEach((arrow) => {
             const elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild;
             elem.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
-            elem.style.backgroundSize = 'contain';
             elem.style.zIndex = '10';
         });
         const gobletElem = this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild;
         gobletElem.style.background = `url("../../${goblet.imgUrl}") no-repeat center`;
-        gobletElem.style.backgroundSize = 'contain';
     }
     drawGameObjects(gameObjects) {
         if (gameObjects.mobileFields) {
