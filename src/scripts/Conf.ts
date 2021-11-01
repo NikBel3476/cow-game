@@ -28,8 +28,8 @@ const CONF = {
         ArrowBlueDown: "assets/sprites/svg/ArrowBlueDown.svg",
         ArrowBlueLeft: "assets/sprites/svg/ArrowBlueLeft.svg",
         Goblet: "assets/sprites/svg/Goblet.svg",
-        StairsRight: "assets/sprites/svg/StairsRight.svg",
-        StairsLeft: "assets/sprites/svg/StairsLeft.svg",
+        SlideRight: "assets/sprites/svg/SlideRight.png",
+        SlideLeft: "assets/sprites/svg/SlideLeft.png",
         Block: "assets/sprites/svg/Block.svg",
         HayBale: "assets/sprites/svg/HayBale.png"
     }
