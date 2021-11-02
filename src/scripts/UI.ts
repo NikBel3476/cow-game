@@ -26,19 +26,18 @@ class UI {
                 this.selectedItem.style.left = `${-this.mouseX + e.clientX}px`;
             }
         });
-        // TODO: it needs to be refactored
         document.addEventListener("mouseup", (e: MouseEvent) => {
             if (this.selectedItem) {
-                if ((e.target as HTMLElement).className.includes("game-field")) {
+                if ((<HTMLElement>e.target).className.includes("game-field")) {
                     if (
-                        !game.findFieldByHtmlElement(e.target as HTMLElement) &&
-                        !game.findGameObjectByHtmlElement(e.target as HTMLElement)
+                        !game.findFieldByHtmlElement(<HTMLElement>e.target) &&
+                        !game.findGameObjectByHtmlElement(<HTMLElement>e.target)
                     ) {
                         // можно поставить на поле
                         const coordinates = (e.target as HTMLElement).className.split(" ")
                             .filter(str => str.match(/^(x|y)-\d+$/g)).map(str => Number(str.slice(2)));
-                        const arrow: Arrow = game.arrows.find((arrow: Arrow) => this.selectedItem === arrow.linkedHtmlElement);
-                        let selectedArrow;
+                        const arrow: Arrow = game.findArrowByHtmlElement(this.selectedItem);
+                        let selectedArrow: Arrow;
                         if (arrow) {
                             selectedArrow = game.arrows.splice(game.arrows.indexOf(arrow), 1)[0];
                             game.mapArrows.push(selectedArrow);
@@ -48,9 +47,9 @@ class UI {
                         if (selectedArrow) {
                             selectedArrow.coordinates.x = coordinates[0];
                             selectedArrow.coordinates.y = coordinates[1];
-                            selectedArrow.linkedHtmlElement = (e.target as HTMLElement);
+                            selectedArrow.linkedHtmlElement = (<HTMLElement>e.target);
                             selectedArrow.linkedHtmlElement.addEventListener("mousedown", (e) => {
-                                this.selectedItem = (e.target as HTMLElement);
+                                this.selectedItem = (<HTMLElement>e.target);
                                 this.selectedItem.style.pointerEvents = "none";
                             });
                         }
@@ -61,7 +60,7 @@ class UI {
                         const selectedArrow = game.mapArrows.splice(game.mapArrows.indexOf(arrow), 1)[0];
                         selectedArrow.coordinates.x = null;
                         selectedArrow.coordinates.y = null;
-                        selectedArrow.linkedHtmlElement = (e.target as HTMLElement);
+                        selectedArrow.linkedHtmlElement = (<HTMLElement>e.target);
                         game.arrows.push(selectedArrow);
                     }
                 }
@@ -116,7 +115,7 @@ class UI {
                 div.style.top = "0";
                 div.style.left = "0";
                 div.addEventListener("mousedown", (e) => {
-                    this.selectedItem = (e.target as HTMLElement);
+                    this.selectedItem = (<HTMLElement>e.target);
                     this.selectedItem.style.pointerEvents = "none";
                 });
                 td.appendChild(div);

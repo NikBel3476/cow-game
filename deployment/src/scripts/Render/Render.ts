@@ -4,6 +4,7 @@ class Render {
     gameTable: HTMLElement[][];
     arrowsTable: HTMLElement[][];
     cowHtmlElements: HTMLElement[];
+    mobileFields: HTMLElement[];
 
     constructor(ui: UI) {
         this.htmlGameTable = ui.htmlGameTable;
@@ -12,7 +13,7 @@ class Render {
         this.arrowsTable = ui.arrowsTable;
     }
 
-    createCowHtmlElements(cows: ILevel['cows']) {
+    createCowHtmlElements(cows: ILevel['cows']): void {
         let count = 0;
         const htmlElements: HTMLElement[] = [];
         Object.values(cows).forEach((cow: ICow) => {
@@ -29,6 +30,24 @@ class Render {
         this.cowHtmlElements = htmlElements;
     }
 
+    createMobileFieldsHtmlElements(fields: ILevel['mapObjects']['mobileFields']): void {
+        const htmlElements: HTMLElement[] = [];
+        Object.values(fields).forEach((coordinatesArr: [number, number][]) => {
+            coordinatesArr.forEach((coordinates: [number, number]) => {
+                const divField = document.createElement("div");
+                divField.className = `mobile-field`;
+                divField.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (coordinates[0] - 1)}px`;
+                divField.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (coordinates[1] - 1)}px`;
+                divField.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+                divField.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                divField.style.zIndex = '20';
+                htmlElements.push(divField);
+                document.getElementById("game-table-wrapper").appendChild(divField);
+            })
+        });
+        this.mobileFields = htmlElements;
+    }
+
     drawStaticObjects(fields: Field[], mapArrows: Arrow[], goblet: Goblet) {
         Object.values(fields).forEach((field: Field) => {
             const elem = (this.gameTable[field.coordinates.y - 1][field.coordinates.x - 1].firstChild as HTMLElement)
@@ -37,22 +56,22 @@ class Render {
 
         Object.values(mapArrows).forEach((arrow: Arrow) => {
                 const elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild as HTMLElement;
-                elem.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
+                elem.style.background = `url("../../${arrow.imgUrl}") center/contain no-repeat`;
                 elem.style.zIndex = '10';
         });
 
         const gobletElem = (this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement)
-        gobletElem.style.background = `url("../../${goblet.imgUrl}") no-repeat center`;
+        gobletElem.style.background = `url("../../${goblet.imgUrl}") center/contain no-repeat`;
     }
 
-    drawGameObjects(gameObjects: { mobileFields?: Field[], cows: Cow[] }) {
+    drawGameObjects(gameObjects: { mobileFields?: HayBale[], cows: Cow[] }) {
         if (gameObjects.mobileFields) {
             gameObjects.mobileFields.forEach((field: Field)  => {
                 field.linkedHtmlElement.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (field.coordinates.y - 1)}px`;
                 field.linkedHtmlElement.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (field.coordinates.x - 1)}px`;
                 field.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
                 field.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
-                field.linkedHtmlElement.style.background = `url("../../${field.imgUrl}") no-repeat center`;
+                field.linkedHtmlElement.style.background = `url("../../${field.imgUrl}") center/contain no-repeat`;
             });
         }
 
@@ -104,7 +123,7 @@ class Render {
     drawScene(
         staticFields: Field[],
         gameObjects: {
-            mobileFields?: Field[],
+            mobileFields?: HayBale[],
             cows: Cow[]
         },
         mapArrows: Arrow[],

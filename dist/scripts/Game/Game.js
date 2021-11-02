@@ -6,7 +6,9 @@ class Game {
     loadLevel(level) {
         const { mapObjects: { staticFields, mobileFields, mapArrows, goblet }, cows, arrows } = level;
         this.render.createCowHtmlElements(cows);
+        this.render.createMobileFieldsHtmlElements(mobileFields);
         this.staticFields = this.initStaticFields(staticFields);
+        this.mobileFields = this.initMobileFields(mobileFields);
         this.mapArrows = this.initMapArrows(mapArrows);
         this.goblet = new Goblet(goblet.coordinates, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild);
         this.mapFields = this.getMapFields();
@@ -26,6 +28,10 @@ class Game {
     initCows(cows) {
         let count = 0;
         return Object.values(cows).map((cow) => new Cow(`Cow${cow.color + cow.direction}`, cow.coordinates, cow.direction, cow.color, this.render.cowHtmlElements[count++]));
+    }
+    initMobileFields(mobileFields) {
+        let count = 0;
+        return Object.keys(mobileFields).reduce((mobileFieldsArr, objName) => mobileFieldsArr.concat(mobileFields[objName].map((coordinates) => new HayBale(objName, { x: coordinates[0], y: coordinates[1] }, this.render.mobileFields[count++]))), []);
     }
     initArrows(arrows) {
         let count = 0;
@@ -47,18 +53,12 @@ class Game {
         ];
     }
     getMapFields() {
-        const mapFields = [];
-        if (this.staticFields) {
-            mapFields.concat(...this.staticFields);
-        }
+        const mapFields = [...this.staticFields, this.goblet];
         if (this.mobileFields) {
             mapFields.concat(...this.mobileFields);
         }
         if (this.mapArrows) {
             mapFields.concat(...this.mapArrows);
-        }
-        if (this.goblet) {
-            mapFields.concat(this.goblet);
         }
         return mapFields;
     }
@@ -79,6 +79,9 @@ class Game {
     }
     findGameObjectByHtmlElement(htmlElement) {
         return this.getGameObjects().find((obj) => htmlElement === (obj === null || obj === void 0 ? void 0 : obj.linkedHtmlElement));
+    }
+    findArrowByHtmlElement(htmlElement) {
+        return this.arrows.find((arrow) => arrow.linkedHtmlElement === htmlElement);
     }
     drawArrows() {
         this.render.drawArrows(this.arrows);

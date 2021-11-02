@@ -21,6 +21,23 @@ class Render {
         });
         this.cowHtmlElements = htmlElements;
     }
+    createMobileFieldsHtmlElements(fields) {
+        const htmlElements = [];
+        Object.values(fields).forEach((coordinatesArr) => {
+            coordinatesArr.forEach((coordinates) => {
+                const divField = document.createElement("div");
+                divField.className = `mobile-field`;
+                divField.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (coordinates[0] - 1)}px`;
+                divField.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (coordinates[1] - 1)}px`;
+                divField.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
+                divField.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                divField.style.zIndex = '20';
+                htmlElements.push(divField);
+                document.getElementById("game-table-wrapper").appendChild(divField);
+            });
+        });
+        this.mobileFields = htmlElements;
+    }
     drawStaticObjects(fields, mapArrows, goblet) {
         Object.values(fields).forEach((field) => {
             const elem = this.gameTable[field.coordinates.y - 1][field.coordinates.x - 1].firstChild;
@@ -28,11 +45,11 @@ class Render {
         });
         Object.values(mapArrows).forEach((arrow) => {
             const elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild;
-            elem.style.background = `url("../../${arrow.imgUrl}") no-repeat center`;
+            elem.style.background = `url("../../${arrow.imgUrl}") center/contain no-repeat`;
             elem.style.zIndex = '10';
         });
         const gobletElem = this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild;
-        gobletElem.style.background = `url("../../${goblet.imgUrl}") no-repeat center`;
+        gobletElem.style.background = `url("../../${goblet.imgUrl}") center/contain no-repeat`;
     }
     drawGameObjects(gameObjects) {
         if (gameObjects.mobileFields) {
@@ -41,7 +58,7 @@ class Render {
                 field.linkedHtmlElement.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (field.coordinates.x - 1)}px`;
                 field.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
                 field.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
-                field.linkedHtmlElement.style.background = `url("../../${field.imgUrl}") no-repeat center`;
+                field.linkedHtmlElement.style.background = `url("../../${field.imgUrl}") center/contain no-repeat`;
             });
         }
         Object.values(gameObjects.cows).forEach((cow) => {

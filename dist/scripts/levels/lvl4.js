@@ -24,14 +24,12 @@ const lvl4 = {
                 [13, 8]
             ],
             "Block": [
-                [11, 7], [10, 8], [12, 8]
+                [11, 7], [10, 8], [12, 8], [11, 8]
             ]
         },
         mobileFields: {
             "HayBale": [
-                {
-                    coordinates: { x: 11, y: 10 }
-                }
+                [11, 10]
             ]
         },
         mapArrows: {
@@ -50,6 +48,11 @@ const lvl4 = {
         {
             coordinates: { x: 5, y: 8 },
             direction: "Right",
+            color: "Grey"
+        },
+        {
+            coordinates: { x: 13, y: 11 },
+            direction: "Left",
             color: "Grey"
         }
     ],

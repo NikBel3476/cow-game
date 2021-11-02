@@ -1,11 +1,11 @@
 class Game {
     loop: number;
     staticFields: Field[];
-    mobileFields: Field[];
+    mobileFields: HayBale[];
     mapArrows: Arrow[];
     goblet: Goblet;
     cows: Cow[];
-    mapFields: Field[];
+    mapFields: (Field | HayBale)[];
     arrows: Arrow[];
     render: Render;
     ui: UI;
@@ -21,9 +21,10 @@ class Game {
     loadLevel(level : ILevel) {
         const { mapObjects: { staticFields, mobileFields, mapArrows, goblet }, cows, arrows } : ILevel = level;
         this.render.createCowHtmlElements(cows);
+        this.render.createMobileFieldsHtmlElements(mobileFields);
         // map fields
         this.staticFields = this.initStaticFields(staticFields);
-        // this.mobileFields = this.initMobileFields(mobileFields);
+        this.mobileFields = this.initMobileFields(mobileFields);
         this.mapArrows = this.initMapArrows(mapArrows);
         this.goblet = new Goblet(goblet.coordinates, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement);
         this.mapFields = this.getMapFields();
@@ -78,17 +79,18 @@ class Game {
         );
     }
 
-   /* initMobileFields(mobileFields: ILevel['mapObjects']['mobileFields']) {
-        return Object.keys(mobileFields).map((objName: EntityName) =>
-            mobileFields[objName].map((field: { coordinates: Coordinates }) =>
+    initMobileFields(mobileFields: ILevel['mapObjects']['mobileFields']) {
+        let count = 0;
+        return Object.keys(mobileFields).reduce((mobileFieldsArr: HayBale[], objName: EntityName) =>
+            mobileFieldsArr.concat(mobileFields[objName].map((coordinates: [number, number]) =>
                 new HayBale(
                     objName,
-                    field.coordinates,
-                    <HTMLElement>
+                    { x: coordinates[0], y: coordinates[1] },
+                    <HTMLElement>this.render.mobileFields[count++]
                 )
             )
-        );
-    }*/
+            ), []);
+    }
 
     initArrows(arrows: ILevel['arrows']) {
         let count = 0;
@@ -111,7 +113,7 @@ class Game {
         return arrowsArray;
     }
 
-    getAllMapObjects(): (Field | Cow)[] {
+    getAllMapObjects(): (Field | Cow | HayBale)[] {
         return [
             ...this.staticFields,
             ...this.mobileFields,
@@ -121,24 +123,18 @@ class Game {
         ];
     }
 
-    getMapFields(): Field[] {
-        const mapFields: Field[] = [];
-        if (this.staticFields) {
-            mapFields.concat(...this.staticFields)
-        }
+    getMapFields(): (Field | HayBale)[] {
+        const mapFields: (Field | HayBale)[] = [...this.staticFields, this.goblet];
         if (this.mobileFields) {
             mapFields.concat(...this.mobileFields)
         }
         if (this.mapArrows) {
             mapFields.concat(...this.mapArrows)
         }
-        if (this.goblet) {
-            mapFields.concat(this.goblet)
-        }
         return mapFields;
     }
 
-    getGameObjects(): (Field | Cow)[] {
+    getGameObjects(): (Arrow | Cow)[] {
         return [
             ...this.cows,
             ...this.mapArrows
@@ -154,16 +150,20 @@ class Game {
             field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y);
     }
 
-    findFieldByHtmlElement(htmlElement: HTMLElement): Field {
+    findFieldByHtmlElement(htmlElement: HTMLElement): (Field | HayBale) {
         return this.mapFields.find((field: Field) =>
             htmlElement === field?.linkedHtmlElement
         );
     }
 
     findGameObjectByHtmlElement(htmlElement: HTMLElement): Field | Cow {
-        return this.getGameObjects().find((obj: Field | Cow) =>
+        return this.getGameObjects().find((obj: Arrow | Cow) =>
             htmlElement === (obj?.linkedHtmlElement as HTMLElement)
         );
+    }
+
+    findArrowByHtmlElement(htmlElement: HTMLElement): Arrow | undefined {
+        return this.arrows.find((arrow: Arrow) => arrow.linkedHtmlElement === htmlElement);
     }
 
     drawArrows(): void {
@@ -259,6 +259,7 @@ class Game {
                             }
                         }
                     } else {
+
                         cow.move();
                     }
                 });

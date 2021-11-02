@@ -51,7 +51,7 @@ body {
     overflow: visible;
 }
 
-.cow-wrapper {
+.cow-wrapper, .mobile-field {
     position: absolute;
 }
 

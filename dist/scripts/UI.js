@@ -23,7 +23,7 @@ class UI {
                         !game.findGameObjectByHtmlElement(e.target)) {
                         const coordinates = e.target.className.split(" ")
                             .filter(str => str.match(/^(x|y)-\d+$/g)).map(str => Number(str.slice(2)));
-                        const arrow = game.arrows.find((arrow) => this.selectedItem === arrow.linkedHtmlElement);
+                        const arrow = game.findArrowByHtmlElement(this.selectedItem);
                         let selectedArrow;
                         if (arrow) {
                             selectedArrow = game.arrows.splice(game.arrows.indexOf(arrow), 1)[0];
