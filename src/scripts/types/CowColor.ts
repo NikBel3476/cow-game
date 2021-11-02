@@ -1,0 +1,1 @@
+type CowColor = 'Brown' | 'Grey';

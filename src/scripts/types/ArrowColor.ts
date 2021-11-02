@@ -1,0 +1,1 @@
+type ArrowColor = 'Red' | 'Blue';
