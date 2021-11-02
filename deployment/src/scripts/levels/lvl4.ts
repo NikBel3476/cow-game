@@ -50,7 +50,7 @@ const lvl4: Readonly<ILevel> = {
             {
                 coordinates: { x: 5, y: 8 },
                 direction: "Right",
-                color: "Brown"
+                color: "Grey"
             }
     ],
     arrows: {

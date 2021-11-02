@@ -27,7 +27,7 @@ const lvl1 = {
         {
             coordinates: { x: 5, y: 8 },
             direction: "Right",
-            color: "Brown"
+            color: "Grey"
         }
     ],
     arrows: {

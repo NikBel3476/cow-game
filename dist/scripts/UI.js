@@ -6,7 +6,6 @@ class UI {
         document.querySelector(arrowsTableCssSelector).appendChild(this.htmlArrowsTable);
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
-        // EventListeners
         document.addEventListener("mousedown", (e) => {
             this.mouseX = e.clientX;
             this.mouseY = e.clientY;
@@ -17,13 +16,11 @@ class UI {
                 this.selectedItem.style.left = `${-this.mouseX + e.clientX}px`;
             }
         });
-        // TODO: it needs to be refactored
         document.addEventListener("mouseup", (e) => {
             if (this.selectedItem) {
                 if (e.target.className.includes("game-field")) {
                     if (!game.findFieldByHtmlElement(e.target) &&
                         !game.findGameObjectByHtmlElement(e.target)) {
-                        // можно поставить на поле
                         const coordinates = e.target.className.split(" ")
                             .filter(str => str.match(/^(x|y)-\d+$/g)).map(str => Number(str.slice(2)));
                         const arrow = game.arrows.find((arrow) => this.selectedItem === arrow.linkedHtmlElement);
@@ -67,8 +64,6 @@ class UI {
     }
     htmlTableToArray(htmlTable) {
         return [...htmlTable.rows].map((row) => [...row.cells]);
-        // одномерный массив
-        // return [...htmlTable.rows].reduce((cells: HTMLTableCellElement[], row: HTMLTableRowElement) => cells.concat([...row.cells]), []);
     }
     createGameTable() {
         const table = document.createElement("table");

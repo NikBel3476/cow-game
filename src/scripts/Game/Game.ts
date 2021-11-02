@@ -193,7 +193,7 @@ class Game {
     }
 
     checkGoblet(cow: Cow): boolean {
-        return cow.color === "Brown" &&
+        return cow.color === "Grey" &&
             this.goblet.coordinates.x === cow.coordinates.x &&
             this.goblet.coordinates.y === cow.coordinates.y;
     }
@@ -201,36 +201,67 @@ class Game {
     startGame(): void {
         if (!this.loop) {
             this.loop = setInterval(() => {
-                let canmove = true;
+                let nextField: Field;
                 let isVictory = false;
                 Object.values(this.cows).forEach((cow: Cow) => {
-                        switch (cow.direction) {
-                            case "Up":
-                                this.checkArrows(cow);
-                                isVictory = this.checkGoblet(cow);
-                                if (!this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1}))
-                                    cow.move();
-                                break;
-                            case "Right":
-                                this.checkArrows(cow);
-                                isVictory = this.checkGoblet(cow);
-                                if (!this.findFieldByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y}))
-                                    cow.move();
-                                break;
-                            case "Down":
-                                this.checkArrows(cow);
-                                isVictory = this.checkGoblet(cow);
-                                if (!this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1}))
-                                    cow.move();
-                                break;
-                            case "Left":
-                                this.checkArrows(cow);
-                                isVictory = this.checkGoblet(cow);
-                                 if (!this.findFieldByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y }))
-                                    cow.move();
-                                break;
+                    if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
+                        this.checkArrows(cow);
+                        isVictory = this.checkGoblet(cow);
+                        if (!isVictory) {
+                            const currentField: Field = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y});
+                            if (
+                                currentField?.name === "SlideUp" ||
+                                currentField?.name === "SlideRight" ||
+                                currentField?.name === "SlideDown" ||
+                                currentField?.name === "SlideLeft"
+                            ) {
+                                cow.layer = cow.layer === 1 ? 2 : 1;
+                            }
+                            switch (cow.direction) {
+                                case "Up":
+                                    nextField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1 });
+                                    if (nextField) {
+                                        if (nextField.name === "SlideUp") cow.move();
+                                    } else {
+                                        cow.move();
+                                    }
+                                    break;
+                                case "Right":
+                                    nextField = this.findFieldByCoordinates({ x:cow.coordinates.x + 1, y: cow.coordinates.y });
+                                    if (cow.layer === 1) {
+                                        if (nextField) {
+                                            if (nextField.name === "SlideRight") cow.move();
+                                        } else {
+                                            cow.move();
+                                        }
+                                    } else {
+                                        if (nextField) {
+                                            cow.move()
+                                        }
+                                    }
+                                    break;
+                                case "Down":
+                                    nextField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1 });
+                                    if (nextField) {
+                                        if (nextField.name === "SlideDown") cow.move();
+                                    } else {
+                                        cow.move();
+                                    }
+                                    break;
+                                case "Left":
+                                    nextField = this.findFieldByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y });
+                                    if (nextField) {
+                                        if (nextField.name === "SlideLeft") cow.move();
+                                    } else {
+                                        cow.move();
+                                    }
+                                    break;
+                            }
                         }
-                    });
+                    } else {
+                        cow.move();
+                    }
+                });
                 if (isVictory) {
                     this.endGame();
                     alert("YOU WIN!!!");

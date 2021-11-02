@@ -57,8 +57,12 @@ class Render {
         }
 
         Object.values(gameObjects.cows).forEach((cow: Cow)  => {
-            cow.linkedHtmlElement.style.top = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (cow.coordinates.y - 1)}px`;
-            cow.linkedHtmlElement.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (cow.coordinates.x - 1)}px`;
+            const cssTop = cow.layer === 2 ?
+                this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (cow.coordinates.y - 1) - 30 :
+                this.htmlGameTable.querySelector("td").getBoundingClientRect().height * (cow.coordinates.y - 1);
+            const cssLeft = this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (cow.coordinates.x - 1);
+            cow.linkedHtmlElement.style.top = `${cssTop}px`;
+            cow.linkedHtmlElement.style.left = `${cssLeft}px`;
             cow.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
             cow.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
             cow.linkedHtmlElement.style.background = `url("../../${cow.imgUrl}") no-repeat center`;

@@ -6,13 +6,10 @@ class Game {
     loadLevel(level) {
         const { mapObjects: { staticFields, mobileFields, mapArrows, goblet }, cows, arrows } = level;
         this.render.createCowHtmlElements(cows);
-        // map fields
         this.staticFields = this.initStaticFields(staticFields);
-        // this.mobileFields = this.initMobileFields(mobileFields);
         this.mapArrows = this.initMapArrows(mapArrows);
         this.goblet = new Goblet(goblet.coordinates, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild);
         this.mapFields = this.getMapFields();
-        // game objects
         this.cows = this.initCows(cows);
         this.arrows = this.initArrows(arrows);
     }
@@ -30,17 +27,6 @@ class Game {
         let count = 0;
         return Object.values(cows).map((cow) => new Cow(`Cow${cow.color + cow.direction}`, cow.coordinates, cow.direction, cow.color, this.render.cowHtmlElements[count++]));
     }
-    /* initMobileFields(mobileFields: ILevel['mapObjects']['mobileFields']) {
-         return Object.keys(mobileFields).map((objName: EntityName) =>
-             mobileFields[objName].map((field: { coordinates: Coordinates }) =>
-                 new HayBale(
-                     objName,
-                     field.coordinates,
-                     <HTMLElement>
-                 )
-             )
-         );
-     }*/
     initArrows(arrows) {
         let count = 0;
         const arrowsArray = [];
@@ -113,41 +99,80 @@ class Game {
         });
     }
     checkGoblet(cow) {
-        return cow.color === "Brown" &&
+        return cow.color === "Grey" &&
             this.goblet.coordinates.x === cow.coordinates.x &&
             this.goblet.coordinates.y === cow.coordinates.y;
     }
     startGame() {
         if (!this.loop) {
             this.loop = setInterval(() => {
-                let canmove = true;
+                let nextField;
                 let isVictory = false;
                 Object.values(this.cows).forEach((cow) => {
-                    switch (cow.direction) {
-                        case "Up":
-                            this.checkArrows(cow);
-                            isVictory = this.checkGoblet(cow);
-                            if (!this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1 }))
-                                cow.move();
-                            break;
-                        case "Right":
-                            this.checkArrows(cow);
-                            isVictory = this.checkGoblet(cow);
-                            if (!this.findFieldByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y }))
-                                cow.move();
-                            break;
-                        case "Down":
-                            this.checkArrows(cow);
-                            isVictory = this.checkGoblet(cow);
-                            if (!this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1 }))
-                                cow.move();
-                            break;
-                        case "Left":
-                            this.checkArrows(cow);
-                            isVictory = this.checkGoblet(cow);
-                            if (!this.findFieldByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y }))
-                                cow.move();
-                            break;
+                    if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
+                        this.checkArrows(cow);
+                        isVictory = this.checkGoblet(cow);
+                        if (!isVictory) {
+                            const currentField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y });
+                            if ((currentField === null || currentField === void 0 ? void 0 : currentField.name) === "SlideUp" ||
+                                (currentField === null || currentField === void 0 ? void 0 : currentField.name) === "SlideRight" ||
+                                (currentField === null || currentField === void 0 ? void 0 : currentField.name) === "SlideDown" ||
+                                (currentField === null || currentField === void 0 ? void 0 : currentField.name) === "SlideLeft") {
+                                cow.layer = cow.layer === 1 ? 2 : 1;
+                            }
+                            switch (cow.direction) {
+                                case "Up":
+                                    nextField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1 });
+                                    if (nextField) {
+                                        if (nextField.name === "SlideUp")
+                                            cow.move();
+                                    }
+                                    else {
+                                        cow.move();
+                                    }
+                                    break;
+                                case "Right":
+                                    nextField = this.findFieldByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y });
+                                    if (cow.layer === 1) {
+                                        if (nextField) {
+                                            if (nextField.name === "SlideRight")
+                                                cow.move();
+                                        }
+                                        else {
+                                            cow.move();
+                                        }
+                                    }
+                                    else {
+                                        if (nextField) {
+                                            cow.move();
+                                        }
+                                    }
+                                    break;
+                                case "Down":
+                                    nextField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1 });
+                                    if (nextField) {
+                                        if (nextField.name === "SlideDown")
+                                            cow.move();
+                                    }
+                                    else {
+                                        cow.move();
+                                    }
+                                    break;
+                                case "Left":
+                                    nextField = this.findFieldByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y });
+                                    if (nextField) {
+                                        if (nextField.name === "SlideLeft")
+                                            cow.move();
+                                    }
+                                    else {
+                                        cow.move();
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    else {
+                        cow.move();
                     }
                 });
                 if (isVictory) {

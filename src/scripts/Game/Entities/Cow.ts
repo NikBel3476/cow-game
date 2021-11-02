@@ -2,7 +2,7 @@ class Cow extends Entity {
     public coordinates: Coordinates;
     private _direction: Direction;
     public color: CowColor;
-
+    public layer: 1 | 2;
 
     constructor(name: EntityName, coordinates: Coordinates, direction: Direction, color: CowColor, linkedHtmlElement: HTMLElement) {
         super(name, linkedHtmlElement);
@@ -10,6 +10,7 @@ class Cow extends Entity {
         this._direction = direction;
         this.color = color;
         this.imgUrl = this.generateImgUrl();
+        this.layer = 1;
     }
 
     public get direction(): Direction {
@@ -21,7 +22,6 @@ class Cow extends Entity {
         this.imgUrl = this.generateImgUrl();
     }
 
-    // TODO: replace '*Grey*' to this.color when the sprites are ready
     generateImgUrl(): string {
         return CONF.ImgPath[`CowGrey${this._direction}`];
     }
@@ -31,29 +31,25 @@ class Cow extends Entity {
             case "Up":
                 this.coordinates.y = Math.round((this.coordinates.y - 0.1) * 100) / 100;
                 if (this._direction !== "Up") {
-                    this._direction = "Up";
-                    this.imgUrl = this.generateImgUrl();
+                    this.direction = "Up";
                 }
                 break;
             case "Right":
                 this.coordinates.x = Math.round((this.coordinates.x + 0.1) * 100) / 100;
                 if (this._direction !== "Right") {
-                    this._direction = "Right";
-                    this.imgUrl = this.generateImgUrl();
+                    this.direction = "Right";
                 }
                 break;
             case "Down":
                 this.coordinates.y = Math.round((this.coordinates.y + 0.1) * 100) / 100;
                 if (this._direction !== "Down") {
-                    this._direction = "Down";
-                    this.imgUrl = this.generateImgUrl();
+                    this.direction = "Down";
                 }
                 break;
             case "Left":
                 this.coordinates.x = Math.round((this.coordinates.x - 0.1) * 100) / 100;
                 if (this._direction !== "Left") {
-                    this._direction = "Left";
-                    this.imgUrl = this.generateImgUrl();
+                    this.direction = "Left";
                 }
                 break;
         }
