@@ -145,8 +145,8 @@ class Game {
         return this.arrows;
     }
 
-    findFieldByCoordinates(coordinates: Coordinates): Field | undefined {
-        return this.staticFields.find((field: Field) =>
+    findFieldByCoordinates(coordinates: Coordinates): Field | HayBale | undefined {
+        return [...this.staticFields, ...this.mobileFields].find((field: Field | HayBale) =>
             field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y);
     }
 
@@ -201,14 +201,14 @@ class Game {
     startGame(): void {
         if (!this.loop) {
             this.loop = setInterval(() => {
-                let nextField: Field;
+                let nextField: Field | HayBale;
                 let isVictory = false;
                 Object.values(this.cows).forEach((cow: Cow) => {
                     if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
                         this.checkArrows(cow);
                         isVictory = this.checkGoblet(cow);
                         if (!isVictory) {
-                            const currentField: Field = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y});
+                            const currentField: Field | HayBale = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y});
                             if (
                                 currentField?.name === "SlideUp" ||
                                 currentField?.name === "SlideRight" ||
@@ -222,6 +222,10 @@ class Game {
                                     nextField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1 });
                                     if (nextField) {
                                         if (nextField.name === "SlideUp") cow.move();
+                                        if (nextField instanceof HayBale) {
+                                            nextField.coordinates.y = Math.round((nextField.coordinates.y - 0.1) * 100) / 100;
+                                            cow.move();
+                                        }
                                     } else {
                                         cow.move();
                                     }
@@ -231,6 +235,10 @@ class Game {
                                     if (cow.layer === 1) {
                                         if (nextField) {
                                             if (nextField.name === "SlideRight") cow.move();
+                                            if (nextField instanceof HayBale) {
+                                                nextField.coordinates.x = Math.round((nextField.coordinates.x + 0.1) * 100) / 100;
+                                                cow.move();
+                                            }
                                         } else {
                                             cow.move();
                                         }
@@ -244,6 +252,10 @@ class Game {
                                     nextField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1 });
                                     if (nextField) {
                                         if (nextField.name === "SlideDown") cow.move();
+                                        if (nextField instanceof HayBale) {
+                                            nextField.coordinates.y = Math.round((nextField.coordinates.y + 0.1) * 100) / 100;
+                                            cow.move();
+                                        }
                                     } else {
                                         cow.move();
                                     }
@@ -252,23 +264,52 @@ class Game {
                                     nextField = this.findFieldByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y });
                                     if (nextField) {
                                         if (nextField.name === "SlideLeft") cow.move();
+                                        if (nextField instanceof HayBale) {
+                                            nextField.coordinates.x = Math.round((nextField.coordinates.x - 0.1) * 100) / 100;
+                                            cow.move();
+                                        }
                                     } else {
                                         cow.move();
                                     }
                                     break;
                             }
+                        } else {
+                            this.endGame();
+                            alert("YOU WIN!!!");
                         }
-                    } else {
+                    } else { // FIXME: delete switch
+                        let nextField: Field | HayBale;
+                        switch (cow.direction) {
+                            case"Up":
+                                nextField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1 });
+                                if (nextField instanceof HayBale) {
+                                    nextField.coordinates.y = Math.round((nextField.coordinates.y - 0.1) * 100) / 100;
+                                }
+                                break;
+                            case"Right":
+                                nextField = this.findFieldByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y });
+                                if (nextField instanceof HayBale) {
+                                    nextField.coordinates.x = Math.round((nextField.coordinates.x + 0.1) * 100) / 100;
+                                }
+                                break;
+                            case"Down":
+                                nextField = this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1 });
+                                if (nextField instanceof HayBale) {
+                                    nextField.coordinates.x = Math.round((nextField.coordinates.y + 0.1) * 100) / 100;
+                                }
+                                break;
+                            case"Left":
+                                nextField = this.findFieldByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y });
+                                if (nextField instanceof HayBale) {
+                                    nextField.coordinates.x = Math.round((nextField.coordinates.x - 0.1) * 100) / 100;
+                                }
+                                break;
 
+                        }
                         cow.move();
                     }
                 });
-                if (isVictory) {
-                    this.endGame();
-                    alert("YOU WIN!!!");
-                } else {
-                    this.renderScene();
-                }
+                this.renderScene();
             }, 40);
         }
     }

@@ -15,7 +15,7 @@ class Render {
             divCow.style.left = `${this.htmlGameTable.querySelector("td").getBoundingClientRect().width * (cow.coordinates.x - 1)}px`;
             divCow.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
             divCow.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
-            divCow.style.zIndex = '20';
+            divCow.style.zIndex = '30';
             htmlElements.push(divCow);
             document.getElementById("game-table-wrapper").appendChild(divCow);
         });
