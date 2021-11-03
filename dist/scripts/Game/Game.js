@@ -1,5 +1,9 @@
+"use strict";
 class Game {
     constructor(render, ui) {
+        this.staticFields = [];
+        this.mobileFields = [];
+        this.mapArrows = [];
         this.render = render;
         this.ui = ui;
     }
@@ -10,38 +14,59 @@ class Game {
         this.staticFields = this.initStaticFields(staticFields);
         this.mobileFields = this.initMobileFields(mobileFields);
         this.mapArrows = this.initMapArrows(mapArrows);
-        this.goblet = new Goblet(goblet.coordinates, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild);
+        this.goblet = this.initGoblet(goblet);
         this.mapFields = this.getMapFields();
         this.cows = this.initCows(cows);
         this.arrows = this.initArrows(arrows);
     }
     initStaticFields(staticFields) {
-        const staticFieldsArray = [];
-        Object.keys(staticFields).forEach((fieldName) => staticFields[fieldName].forEach(fieldCoordinates => staticFieldsArray.push(new Field(fieldName, { x: fieldCoordinates[0], y: fieldCoordinates[1] }, true, false, this.ui.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild))));
-        return staticFieldsArray;
+        if (staticFields) {
+            const staticFieldsArray = [];
+            Object.keys(staticFields).forEach((fieldName) => {
+                var _a;
+                return (_a = staticFields[fieldName]) === null || _a === void 0 ? void 0 : _a.forEach((fieldCoordinates) => staticFieldsArray.push(new Field(fieldName, { x: fieldCoordinates[0], y: fieldCoordinates[1] }, true, false, this.ui.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild)));
+            });
+            return staticFieldsArray;
+        }
+        return [];
+    }
+    initMobileFields(mobileFields) {
+        if (mobileFields) {
+            let count = 0;
+            return Object.keys(mobileFields).reduce((mobileFieldsArr, objName) => {
+                var _a, _b;
+                return mobileFieldsArr.concat((_b = (_a = mobileFields[objName]) === null || _a === void 0 ? void 0 : _a.map((coordinates) => new HayBale(objName, { x: coordinates[0], y: coordinates[1] }, this.render.mobileFields[count++]))) !== null && _b !== void 0 ? _b : []);
+            }, []);
+        }
+        return [];
     }
     initMapArrows(mapArrows) {
-        const mapArrowsArray = [];
-        Object.keys(mapArrows).forEach((arrowColor) => mapArrows[arrowColor].forEach((arrow) => mapArrowsArray.push(new Arrow(`Arrow${arrowColor + arrow.direction}`, arrow.coordinates, arrow.direction, arrowColor, this.ui.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild))));
-        return mapArrowsArray;
+        if (mapArrows) {
+            const mapArrowsArray = [];
+            Object.keys(mapArrows).forEach((arrowColor) => {
+                var _a;
+                return (_a = mapArrows[arrowColor]) === null || _a === void 0 ? void 0 : _a.forEach((arrow) => mapArrowsArray.push(new Arrow(`Arrow${arrowColor + arrow.direction}`, arrow.coordinates, arrow.direction, arrowColor, this.ui.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild)));
+            });
+            return mapArrowsArray;
+        }
+        return [];
     }
     initCows(cows) {
         let count = 0;
         return Object.values(cows).map((cow) => new Cow(`Cow${cow.color + cow.direction}`, cow.coordinates, cow.direction, cow.color, this.render.cowHtmlElements[count++]));
-    }
-    initMobileFields(mobileFields) {
-        let count = 0;
-        return Object.keys(mobileFields).reduce((mobileFieldsArr, objName) => mobileFieldsArr.concat(mobileFields[objName].map((coordinates) => new HayBale(objName, { x: coordinates[0], y: coordinates[1] }, this.render.mobileFields[count++]))), []);
     }
     initArrows(arrows) {
         let count = 0;
         const arrowsArray = [];
         Object.keys(arrows).forEach((arrowColor) => Object.keys(arrows[arrowColor]).forEach((arrowDirection) => {
             for (let i = 0; i < arrows[arrowColor][arrowDirection]; i++) {
-                arrowsArray.push(new Arrow(`Arrow${arrowColor + arrowDirection}`, { x: undefined, y: undefined }, arrowDirection, arrowColor, this.ui.arrowsTable.flat(1)[count++].firstChild));
+                arrowsArray.push(new Arrow(`Arrow${arrowColor + arrowDirection}`, { x: 0, y: 0 }, arrowDirection, arrowColor, this.ui.arrowsTable.flat(1)[count++].firstChild));
             }
         }));
         return arrowsArray;
+    }
+    initGoblet(goblet) {
+        return new Goblet(goblet.coordinates, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild);
     }
     getAllMapObjects() {
         return [
@@ -94,12 +119,14 @@ class Game {
         this.render.clearScene();
     }
     checkArrows(cow) {
-        Object.values(this.mapArrows).forEach((arrow) => {
-            if (cow.coordinates.x === arrow.coordinates.x && cow.coordinates.y === arrow.coordinates.y) {
-                cow.direction = arrow.direction;
-                this.mapArrows.splice(this.mapArrows.indexOf(arrow), 1);
-            }
-        });
+        if (this.mapArrows) {
+            Object.values(this.mapArrows).forEach((arrow) => {
+                if (cow.coordinates.x === arrow.coordinates.x && cow.coordinates.y === arrow.coordinates.y) {
+                    cow.direction = arrow.direction;
+                    this.mapArrows.splice(this.mapArrows.indexOf(arrow), 1);
+                }
+            });
+        }
     }
     checkGoblet(cow) {
         return cow.color === "Grey" &&

@@ -1,3 +1,4 @@
+"use strict";
 class Goblet extends Field {
     constructor(coordinates, linkedHtmlElement) {
         super("Goblet", coordinates, false, false, linkedHtmlElement);

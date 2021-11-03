@@ -3,15 +3,15 @@ class UI {
     htmlArrowsTable: HTMLTableElement;
     gameTable: HTMLTableCellElement[][];
     arrowsTable: HTMLTableCellElement[][];
-    selectedItem: HTMLElement;
-    mouseX: number;
-    mouseY: number;
+    selectedItem: HTMLElement | null = null;
+    mouseX!: number;
+    mouseY!: number;
 
-    constructor(gameContainerCssSelector = "", arrowsTableCssSelector = "") {
+    constructor(gameContainerCssSelector: string, arrowsTableCssSelector: string) {
         this.htmlGameTable = this.createGameTable();
-        document.querySelector(gameContainerCssSelector).appendChild(this.htmlGameTable);
+        document.querySelector(gameContainerCssSelector)?.appendChild(this.htmlGameTable);
         this.htmlArrowsTable = this.createArrowsTable();
-        document.querySelector(arrowsTableCssSelector).appendChild(this.htmlArrowsTable);
+        document.querySelector(arrowsTableCssSelector)?.appendChild(this.htmlArrowsTable);
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
 
@@ -36,8 +36,8 @@ class UI {
                         // можно поставить на поле
                         const coordinates = (e.target as HTMLElement).className.split(" ")
                             .filter(str => str.match(/^(x|y)-\d+$/g)).map(str => Number(str.slice(2)));
-                        const arrow: Arrow = game.findArrowByHtmlElement(this.selectedItem);
-                        let selectedArrow: Arrow;
+                        const arrow: Arrow | undefined = game.findArrowByHtmlElement(this.selectedItem);
+                        let selectedArrow: Arrow | undefined;
                         if (arrow) {
                             selectedArrow = game.arrows.splice(game.arrows.indexOf(arrow), 1)[0];
                             game.mapArrows.push(selectedArrow);
@@ -58,8 +58,8 @@ class UI {
                     const arrow = game.mapArrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement);
                     if (arrow) {
                         const selectedArrow = game.mapArrows.splice(game.mapArrows.indexOf(arrow), 1)[0];
-                        selectedArrow.coordinates.x = null;
-                        selectedArrow.coordinates.y = null;
+                        selectedArrow.coordinates.x = 0;
+                        selectedArrow.coordinates.y = 0;
                         selectedArrow.linkedHtmlElement = (<HTMLElement>e.target);
                         game.arrows.push(selectedArrow);
                     }
@@ -80,7 +80,7 @@ class UI {
         // return [...htmlTable.rows].reduce((cells: HTMLTableCellElement[], row: HTMLTableRowElement) => cells.concat([...row.cells]), []);
     }
 
-    createGameTable() {
+    createGameTable(): HTMLTableElement {
         const table = document.createElement("table");
         table.id = "game-table";
         const tBody = document.createElement("tbody");
@@ -107,8 +107,8 @@ class UI {
             const tr = document.createElement("tr");
             for (let j = 0; j < CONF.ArrowsTable.width; j++) {
                 const td = document.createElement("td");
-                td.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
-                td.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                td.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
+                td.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
                 const div = document.createElement("div");
                 div.className = `arrow-field x-${j+1} y-${i+1}`;
                 div.style.zIndex = '10';

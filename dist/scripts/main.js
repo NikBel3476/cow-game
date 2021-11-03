@@ -1,3 +1,4 @@
+"use strict";
 const ui = new UI("#game-table-wrapper", "#ui-table-wrapper");
 const render = new Render(ui);
 const game = new Game(render, ui);
@@ -11,7 +12,7 @@ function endGame() {
     game.endGame();
 }
 window.onload = () => {
-    game.loadLevel(lvl4);
+    game.loadLevel(lvl2);
     game.renderScene();
     game.drawArrows();
 };

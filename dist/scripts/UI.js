@@ -1,9 +1,12 @@
+"use strict";
 class UI {
-    constructor(gameContainerCssSelector = "", arrowsTableCssSelector = "") {
+    constructor(gameContainerCssSelector, arrowsTableCssSelector) {
+        var _a, _b;
+        this.selectedItem = null;
         this.htmlGameTable = this.createGameTable();
-        document.querySelector(gameContainerCssSelector).appendChild(this.htmlGameTable);
+        (_a = document.querySelector(gameContainerCssSelector)) === null || _a === void 0 ? void 0 : _a.appendChild(this.htmlGameTable);
         this.htmlArrowsTable = this.createArrowsTable();
-        document.querySelector(arrowsTableCssSelector).appendChild(this.htmlArrowsTable);
+        (_b = document.querySelector(arrowsTableCssSelector)) === null || _b === void 0 ? void 0 : _b.appendChild(this.htmlArrowsTable);
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
         document.addEventListener("mousedown", (e) => {
@@ -47,8 +50,8 @@ class UI {
                     const arrow = game.mapArrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement);
                     if (arrow) {
                         const selectedArrow = game.mapArrows.splice(game.mapArrows.indexOf(arrow), 1)[0];
-                        selectedArrow.coordinates.x = null;
-                        selectedArrow.coordinates.y = null;
+                        selectedArrow.coordinates.x = 0;
+                        selectedArrow.coordinates.y = 0;
                         selectedArrow.linkedHtmlElement = e.target;
                         game.arrows.push(selectedArrow);
                     }
@@ -84,6 +87,7 @@ class UI {
         return table;
     }
     createArrowsTable() {
+        var _a, _b;
         const table = document.createElement("table");
         table.id = "ui-table";
         const tBody = document.createElement("tbody");
@@ -91,8 +95,8 @@ class UI {
             const tr = document.createElement("tr");
             for (let j = 0; j < CONF.ArrowsTable.width; j++) {
                 const td = document.createElement("td");
-                td.style.width = `${this.htmlGameTable.querySelector("td").clientWidth}px`;
-                td.style.height = `${this.htmlGameTable.querySelector("td").clientHeight}px`;
+                td.style.width = `${(_a = this.htmlGameTable.querySelector("td")) === null || _a === void 0 ? void 0 : _a.clientWidth}px`;
+                td.style.height = `${(_b = this.htmlGameTable.querySelector("td")) === null || _b === void 0 ? void 0 : _b.clientHeight}px`;
                 const div = document.createElement("div");
                 div.className = `arrow-field x-${j + 1} y-${i + 1}`;
                 div.style.zIndex = '10';

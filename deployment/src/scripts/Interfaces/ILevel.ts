@@ -1,12 +1,11 @@
 interface ILevel {
     readonly mapObjects: {
-        readonly staticFields: StaticFields,
+        readonly staticFields?: StaticFields,
         readonly mobileFields?: {
             [k in EntityName]?: [number, number][]
         },
         readonly mapArrows?: {
-            Red?: MapArrow[],
-            Blue?: MapArrow[]
+            [k in ArrowColor]?: MapArrow[]
         },
         readonly goblet: {
             coordinates: { x: number, y: number }
@@ -14,10 +13,7 @@ interface ILevel {
     },
     readonly cows: ICow[],
     arrows: {
-        Red: {
-            [k in Direction]?: number
-        },
-        Blue?: {
+        [k in ArrowColor]?: {
             [k in Direction]?: number
         }
     }

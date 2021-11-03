@@ -1,3 +1,4 @@
+"use strict";
 class Arrow extends Field {
     constructor(name, coordinates, direction, color, linkedHtmlElement) {
         super(name, coordinates, false, false, linkedHtmlElement);

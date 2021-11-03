@@ -1,3 +1,4 @@
+"use strict";
 class HayBale extends Entity {
     constructor(name, coordinates, linkedHtmlElement) {
         super(name, linkedHtmlElement);

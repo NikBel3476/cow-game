@@ -1,3 +1,4 @@
+"use strict";
 class Cow extends Entity {
     constructor(name, coordinates, direction, color, linkedHtmlElement) {
         super(name, linkedHtmlElement);

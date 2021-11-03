@@ -1,3 +1,4 @@
+"use strict";
 const CONF = {
     Map: {
         width: 20,

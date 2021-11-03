@@ -1,3 +1,4 @@
+"use strict";
 const lvl4 = {
     mapObjects: {
         staticFields: {

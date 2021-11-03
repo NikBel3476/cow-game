@@ -1,3 +1,4 @@
+"use strict";
 class Field extends Entity {
     constructor(name, coordinates, impassable = true, movable = false, linkedHtmlElement) {
         super(name, linkedHtmlElement);
