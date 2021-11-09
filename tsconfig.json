@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES2019",
+    "target": "ES5",
+    "module": "ES6",
+    "moduleResolution": "Node",
     "noImplicitAny": true,
     "sourceMap": true,
     "removeComments": true,
-    "outDir": "dist/scripts",
+    "outDir": "./dist/",
     "baseUrl": ".",
     "paths": {
       "*": [

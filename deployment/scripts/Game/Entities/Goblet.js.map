@@ -1,1 +1,0 @@
-{"version":3,"file":"Goblet.js","sourceRoot":"","sources":["../../../../src/scripts/Game/Entities/Goblet.ts"],"names":[],"mappings":"AAAA,MAAM,MAAO,SAAQ,KAAK;IACtB,YAAa,WAAwB,EAAE,iBAA8B;QACjE,KAAK,CAAC,QAAQ,EAAE,WAAW,EAAE,KAAK,EAAE,KAAK,EAAE,iBAAiB,CAAC,CAAC;QAC9D,IAAI,CAAC,MAAM,GAAG,IAAI,CAAC,OAAO,CAAC,MAAM,CAAC;IACtC,CAAC;CACJ"}

@@ -1,1 +1,0 @@
-type CowColor = 'Brown' | 'Grey';

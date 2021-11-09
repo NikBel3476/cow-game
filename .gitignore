@@ -5,9 +5,13 @@
 !.vscode/extensions.json
 *.code-workspace
 
+node_modules/
+
 # Local History for Visual Studio Code
 .history/
 
 .idea/
 
 flash game/
+
+deployment/
