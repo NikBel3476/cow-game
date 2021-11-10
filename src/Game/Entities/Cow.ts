@@ -1,6 +1,6 @@
 import CONF from '../../Conf';
 import { Entity } from "./Entity";
-import { Coordinates, Direction, CowColor, EntityName} from "../../types";
+import { Coordinates, Direction, CowColor, EntityName } from "../../types";
 
 export class Cow extends Entity {
     public coordinates: Coordinates;
@@ -8,7 +8,13 @@ export class Cow extends Entity {
     public color: CowColor;
     public layer: 1 | 2;
 
-    constructor(name: EntityName, coordinates: Coordinates, direction: Direction, color: CowColor, linkedHtmlElement: HTMLElement) {
+    constructor(
+        name: EntityName,
+        coordinates: Coordinates,
+        direction: Direction,
+        color: CowColor,
+        linkedHtmlElement: HTMLElement
+    ) {
         super(name, linkedHtmlElement);
         this.coordinates = coordinates;
         this._direction = direction;
@@ -31,7 +37,7 @@ export class Cow extends Entity {
     }
 
     move(direction: Direction = this._direction) {
-        switch(direction) {
+        switch (direction) {
             case "Up":
                 this.coordinates.y = Math.round((this.coordinates.y - 0.1) * 100) / 100;
                 if (this._direction !== "Up") {
@@ -56,6 +62,8 @@ export class Cow extends Entity {
                     this.direction = "Left";
                 }
                 break;
+            default:
+                throw new Error("Wrong cow direction");
         }
     }
 }

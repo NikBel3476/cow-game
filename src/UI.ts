@@ -1,5 +1,5 @@
 import CONF from './Conf';
-import { Arrow} from "./Game/Entities";
+import { Arrow } from "./Game/Entities";
 import { game, startGame, endGame } from './index';
 
 export default class UI {
@@ -27,7 +27,7 @@ export default class UI {
         });
 
         (document.getElementById("end-game-button") as HTMLElement).addEventListener('click', (e: MouseEvent) => {
-           endGame();
+            endGame();
         });
 
         document.addEventListener("mousedown", (e: MouseEvent) => {
@@ -103,7 +103,7 @@ export default class UI {
             for (let j = 0; j < CONF.Map.width; j++) {
                 const td = document.createElement("td");
                 const div = document.createElement("div");
-                div.className = `game-field x-${j+1} y-${i+1}`;
+                div.className = `game-field x-${j + 1} y-${i + 1}`;
                 td.appendChild(div);
                 tr.appendChild(td);
             }
@@ -124,7 +124,7 @@ export default class UI {
                 td.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
                 td.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
                 const div = document.createElement("div");
-                div.className = `arrow-field x-${j+1} y-${i+1}`;
+                div.className = `arrow-field x-${j + 1} y-${i + 1}`;
                 div.style.zIndex = '10';
                 div.style.top = "0";
                 div.style.left = "0";

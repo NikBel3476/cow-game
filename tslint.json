@@ -1,14 +1,65 @@
 {
-  "defaultSeverity": "error",
   "extends": [
     "tslint:recommended"
   ],
-  "jsRules": {},
+  "defaultSeverity": "error",
   "rules": {
     "no-console": false,
     "trailing-comma": false,
     "only-arrow-functions": false,
-    "no-shadowed-variable": false
-  },
-  "rulesDirectory": []
+    "no-shadowed-variable": false,
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-decl",
+      "check-type-operator"
+    ],
+    "no-any": true,
+    "no-unsafe-any": true,
+    "typedef": true,
+    "use-isnan": true,
+    "max-classes-per-file": [
+      true,
+      1
+    ],
+    "no-duplicate-imports": true,
+    "arrow-return-shorthand": true,
+    "class-name": true,
+    "interface-name": [
+      true,
+      "always-prefix"
+    ],
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "never",
+        "asyncArrow": "never",
+        "constructor": "never",
+        "method": "never",
+        "named": "never"
+      }
+    ],
+    "max-line-length": [
+      true,
+      150
+    ],
+    "no-trailing-whitespace": true,
+    "no-consecutive-blank-lines": [
+      true,
+      2
+    ],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      }
+    ]
+  }
 }

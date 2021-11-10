@@ -8,7 +8,13 @@ export class Field extends Entity {
     imgUrl: string;
     movable: boolean; // true - можно двигать
 
-    constructor(name: EntityName, coordinates: Coordinates, impassable = true, movable = false, linkedHtmlElement: HTMLElement) {
+    constructor(
+        name: EntityName,
+        coordinates: Coordinates,
+        impassable = true,
+        movable = false,
+        linkedHtmlElement: HTMLElement
+    ) {
         super(name, linkedHtmlElement);
         this.coordinates = coordinates;
         this.impassable = impassable;

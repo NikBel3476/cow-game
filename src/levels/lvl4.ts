@@ -37,26 +37,26 @@ export const lvl4: Readonly<ILevel> = {
         mapArrows: {
             "Red": [
                 {
-                    coordinates: { x: 11, y: 9 },
+                    coordinates: {x: 11, y: 9},
                     direction: "Right"
                 }
             ]
         },
         goblet: {
-            coordinates: { x: 16, y: 3 }
+            coordinates: {x: 16, y: 3}
         }
     },
     cows: [
-            {
-                coordinates: { x: 5, y: 8 },
-                direction: "Right",
-                color: "Grey"
-            },
-            {
-                coordinates: { x: 13, y: 11 },
-                direction: "Left",
-                color: "Grey"
-            }
+        {
+            coordinates: {x: 5, y: 8},
+            direction: "Right",
+            color: "Grey"
+        },
+        {
+            coordinates: {x: 13, y: 11},
+            direction: "Left",
+            color: "Grey"
+        }
     ],
     arrows: {
         "Red": {

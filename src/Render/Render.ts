@@ -21,16 +21,18 @@ export default class Render {
         let count = 0;
         const htmlElements: HTMLElement[] = [];
         Object.values(cows).forEach((cow: ICow) => {
-                const divCow = document.createElement("div");
-                divCow.className = `cow-wrapper cow-${count++}`;
-                divCow.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (cow.coordinates.y - 1)}px`;
-                divCow.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().width * (cow.coordinates.x - 1)}px`;
-                divCow.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
-                divCow.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
-                divCow.style.zIndex = '30';
-                htmlElements.push(divCow);
-                document.getElementById("game-table-wrapper")?.appendChild(divCow);
-            });
+            const divCow = document.createElement("div");
+            divCow.className = `cow-wrapper cow-${count++}`;
+            divCow.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect()
+                .height * (cow.coordinates.y - 1)}px`;
+            divCow.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect()
+                .width * (cow.coordinates.x - 1)}px`;
+            divCow.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
+            divCow.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
+            divCow.style.zIndex = '30';
+            htmlElements.push(divCow);
+            document.getElementById("game-table-wrapper")?.appendChild(divCow);
+        });
         this.cowHtmlElements = htmlElements;
     }
 
@@ -61,9 +63,9 @@ export default class Render {
         });
 
         Object.values(mapArrows).forEach((arrow: Arrow) => {
-                const elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild as HTMLElement;
-                elem.style.background = `url("../../${arrow.imgUrl}") center/contain no-repeat`;
-                elem.style.zIndex = '10';
+            const elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild as HTMLElement;
+            elem.style.background = `url("../../${arrow.imgUrl}") center/contain no-repeat`;
+            elem.style.zIndex = '10';
         });
 
         const gobletElem = (this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement)
@@ -72,7 +74,7 @@ export default class Render {
 
     drawGameObjects(gameObjects: { mobileFields?: HayBale[], cows: Cow[] }) {
         if (gameObjects.mobileFields) {
-            gameObjects.mobileFields.forEach((field: HayBale)  => {
+            gameObjects.mobileFields.forEach((field: HayBale) => {
                 field.linkedHtmlElement.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (field.coordinates.y - 1)}px`;
                 field.linkedHtmlElement.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().width * (field.coordinates.x - 1)}px`;
                 field.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
@@ -81,7 +83,7 @@ export default class Render {
             });
         }
 
-        Object.values(gameObjects.cows).forEach((cow: Cow)  => {
+        Object.values(gameObjects.cows).forEach((cow: Cow) => {
             const cssTop = cow.layer === 2 ?
                 (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (cow.coordinates.y - 1) - 30 :
                 (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (cow.coordinates.y - 1);
