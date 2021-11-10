@@ -4,8 +4,8 @@
   "description": "Задача в игре: с помощью стрелок довести корову коричневого цвета до кубка",
   "main": "dist/scripts/index.js",
   "scripts": {
-    "build:watch": "tsc -w",
-    "build": "tsc",
+    "build:watch": "webpack --mode=development --watch",
+    "build": "webpack --mode=development",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix"
   },
   "repository": {
@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/NikBel3476/cow-game#readme",
   "dependencies": {
+    "ts-loader": "^9.2.6",
     "tslint": "^6.1.3",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "webpack": "^5.62.2",
+    "webpack-cli": "^4.9.1"
   }
 }

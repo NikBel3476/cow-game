@@ -9,8 +9,8 @@ https://nikbel3476.github.io/cow-game/
 `npm i`
 
 #### Компиляция .ts файлов
-`npm run build`  
-`npm run build:watch` - автокомпиляция при изменении .ts файлов
+`npm run build` - сборка проекта  
+`npm run build:watch` - автосборка при изменении .ts файлов
 
 .ts файлы лежат а каталоге ./src,  
 они компилируются в каталог ./dist, в нем же лежит index.html
