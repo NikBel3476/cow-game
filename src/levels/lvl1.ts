@@ -27,7 +27,7 @@ export const lvl1: Readonly<ILevel> = {
     },
     cows: [
         {
-            coordinates: {x: 5, y: 8},
+            coordinates: { x: 5, y: 8 },
             direction: "Right",
             color: "Grey"
         }
