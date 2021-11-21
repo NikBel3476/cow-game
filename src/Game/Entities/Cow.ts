@@ -1,26 +1,34 @@
-import CONF from '../../Conf';
 import { Entity } from "./Entity";
-import { Coordinates, Direction, CowColor, EntityName } from "../../types";
+import { Coordinates, Direction, CowColor } from "../../types";
+import { MAPPED_SPRITES } from "../../MappedSprites";
 
 export class Cow extends Entity {
-    public coordinates: Coordinates;
+    private _coordinates: Coordinates;
     private _direction: Direction;
-    public color: CowColor;
-    public layer: 1 | 2;
+    private _color: CowColor;
+    private _layer: 1 | 2;
 
     constructor(
-        name: EntityName,
         coordinates: Coordinates,
         direction: Direction,
         color: CowColor,
         linkedHtmlElement: HTMLElement
     ) {
-        super(name, linkedHtmlElement);
-        this.coordinates = coordinates;
+        super(linkedHtmlElement);
+        this._coordinates = coordinates;
         this._direction = direction;
-        this.color = color;
-        this.imgUrl = this.generateImgUrl();
-        this.layer = 1;
+        this._color = color;
+        this._img = this.setImg();
+        this._layer = 1;
+        console.log(this._img);
+    }
+
+    public get coordinates(): Coordinates {
+        return this._coordinates;
+    }
+
+    public set coordinates(value: Coordinates) {
+        this._coordinates = value;
     }
 
     public get direction(): Direction {
@@ -29,11 +37,36 @@ export class Cow extends Entity {
 
     public set direction(direction: Direction) {
         this._direction = direction;
-        this.imgUrl = this.generateImgUrl();
+        this._img = this.setImg();
     }
 
-    generateImgUrl(): string {
-        return CONF.ImgPath[`CowGrey${this._direction}`];
+    public get color(): CowColor {
+        return this._color;
+    }
+
+    public set color(color: CowColor) {
+        this._color = color;
+    }
+
+    public get layer(): 1 | 2 {
+        return this._layer;
+    }
+
+    public set layer(layer: 1 | 2) {
+        this._layer = layer;
+    }
+
+    setImg(): string {
+        switch (this._direction) {
+            case "Up":
+                return MAPPED_SPRITES.CowGreyUp; /*this._color === 'Grey' : GreyUpSprite : BrownUpSprite;*/
+            case "Right":
+                return MAPPED_SPRITES.CowGreyRight; /*this._color === 'Grey' : GreyRightSprite : BrownRightSprite;*/
+            case "Down":
+                return MAPPED_SPRITES.CowGreyDown; /*this._color === 'Grey' : GreyDownSprite : BrownDownSprite;*/
+            case "Left":
+                return MAPPED_SPRITES.CowGreyLeft; /*this._color === 'Grey' : GreyLeftSprite : BrownLeftSprite;*/
+        }
     }
 
     move(direction: Direction = this._direction) {

@@ -1,8 +1,8 @@
 import Render from '../Render';
 import UI from '../UI';
 import { ILevel, ICow } from '../Interfaces';
-import { StaticFields, EntityName, ArrowColor, MapArrow, Direction, Coordinates } from '../types';
-import { Field, HayBale, Arrow, Goblet, Cow } from "./Entities";
+import { StaticFields, ArrowColor, MapArrow, Direction, Coordinates } from '../types';
+import { Field, HayBale, Arrow, Goblet, Cow, Slider } from "./Entities";
 
 export default class Game {
     loop!: NodeJS.Timer;
@@ -41,10 +41,11 @@ export default class Game {
     initStaticFields(staticFields?: StaticFields): Field[] {
         if (staticFields) {
             const staticFieldsArray: Field[] = [];
-            (Object.keys(staticFields) as EntityName[]).forEach((fieldName: EntityName) =>
-                staticFields[fieldName]?.forEach((fieldCoordinates: [number, number]) =>
-                    staticFieldsArray.push(new Field(fieldName,
-                        {x: fieldCoordinates[0], y: fieldCoordinates[1]},
+            (Object.values(staticFields)).forEach((field) =>
+                field?.forEach((fieldCoordinates: [number, number]) =>
+                    staticFieldsArray.push(
+                        new Field(
+                        { x: fieldCoordinates[0], y: fieldCoordinates[1] },
                         true,
                         false,
                         this.ui.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement)
@@ -59,10 +60,9 @@ export default class Game {
     initMobileFields(mobileFields?: ILevel['mapObjects']['mobileFields']): HayBale[] {
         if (mobileFields) {
             let count = 0;
-            return (Object.keys(mobileFields) as EntityName[]).reduce((mobileFieldsArr: HayBale[], objName: EntityName) =>
-                mobileFieldsArr.concat(mobileFields[objName]?.map((coordinates: [number, number]) =>
+            return (Object.values(mobileFields)).reduce((mobileFieldsArr: HayBale[], obj) =>
+                mobileFieldsArr.concat(obj?.map((coordinates: [number, number]) =>
                     new HayBale(
-                        objName,
                         {x: coordinates[0], y: coordinates[1]},
                         this.render.mobileFields[count++] as HTMLElement
                     )
@@ -79,7 +79,6 @@ export default class Game {
                 mapArrows[arrowColor]?.forEach((arrow: MapArrow) =>
                     mapArrowsArray.push(
                         new Arrow(
-                            `Arrow${arrowColor + arrow.direction}` as EntityName,
                             arrow.coordinates,
                             arrow.direction,
                             arrowColor,
@@ -97,7 +96,6 @@ export default class Game {
         let count = 0;
         return Object.values(cows).map((cow: ICow) =>
             new Cow(
-                `Cow${cow.color + cow.direction}` as EntityName,
                 cow.coordinates,
                 cow.direction,
                 cow.color,
@@ -114,7 +112,6 @@ export default class Game {
                 for (let i = 0; i < (arrows[arrowColor] as { [k in Direction]: number })[arrowDirection]; i++) {
                     arrowsArray.push(
                         new Arrow(
-                            `Arrow${arrowColor + arrowDirection}` as EntityName,
                             {x: 0, y: 0},
                             arrowDirection,
                             arrowColor,
@@ -244,12 +241,7 @@ export default class Game {
                                 x: cow.coordinates.x,
                                 y: cow.coordinates.y
                             });
-                            if (
-                                currentField?.name === "SlideUp" ||
-                                currentField?.name === "SlideRight" ||
-                                currentField?.name === "SlideDown" ||
-                                currentField?.name === "SlideLeft"
-                            ) {
+                            if (currentField instanceof Slider) {
                                 cow.layer = cow.layer === 1 ? 2 : 1;
                             }
                             switch (cow.direction) {
@@ -259,7 +251,7 @@ export default class Game {
                                         y: cow.coordinates.y - 1
                                     });
                                     if (nextField) {
-                                        if (nextField.name === "SlideUp") cow.move();
+                                        if (nextField instanceof Slider && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.y = Math.round((nextField.coordinates.y - 0.1) * 100) / 100;
                                             cow.move();
@@ -275,7 +267,7 @@ export default class Game {
                                     });
                                     if (cow.layer === 1) {
                                         if (nextField) {
-                                            if (nextField.name === "SlideRight") cow.move();
+                                            if (nextField instanceof Slider && nextField.direction === cow.direction) cow.move();
                                             if (nextField instanceof HayBale) {
                                                 nextField.coordinates.x = Math.round((nextField.coordinates.x + 0.1) * 100) / 100;
                                                 cow.move();
@@ -295,7 +287,7 @@ export default class Game {
                                         y: cow.coordinates.y + 1
                                     });
                                     if (nextField) {
-                                        if (nextField.name === "SlideDown") cow.move();
+                                        if (nextField instanceof Slider && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.y = Math.round((nextField.coordinates.y + 0.1) * 100) / 100;
                                             cow.move();
@@ -310,7 +302,7 @@ export default class Game {
                                         y: cow.coordinates.y
                                     });
                                     if (nextField) {
-                                        if (nextField.name === "SlideLeft") cow.move();
+                                        if (nextField instanceof Slider && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.x = Math.round((nextField.coordinates.x - 0.1) * 100) / 100;
                                             cow.move();

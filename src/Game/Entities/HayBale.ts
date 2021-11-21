@@ -1,13 +1,12 @@
-import CONF from '../../Conf';
-import { Entity } from "./Entity";
-import { Coordinates, EntityName } from "../../types";
+import { Field } from "./Field";
 
-export class HayBale extends Entity {
-    coordinates: Coordinates;
+import { MAPPED_SPRITES } from "../../MappedSprites";
 
-    constructor(name: EntityName, coordinates: Coordinates, linkedHtmlElement: HTMLElement) {
-        super(name, linkedHtmlElement);
-        this.coordinates = coordinates;
-        this.imgUrl = CONF.ImgPath.HayBale;
+import { Coordinates } from "../../types";
+
+export class HayBale extends Field {
+    constructor(coordinates: Coordinates, linkedHtmlElement: HTMLElement) {
+        super(coordinates, true, true, linkedHtmlElement);
+        this._img = MAPPED_SPRITES.HayBale;
     }
 }
