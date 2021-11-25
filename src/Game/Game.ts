@@ -1,19 +1,21 @@
 import Render from '../Render';
 import UI from '../UI';
 import { ILevel, ICow } from '../Interfaces';
-import { StaticFields, ArrowColor, MapArrow, Direction, Coordinates } from '../types';
-import { Field, HayBale, Arrow, Goblet, Cow, Slider } from "./Entities";
+import { ArrowColor, Direction, Coordinates, SpriteName } from '../types';
+import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key } from "./Entities";
+import { MAPPED_SPRITES } from "../types";
+import { Field } from "./Entities/Fields/Field";
 
 export default class Game {
-    loop!: NodeJS.Timer;
-    staticFields: Field[] = [];
-    mobileFields: HayBale[] = [];
-    mapArrows: Arrow[] = [];
-    activeFields!: Field[];
-    goblet!: Goblet;
-    cows!: Cow[];
-    mapFields!: (Field | HayBale)[];
-    arrows!: Arrow[];
+    private _nonInteractiveFields: Field[] = [];
+    private _goblet!: Goblet;
+    private _slides!: Slide[];
+    private _hayBales!: HayBale[];
+    private _pits!: Pit[];
+    private _keys!: Key[];
+    private _cows!: Cow[];
+    private _arrows!: Arrow[];
+    private _loop!: NodeJS.Timer;
     render: Render;
     ui: UI;
 
@@ -23,76 +25,121 @@ export default class Game {
     }
 
     loadLevel(level: ILevel) {
-        const {mapObjects: {staticFields, mobileFields, mapArrows, activeFields, goblet}, cows, arrows}: ILevel = level;
-        this.render.createCowHtmlElements(cows);
-        this.render.createMobileFieldsHtmlElements(mobileFields);
-        // map fields
-        this.staticFields = this.initStaticFields(staticFields);
-        this.mobileFields = this.initMobileFields(mobileFields);
-        this.mapArrows = this.initMapArrows(mapArrows);
-        // this.activeFields = this.initActiveFields(activeFields);
-        this.goblet = this.initGoblet(goblet);
-        this.mapFields = this.getMapFields();
-        // game objects
-        this.cows = this.initCows(cows);
-        this.arrows = this.initArrows(arrows);
+        const {
+            MapObjects: {
+                NonInteractive,
+                Interactive: {
+                    Goblet,
+                    Slide,
+                    HayBale,
+                    Pit,
+                    Key,
+                    ActivatingCouple
+                },
+            },
+            GameObjects: {
+                Cows,
+                Arrows
+            }
+        } = level;
+        this.render.createCowHtmlElements(Cows);
+        this.render.createMovableHtmlElements(HayBale);
+        this._nonInteractiveFields = this.initNonInteractiveFields(NonInteractive);
+        this._goblet = this.initGoblet(Goblet);
+        this._slides = this.initSlides(Slide);
+        this._hayBales = this.initHayBales(HayBale);
+        this._pits = this.initPits(Pit);
+        this._keys = this.initKeys(Key);
+
+        this._cows = this.initCows(Cows);
+        this._arrows = this.initArrows(Arrows);
     }
 
-    initStaticFields(staticFields?: StaticFields): Field[] {
+    initNonInteractiveFields(staticFields?: ILevel['MapObjects']['NonInteractive']): Field[] {
+        const staticFieldsArray: Field[] = [];
         if (staticFields) {
-            const staticFieldsArray: Field[] = [];
-            (Object.values(staticFields)).forEach((field) =>
-                field?.forEach((fieldCoordinates: [number, number]) =>
+            (Object.keys(staticFields) as SpriteName[]).forEach((fieldName) =>
+                staticFields[fieldName]?.forEach((fieldCoordinates) =>
                     staticFieldsArray.push(
                         new Field(
-                        { x: fieldCoordinates[0], y: fieldCoordinates[1] },
-                        true,
-                        false,
-                        this.ui.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement)
-                    )
-                )
-            );
-            return staticFieldsArray;
-        }
-        return [];
-    }
-
-    initMobileFields(mobileFields?: ILevel['mapObjects']['mobileFields']): HayBale[] {
-        if (mobileFields) {
-            let count = 0;
-            return (Object.values(mobileFields)).reduce((mobileFieldsArr: HayBale[], obj) =>
-                mobileFieldsArr.concat(obj?.map((coordinates: [number, number]) =>
-                    new HayBale(
-                        {x: coordinates[0], y: coordinates[1]},
-                        this.render.mobileFields[count++] as HTMLElement
-                    )
-                ) ?? []
-                ), []);
-        }
-        return [];
-    }
-
-    initMapArrows(mapArrows?: ILevel['mapObjects']['mapArrows']): Arrow[] {
-        if (mapArrows) {
-            const mapArrowsArray: Arrow[] = [];
-            (Object.keys(mapArrows) as ArrowColor[]).forEach((arrowColor: ArrowColor) =>
-                mapArrows[arrowColor]?.forEach((arrow: MapArrow) =>
-                    mapArrowsArray.push(
-                        new Arrow(
-                            arrow.coordinates,
-                            arrow.direction,
-                            arrowColor,
-                            this.ui.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild as HTMLElement
+                            { x: fieldCoordinates[0], y: fieldCoordinates[1] },
+                            MAPPED_SPRITES[fieldName],
+                            this.ui.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement
                         )
                     )
                 )
             );
-            return mapArrowsArray;
         }
-        return [];
+        return staticFieldsArray;
     }
 
-    initCows(cows: ILevel['cows']) {
+    initGoblet(goblet: ILevel['MapObjects']['Interactive']['Goblet']): Goblet {
+        return new Goblet(goblet.coordinates, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement)
+    }
+
+    initSlides(slides: ILevel['MapObjects']['Interactive']['Slide']): Slide[] {
+        const slidesArr: Slide[] = [];
+        if (slides) {
+            (Object.keys(slides) as Direction[]).forEach((slideDirection) =>
+                slides[slideDirection].forEach(coordinates => {
+                    slidesArr.push(
+                        new Slide(
+                        { x: coordinates.x, y: coordinates.y },
+                            slideDirection,
+                            this.render.gameTable[coordinates.x - 1][coordinates.y - 1]
+                        )
+                    )
+                })
+            )
+        }
+        return slidesArr;
+    }
+
+    initHayBales(hayBales: ILevel['MapObjects']['Interactive']['HayBale']): HayBale[] {
+        const hayBalesArr: HayBale[] = [];
+        if (hayBales) {
+            Object.values(hayBales).forEach(coordinates =>
+                hayBalesArr.push(
+                    new HayBale(
+                        coordinates,
+                        this.render.gameTable[coordinates.x - 1][coordinates.y - 1]
+                    )
+                )
+            )
+        }
+        return hayBalesArr;
+    }
+
+    initPits(pits: ILevel['MapObjects']['Interactive']['Pit']): Pit[] {
+        const pitsArr: Pit[] = [];
+        if (pits) {
+            Object.values(pits).forEach(pit =>
+                new Pit(
+                    pit.coordinates,
+                    this.render.gameTable[pit.coordinates.x - 1][pit.coordinates.y - 1],
+                    pit.activated
+                )
+            )
+        }
+        return pitsArr;
+    }
+
+    initKeys(keys: ILevel['MapObjects']['Interactive']['Key']): Key[] {
+        const keysArr: Key[] = [];
+        if (keys) {
+            Object.values(keys).forEach(coordinates =>
+                keysArr.push(
+                    new Key(
+                        coordinates,
+                        this.render.gameTable[coordinates.x - 1][coordinates.y - 1]
+                    )
+                )
+            )
+        }
+        return keysArr;
+    }
+
+    initCows(cows: ILevel['GameObjects']['Cows']) {
         let count = 0;
         return Object.values(cows).map((cow: ICow) =>
             new Cow(
@@ -104,144 +151,113 @@ export default class Game {
         );
     }
 
-    initArrows(arrows: ILevel['arrows']) {
+    initArrows(arrows: ILevel['GameObjects']['Arrows']): Arrow[] {
+        const arrowsArr: Arrow[] = [];
         let count = 0;
-        const arrowsArray: Arrow[] = [];
-        (Object.keys(arrows) as ArrowColor[]).forEach((arrowColor: ArrowColor) =>
-            (Object.keys(arrows[arrowColor] as { [k in Direction]: number }) as Direction[]).forEach((arrowDirection: Direction) => {
-                for (let i = 0; i < (arrows[arrowColor] as { [k in Direction]: number })[arrowDirection]; i++) {
-                    arrowsArray.push(
-                        new Arrow(
-                            {x: 0, y: 0},
-                            arrowDirection,
-                            arrowColor,
-                            this.ui.arrowsTable.flat<HTMLElement[][]>(1)[count++].firstChild as HTMLElement
+        (Object.keys(arrows) as ArrowColor[]).forEach(color => {
+            (Object.keys(arrows[color]) as Direction[]).forEach(direction => {
+                arrows[color][direction].forEach(coordinates => {
+                    if (coordinates) {
+                        arrowsArr.push(
+                            new Arrow(
+                                direction,
+                                color,
+                                this.render.gameTable[coordinates.x - 1][coordinates.y - 1],
+                                coordinates
+                            )
                         )
-                    );
-                }
+                    } else {
+                        arrowsArr.push(
+                            new Arrow(
+                                direction,
+                                color,
+                                this.ui.arrowsTable.flat(1)[count++]
+                            )
+                        )
+                    }
+                });
             })
-        );
-        return arrowsArray;
-    }
-
-    /*initActiveFields(fields: ILevel['mapObjects']["activeFields"] | undefined): Field[] {
-        if (fields) {
-            const mobileFieldsArr: Field[] = [];
-            (Object.keys(fields) as EntityName[]).forEach((fieldName: EntityName) => {
-                fields[fieldName]?.forEach((coordinates: [number, number]) => {
-
-                })
-            });
-        }
-        return [];
-    }*/
-
-    initGoblet(goblet: ILevel['mapObjects']['goblet']): Goblet {
-        return new Goblet(goblet.coordinates, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement)
-    }
-
-    getAllMapObjects(): (Field | Cow | HayBale)[] {
-        return [
-            ...this.staticFields,
-            ...this.mobileFields,
-            ...this.mapArrows,
-            this.goblet,
-            ...this.cows
-        ];
-    }
-
-    getMapFields(): (Field | HayBale)[] {
-        const mapFields: (Field | HayBale)[] = [...this.staticFields, this.goblet];
-        if (this.mobileFields) {
-            mapFields.concat(...this.mobileFields)
-        }
-        if (this.mapArrows) {
-            mapFields.concat(...this.mapArrows)
-        }
-        return mapFields;
+        })
+        return arrowsArr;
     }
 
     getGameObjects(): (Arrow | Cow)[] {
         return [
-            ...this.cows,
-            ...this.mapArrows
+            ...this._cows,
+            ...this._arrows
         ];
     }
 
-    getArrows(): Arrow[] {
-        return this.arrows;
-    }
-
-    findFieldByCoordinates(coordinates: Coordinates): Field | HayBale | undefined {
-        return [...this.staticFields, ...this.mobileFields].find((field: Field | HayBale) =>
+    /*findFieldByCoordinates(coordinates: Coordinates): IField | HayBale | undefined {
+        return [...this.staticFields, ...this.mobileFields].find((field: IField | HayBale) =>
             field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y);
-    }
+    }*/
 
-    findFieldByHtmlElement(htmlElement: HTMLElement): Field | HayBale | undefined {
-        return this.mapFields.find((field: Field | HayBale) =>
+    /*findFieldByHtmlElement(htmlElement: HTMLElement): IField | Arrow | undefined {
+        return this.mapFields.find((field: IField | Arrow) =>
             htmlElement === field?.linkedHtmlElement
         );
-    }
+    }*/
 
-    findGameObjectByHtmlElement(htmlElement: HTMLElement): Field | Cow | undefined {
+    findGameObjectByHtmlElement(htmlElement: HTMLElement): Arrow | Cow | undefined {
         return this.getGameObjects().find((obj: Arrow | Cow) =>
             htmlElement === (obj?.linkedHtmlElement as HTMLElement)
         );
     }
 
-    findArrowByHtmlElement(htmlElement: HTMLElement): Arrow | undefined {
+    /*findArrowByHtmlElement(htmlElement: HTMLElement): Arrow | undefined {
         return this.arrows.find((arrow: Arrow) => arrow.linkedHtmlElement === htmlElement);
-    }
+    }*/
 
-    drawArrows(): void {
+    /*drawArrows(): void {
         this.render.drawArrows(this.arrows);
-    }
+    }*/
 
-    renderScene(): void {
+    /*renderScene(): void {
         this.clearScene();
         this.render.drawScene(
             this.staticFields,
             {mobileFields: this.mobileFields, cows: this.cows},
             this.mapArrows, this.goblet
         );
-    }
+    }*/
 
     clearScene(): void {
         this.render.clearScene();
     }
 
     checkArrows(cow: Cow): void {
-        if (this.mapArrows) {
-            Object.values(this.mapArrows).forEach((arrow: Arrow) => {
-                if (cow.coordinates.x === arrow.coordinates.x && cow.coordinates.y === arrow.coordinates.y) {
-                    cow.direction = arrow.direction;
-                    this.mapArrows.splice(this.mapArrows.indexOf(arrow), 1);
-                }
+        if (this._arrows) {
+            Object.values(this._arrows).forEach((arrow: Arrow) => {
+                    if (arrow?.coordinates && cow.coordinates.x === arrow.coordinates.x && cow.coordinates.y === arrow.coordinates.y) {
+                        cow.direction = arrow.direction;
+                        this._arrows.splice(this._arrows.indexOf(arrow), 1);
+                    }
             });
         }
     }
 
     checkGoblet(cow: Cow): boolean {
         return cow.color === "Grey" &&
-            this.goblet.coordinates.x === cow.coordinates.x &&
-            this.goblet.coordinates.y === cow.coordinates.y;
+            this._goblet.coordinates.x === cow.coordinates.x &&
+            this._goblet.coordinates.y === cow.coordinates.y;
     }
 
     startGame(): void {
-        if (!this.loop) {
-            this.loop = setInterval(() => {
-                let nextField: Field | HayBale | undefined;
+        if (!this._loop) {
+            this._loop = setInterval(() => {
+                let nextField: IField | HayBale | undefined;
                 let isVictory = false;
-                Object.values(this.cows).forEach((cow: Cow) => {
+                Object.values(this._cows).forEach((cow: Cow) => {
                     if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
                         this.checkArrows(cow);
                         isVictory = this.checkGoblet(cow);
                         if (!isVictory) {
-                            const currentField: Field | HayBale | undefined = this.findFieldByCoordinates({
+                            const currentField: IField | HayBale | undefined = this.findFieldByCoordinates({
                                 x: cow.coordinates.x,
                                 y: cow.coordinates.y
                             });
-                            if (currentField instanceof Slider) {
+                            if (currentField instanceof Slide) {
                                 cow.layer = cow.layer === 1 ? 2 : 1;
                             }
                             switch (cow.direction) {
@@ -251,7 +267,7 @@ export default class Game {
                                         y: cow.coordinates.y - 1
                                     });
                                     if (nextField) {
-                                        if (nextField instanceof Slider && nextField.direction === cow.direction) cow.move();
+                                        if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.y = Math.round((nextField.coordinates.y - 0.1) * 100) / 100;
                                             cow.move();
@@ -267,7 +283,7 @@ export default class Game {
                                     });
                                     if (cow.layer === 1) {
                                         if (nextField) {
-                                            if (nextField instanceof Slider && nextField.direction === cow.direction) cow.move();
+                                            if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                             if (nextField instanceof HayBale) {
                                                 nextField.coordinates.x = Math.round((nextField.coordinates.x + 0.1) * 100) / 100;
                                                 cow.move();
@@ -287,7 +303,7 @@ export default class Game {
                                         y: cow.coordinates.y + 1
                                     });
                                     if (nextField) {
-                                        if (nextField instanceof Slider && nextField.direction === cow.direction) cow.move();
+                                        if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.y = Math.round((nextField.coordinates.y + 0.1) * 100) / 100;
                                             cow.move();
@@ -302,7 +318,7 @@ export default class Game {
                                         y: cow.coordinates.y
                                     });
                                     if (nextField) {
-                                        if (nextField instanceof Slider && nextField.direction === cow.direction) cow.move();
+                                        if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.x = Math.round((nextField.coordinates.x - 0.1) * 100) / 100;
                                             cow.move();
@@ -317,7 +333,7 @@ export default class Game {
                             alert("YOU WIN!!!");
                         }
                     } else { // FIXME: delete switch
-                        let nextField: Field | HayBale | undefined;
+                        let nextField: IField | HayBale | undefined;
                         switch (cow.direction) {
                             case "Up":
                                 nextField = this.findFieldByCoordinates({
@@ -365,6 +381,6 @@ export default class Game {
     }
 
     endGame() {
-        clearInterval(this.loop);
+        clearInterval(this._loop);
     }
 }

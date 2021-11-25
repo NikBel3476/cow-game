@@ -1,12 +1,13 @@
-import { Entity } from "./Entity";
-import { Coordinates, Direction, CowColor } from "../../types";
-import { MAPPED_SPRITES } from "../../MappedSprites";
+import { Coordinates, Direction, CowColor, MAPPED_SPRITES } from "../../../types";
+import { ICow } from "../../../Interfaces";
 
-export class Cow extends Entity {
+export class Cow implements ICow {
     private _coordinates: Coordinates;
     private _direction: Direction;
     private _color: CowColor;
     private _layer: 1 | 2;
+    private _img: string;
+    private _linkedHtmlElement: HTMLElement;
 
     constructor(
         coordinates: Coordinates,
@@ -14,21 +15,16 @@ export class Cow extends Entity {
         color: CowColor,
         linkedHtmlElement: HTMLElement
     ) {
-        super(linkedHtmlElement);
         this._coordinates = coordinates;
         this._direction = direction;
         this._color = color;
         this._img = this.setImg();
         this._layer = 1;
-        console.log(this._img);
+        this._linkedHtmlElement = linkedHtmlElement;
     }
 
     public get coordinates(): Coordinates {
         return this._coordinates;
-    }
-
-    public set coordinates(value: Coordinates) {
-        this._coordinates = value;
     }
 
     public get direction(): Direction {
@@ -44,10 +40,6 @@ export class Cow extends Entity {
         return this._color;
     }
 
-    public set color(color: CowColor) {
-        this._color = color;
-    }
-
     public get layer(): 1 | 2 {
         return this._layer;
     }
@@ -55,6 +47,22 @@ export class Cow extends Entity {
     public set layer(layer: 1 | 2) {
         this._layer = layer;
     }
+
+    get img(): string {
+        return this._img;
+    }
+
+    get linkedHtmlElement(): HTMLElement {
+        return this._linkedHtmlElement;
+    }
+
+    /*layerUp(): void {
+        ++this._layer;
+    }
+
+    layerDown(): void {
+        --this._layer;
+    }*/
 
     setImg(): string {
         switch (this._direction) {
@@ -72,27 +80,27 @@ export class Cow extends Entity {
     move(direction: Direction = this._direction) {
         switch (direction) {
             case "Up":
-                this.coordinates.y = Math.round((this.coordinates.y - 0.1) * 100) / 100;
+                this._coordinates.y = Math.round((this._coordinates.y - 0.1) * 100) / 100;
                 if (this._direction !== "Up") {
-                    this.direction = "Up";
+                    this._direction = "Up";
                 }
                 break;
             case "Right":
-                this.coordinates.x = Math.round((this.coordinates.x + 0.1) * 100) / 100;
+                this._coordinates.x = Math.round((this._coordinates.x + 0.1) * 100) / 100;
                 if (this._direction !== "Right") {
-                    this.direction = "Right";
+                    this._direction = "Right";
                 }
                 break;
             case "Down":
-                this.coordinates.y = Math.round((this.coordinates.y + 0.1) * 100) / 100;
+                this._coordinates.y = Math.round((this._coordinates.y + 0.1) * 100) / 100;
                 if (this._direction !== "Down") {
-                    this.direction = "Down";
+                    this._direction = "Down";
                 }
                 break;
             case "Left":
-                this.coordinates.x = Math.round((this.coordinates.x - 0.1) * 100) / 100;
+                this._coordinates.x = Math.round((this._coordinates.x - 0.1) * 100) / 100;
                 if (this._direction !== "Left") {
-                    this.direction = "Left";
+                    this._direction = "Left";
                 }
                 break;
             default:

@@ -1,24 +1,28 @@
-import { Field } from "./Field";
+import { Direction, ArrowColor, Coordinates, MAPPED_SPRITES } from "../../../types";
+import { IEntity } from "../IEntity";
 
-import { MAPPED_SPRITES } from "../../MappedSprites";
-
-import { Direction, ArrowColor, Coordinates } from "../../types";
-
-export class Arrow extends Field {
+export class Arrow implements IEntity {
+    private _coordinates?: Coordinates;
     private _direction: Direction;
     private _color: ArrowColor;
+    private _img: string;
+    private _linkedHtmlElement: HTMLElement;
 
     constructor(
-        coordinates: Coordinates,
         direction: Direction,
         color: ArrowColor,
-        linkedHtmlElement: HTMLElement
+        linkedHtmlElement: HTMLElement,
+        coordinates?: Coordinates
     ) {
-        super(coordinates, false, false, linkedHtmlElement);
+        this._coordinates = coordinates;
         this._direction = direction;
         this._color = color;
-        this._linkedHtmlElement = linkedHtmlElement;
         this._img = this.setImg();
+        this._linkedHtmlElement = linkedHtmlElement;
+    }
+
+    public get coordinates(): Coordinates | undefined {
+        return this._coordinates;
     }
 
     public get direction(): Direction {
@@ -35,6 +39,14 @@ export class Arrow extends Field {
 
     public set color(color: ArrowColor) {
         this._color = color;
+    }
+
+    get img(): string {
+        return this._img;
+    }
+
+    get linkedHtmlElement(): HTMLElement {
+        return this._linkedHtmlElement;
     }
 
     setImg() {

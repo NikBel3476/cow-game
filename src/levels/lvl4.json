@@ -1,6 +1,6 @@
 {
-  "mapObjects": {
-    "staticFields": {
+  "MapObjects": {
+    "NonInteractive": {
       "Pillar": [
         [1, 1], [11, 1], [20, 1],
         [1, 14], [10, 14], [20, 14]
@@ -17,48 +17,60 @@
         [11, 2], [11, 3], [11, 4], [11, 5], [11, 6],
         [10, 9], [10, 10], [10, 11], [10, 12], [10, 13]
       ],
-      "SlideRight": [
-        [9, 8]
-      ],
-      "SlideLeft": [
-        [13, 8]
-      ],
       "Block": [
         [11, 7], [10, 8], [12, 8]
       ]
     },
-    "mobileFields": {
+    "Interactive": {
+      "Slide": {
+        "Up": [],
+        "Right": [
+          { "x": 9, "y": 8 }
+        ],
+        "Down": [],
+        "Left": [
+          { "x": 13, "y": 8 }
+        ]
+      },
       "HayBale": [
-        [11, 10]
-      ]
-    },
-    "mapArrows": {
-      "Red": [
-        {
-          "coordinates": { "x": 11, "y": 9 },
-          "direction": "Right"
-        }
-      ]
-    },
-    "goblet": {
-      "coordinates": { "x": 16, "y": 3 }
+        { "x": 11, "y": 10 }
+      ],
+      "Goblet": {
+        "coordinates": { "x": 16, "y": 3 }
+      }
     }
   },
-  "cows": [
-    {
-      "coordinates": { "x": 5, "y": 8 },
-      "direction": "Right",
-      "color": "Grey"
-    },
-    {
-      "coordinates": { "x": 13, "y": 11 },
-      "direction": "Left",
-      "color": "Grey"
-    }
-  ],
-  "arrows": {
-    "Red": {
-      "Up": 2
+  "GameObjects": {
+    "Cows": [
+      {
+        "coordinates": { "x": 5, "y": 8 },
+        "direction": "Right",
+        "color": "Grey"
+      },
+      {
+        "coordinates": { "x": 13, "y": 11 },
+        "direction": "Left",
+        "color": "Grey"
+      }
+    ],
+    "Arrows": {
+      "Red": {
+        "Up": [
+          { },
+          { }
+        ],
+        "Right": [
+          { "coordinates": { "x": 11, "y": 9 } }
+        ],
+        "Down": [],
+        "Left": []
+      },
+      "Blue": {
+        "Up": [],
+        "Right": [],
+        "Down": [],
+        "Left": []
+      }
     }
   }
 }

@@ -1,27 +1,36 @@
-import { ArrowColor, StaticFields, MapArrow, Direction } from '../types';
+import { ArrowColor, Direction, Coordinates, SpriteName } from '../types';
 import { ICow } from './ICow';
-import { MAPPED_SPRITES } from "../MappedSprites";
 
 export interface ILevel {
-    readonly mapObjects: {
-        readonly staticFields?: StaticFields,
-        readonly mobileFields?: {
-            [k in keyof typeof MAPPED_SPRITES]?: [number, number][]
-        },
-        readonly mapArrows?: {
-            [k in ArrowColor]?: MapArrow[]
-        },
-        readonly activeFields?: {
-            [k in keyof typeof MAPPED_SPRITES]?: [number, number][]
-        },
-        readonly goblet: {
-            coordinates: { x: number, y: number }
+    MapObjects: {
+        NonInteractive?: {
+            [k in SpriteName]?: number[][]
         }
-    },
-    readonly cows: ICow[],
-    arrows: {
-        [k in ArrowColor]?: {
-            [k in Direction]?: number
+        Interactive: {
+            Goblet: {
+                coordinates: Coordinates
+            }
+            Slide?: {
+                [ k in Direction]: Coordinates[]
+            }
+            HayBale?: Coordinates[]
+            Pit?: {
+                coordinates: Coordinates,
+                activated: boolean
+            }[],
+            Key?: Coordinates[]
+            ActivatingCouple?: { // TODO: change structure
+                "InteractiveObjects": { coordinates: Coordinates } // door | piston secondary
+                "Button": { coordinates: Coordinates }[] // button | lever firstly
+            }[]
+        }
+    }
+    GameObjects: {
+        Cows: ICow[],
+        Arrows: {
+            [ k in ArrowColor]: {
+                [ k in Direction]: (Coordinates | null)[]
+            }
         }
     }
 }

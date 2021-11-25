@@ -1,7 +1,10 @@
 import UI from './UI';
 import Render from './Render';
 import Game from './Game';
-import { lvl1, lvl2, lvl4 } from './levels';
+
+import { ILevel } from "./Interfaces";
+
+import { lvl1, lvl2, lvl3, lvl4 } from "./levels";
 
 const ui: UI = new UI("#game-table-wrapper", "#ui-table-wrapper");
 const render: Render = new Render(ui);
@@ -21,7 +24,7 @@ export function endGame() {
 }
 
 window.onload = () => {
-    game.loadLevel(lvl2);
+    game.loadLevel(lvl4 as ILevel);
     game.renderScene();
     game.drawArrows();
 }
