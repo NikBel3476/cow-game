@@ -1,10 +1,11 @@
-import Render from '../Render';
-import UI from '../UI';
-import { ILevel, ICow } from '../Interfaces';
+import { render } from '../Render';
+import { ui } from '../UI';
+import { ILevel } from '../Interfaces';
 import { ArrowColor, Direction, Coordinates, SpriteName, MAPPED_SPRITES } from '../types';
-import { IField, IGameObject, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity } from "./Entities";
+import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity } from "./Entities";
+import CONF from "../Conf";
 
-export default class Game {
+export class Game {
     private _nonInteractiveFields: Field[] = [];
     private _interactiveFields: IField[] = [];
     private _staticObjects: (IField | Arrow)[] = [];
@@ -18,12 +19,9 @@ export default class Game {
     private _cows!: Cow[];
     private _arrows!: Arrow[];
     private _loop!: NodeJS.Timer;
-    render: Render;
-    ui: UI;
 
-    constructor(render: Render, ui: UI) {
-        this.render = render;
-        this.ui = ui;
+    constructor() {
+
     }
 
     loadLevel(level: ILevel) {
@@ -44,8 +42,8 @@ export default class Game {
                 Arrows
             }
         } = level;
-        this.render.createCowHtmlElements(Cows);
-        this.render.createMovableHtmlElements(HayBale);
+        render.createCowHtmlElements(Cows);
+        render.createMovableHtmlElements(HayBale);
         this._nonInteractiveFields = this.initNonInteractiveFields(NonInteractive);
         this._goblet = this.initGoblet(Goblet);
         this._slides = this.initSlides(Slide);
@@ -63,7 +61,11 @@ export default class Game {
         this._allObjects = [...this._nonInteractiveFields, ...this._interactiveFields, ...this._cows, ...this._arrows];
     }
 
-    initNonInteractiveFields(staticFields?: ILevel['MapObjects']['NonInteractive']): Field[] {
+    public get arrows(): Arrow[] {
+        return this._arrows;
+    }
+
+    private initNonInteractiveFields(staticFields?: ILevel['MapObjects']['NonInteractive']): Field[] {
         const staticFieldsArray: Field[] = [];
         if (staticFields) {
             (Object.keys(staticFields) as SpriteName[]).forEach((fieldName) =>
@@ -72,7 +74,7 @@ export default class Game {
                         new Field(
                             { x: fieldCoordinates[0], y: fieldCoordinates[1] },
                             MAPPED_SPRITES[fieldName],
-                            this.render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement
+                            render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement
                         )
                     )
                 )
@@ -81,11 +83,11 @@ export default class Game {
         return staticFieldsArray;
     }
 
-    initGoblet(goblet: ILevel['MapObjects']['Interactive']['Goblet']): Goblet {
-        return new Goblet(goblet.coordinates, this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement)
+    private initGoblet(goblet: ILevel['MapObjects']['Interactive']['Goblet']): Goblet {
+        return new Goblet(goblet.coordinates, ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement)
     }
 
-    initSlides(slides: ILevel['MapObjects']['Interactive']['Slide']): Slide[] {
+    private initSlides(slides: ILevel['MapObjects']['Interactive']['Slide']): Slide[] {
         const slidesArr: Slide[] = [];
         if (slides) {
             (Object.keys(slides) as Direction[]).forEach(slideDirection =>
@@ -94,7 +96,7 @@ export default class Game {
                         new Slide(
                         { x: coordinates.x, y: coordinates.y },
                             slideDirection,
-                            this.render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement
+                            render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement
                         )
                     )
                 })
@@ -103,23 +105,23 @@ export default class Game {
         return slidesArr;
     }
 
-    initHayBales(hayBales: ILevel['MapObjects']['Interactive']['HayBale']): HayBale[] {
+    private initHayBales(hayBales: ILevel['MapObjects']['Interactive']['HayBale']): HayBale[] {
         let count = 0;
         return Object.values(hayBales ?? {}).map(coordinates =>
             new HayBale(
                 coordinates,
-                this.render.movableFields[count++] as HTMLElement
+                render.movableFields[count++] as HTMLElement
             )
         );
     }
 
-    initPits(pits: ILevel['MapObjects']['Interactive']['Pit']): Pit[] {
+    private initPits(pits: ILevel['MapObjects']['Interactive']['Pit']): Pit[] {
         const pitsArr: Pit[] = [];
         if (pits) {
             Object.values(pits).forEach(pit =>
                 new Pit(
                     pit.coordinates,
-                    this.render.gameTable[pit.coordinates.y - 1][pit.coordinates.x - 1].firstChild as HTMLElement,
+                    render.gameTable[pit.coordinates.y - 1][pit.coordinates.x - 1].firstChild as HTMLElement,
                     pit.activated
                 )
             )
@@ -127,29 +129,29 @@ export default class Game {
         return pitsArr;
     }
 
-    initKeys(keys: ILevel['MapObjects']['Interactive']['Key']): Key[] {
+    private initKeys(keys: ILevel['MapObjects']['Interactive']['Key']): Key[] {
         const keysArr: Key[] = [];
         if (keys) {
             Object.values(keys).forEach(coordinates =>
-                keysArr.push(new Key(coordinates, this.render.gameTable[coordinates.y - 1][coordinates.x - 1]))
+                keysArr.push(new Key(coordinates, render.gameTable[coordinates.y - 1][coordinates.x - 1]))
             )
         }
         return keysArr;
     }
 
-    initCows(cows: ILevel['GameObjects']['Cows']) {
+    private initCows(cows: ILevel['GameObjects']['Cows']) {
         let count = 0;
         return Object.values(cows).map(cow =>
             new Cow(
                 cow.coordinates,
                 cow.direction,
                 cow.color,
-                this.render.cowHtmlElements[count++]
+                render.cowHtmlElements[count++]
             )
         );
     }
 
-    initArrows(arrows: ILevel['GameObjects']['Arrows']): Arrow[] {
+    private initArrows(arrows: ILevel['GameObjects']['Arrows']): Arrow[] {
         const arrowsArr: Arrow[] = [];
         let count = 0;
         (Object.keys(arrows) as ArrowColor[]).forEach(color => {
@@ -161,12 +163,12 @@ export default class Game {
                             new Arrow(
                                 direction,
                                 color,
-                                this.render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement,
+                                render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement,
                                 coordinates
                             )
                         );
                     } else {
-                        arrowsArr.push(new Arrow(direction, color, this.ui.arrowsTable.flat(1)[count++].firstChild as HTMLElement));
+                        arrowsArr.push(new Arrow(direction, color, ui.arrowsTable.flat(1)[count++].firstChild as HTMLElement));
                     }
                 });
             })
@@ -179,6 +181,13 @@ export default class Game {
             ...this._cows,
             ...this._arrows
         ];
+    }
+
+    getFieldCoordinates(htmlElement: HTMLElement): Coordinates | undefined {
+        const indexes = ui.getMapElementIndex(htmlElement);
+        if (indexes)
+            return { x: indexes[1] + 1, y: indexes[0] + 1}
+        return undefined;
     }
 
     findFieldByCoordinates(coordinates: Coordinates): IField | HayBale | undefined {
@@ -213,30 +222,26 @@ export default class Game {
 
     // -------------------- RENDER --------------------
 
-    /*drawArrows(): void {
-        this.render.drawArrows(this.arrows);
-    }*/
-
     renderScene(): void {
         this.clearScene();
-        this.render.drawScene(
+        render.drawScene(
             this._staticObjects,
             this._movableObjects
         );
     }
 
     clearScene(): void {
-        this.render.clearGameTable();
+        render.clearScene();
     }
 
     // -------------------- GAME --------------------
 
     checkArrows(cow: Cow): void {
         this._arrows.forEach((arrow: Arrow) => {
-                if (cow.coordinates.x === arrow?.coordinates?.x && cow.coordinates.y === arrow.coordinates.y) {
-                    cow.direction = arrow.direction;
-                    this._arrows.splice(this._arrows.indexOf(arrow), 1);
-                }
+            if (cow.coordinates.x === arrow?.coordinates?.x && cow.coordinates.y === arrow.coordinates.y) {
+                cow.direction = arrow.direction;
+                this._staticObjects.splice(this._staticObjects.indexOf(arrow), 1);
+            }
         });
     }
 
@@ -270,6 +275,7 @@ export default class Game {
                                         y: cow.coordinates.y - 1
                                     });
                                     if (nextField) {
+                                        if (nextField instanceof Goblet) cow.move();
                                         if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.y = Math.round((nextField.coordinates.y - 0.1) * 100) / 100;
@@ -286,6 +292,7 @@ export default class Game {
                                     });
                                     if (cow.layer === 1) {
                                         if (nextField) {
+                                            if (nextField instanceof Goblet) cow.move();
                                             if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                             if (nextField instanceof HayBale) {
                                                 nextField.coordinates.x = Math.round((nextField.coordinates.x + 0.1) * 100) / 100;
@@ -306,6 +313,7 @@ export default class Game {
                                         y: cow.coordinates.y + 1
                                     });
                                     if (nextField) {
+                                        if (nextField instanceof Goblet) cow.move();
                                         if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.y = Math.round((nextField.coordinates.y + 0.1) * 100) / 100;
@@ -321,6 +329,7 @@ export default class Game {
                                         y: cow.coordinates.y
                                     });
                                     if (nextField) {
+                                        if (nextField instanceof Goblet) cow.move();
                                         if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.x = Math.round((nextField.coordinates.x - 0.1) * 100) / 100;

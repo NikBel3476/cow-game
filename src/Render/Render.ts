@@ -1,9 +1,9 @@
-import UI from '../UI';
+import { ui } from '../UI';
 import { ICow, ILevel } from "../Interfaces";
-import { Arrow, Goblet, HayBale, Cow, Field, IField, IGameObject } from "../Game/Entities";
+import { Arrow, Goblet, HayBale, Cow, Field, IField, IGameObject } from "../Game";
 import { Coordinates } from "../types";
 
-export default class Render {
+class Render {
     htmlGameTable: HTMLElement;
     htmlArrowsTable: HTMLElement;
     gameTable: HTMLElement[][];
@@ -11,7 +11,7 @@ export default class Render {
     cowHtmlElements!: HTMLElement[];
     movableFields: HTMLElement[] = [];
 
-    constructor(ui: UI) {
+    constructor() {
         this.htmlGameTable = ui.htmlGameTable;
         this.htmlArrowsTable = ui.htmlArrowsTable;
         this.gameTable = ui.gameTable;
@@ -104,12 +104,13 @@ export default class Render {
         });
     }
 
-    clearGameTable() {
+    clearScene() {
         this.gameTable.forEach(row =>
-            row.forEach((field: HTMLElement) =>
-                (field.firstChild as HTMLElement).style.background = ""
-            )
+            row.forEach((field: HTMLElement) => (field.firstChild as HTMLElement).style.background = '')
         );
+        this.arrowsTable.forEach(row =>
+            row.forEach(cell => (cell.firstChild as HTMLElement).style.background = '')
+        )
     }
 
     drawTableArrows(arrows: Arrow[]) {
@@ -136,10 +137,6 @@ export default class Render {
         });
     }
 
-    /*initScene() {
-
-    }*/
-
     drawScene(
         staticElems: (IField | Arrow)[],
         movableElems: (Cow | HayBale)[]
@@ -148,3 +145,5 @@ export default class Render {
         this.drawNonStaticElements(movableElems);
     }
 }
+
+export const render = new Render();
