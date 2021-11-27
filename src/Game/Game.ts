@@ -1,13 +1,15 @@
 import Render from '../Render';
 import UI from '../UI';
 import { ILevel, ICow } from '../Interfaces';
-import { ArrowColor, Direction, Coordinates, SpriteName } from '../types';
-import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key } from "./Entities";
-import { MAPPED_SPRITES } from "../types";
-import { Field } from "./Entities/Fields/Field";
+import { ArrowColor, Direction, Coordinates, SpriteName, MAPPED_SPRITES } from '../types';
+import { IField, IGameObject, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity } from "./Entities";
 
 export default class Game {
     private _nonInteractiveFields: Field[] = [];
+    private _interactiveFields: IField[] = [];
+    private _staticObjects: (IField | Arrow)[] = [];
+    private _movableObjects: (Cow | HayBale)[] = [];
+    private _allObjects: IEntity[] = [];
     private _goblet!: Goblet;
     private _slides!: Slide[];
     private _hayBales!: HayBale[];
@@ -53,6 +55,12 @@ export default class Game {
 
         this._cows = this.initCows(Cows);
         this._arrows = this.initArrows(Arrows);
+
+        this._interactiveFields = [this._goblet, ...this._slides, ...this._hayBales, ...this._pits, ...this._keys];
+        // TODO: add activatingCouple to _staticObjects
+        this._staticObjects = [...this._nonInteractiveFields, this._goblet, ...this._slides, ...this._pits, ...this._keys, ...this._arrows];
+        this._movableObjects = [...this._cows, ...this._hayBales];
+        this._allObjects = [...this._nonInteractiveFields, ...this._interactiveFields, ...this._cows, ...this._arrows];
     }
 
     initNonInteractiveFields(staticFields?: ILevel['MapObjects']['NonInteractive']): Field[] {
@@ -64,7 +72,7 @@ export default class Game {
                         new Field(
                             { x: fieldCoordinates[0], y: fieldCoordinates[1] },
                             MAPPED_SPRITES[fieldName],
-                            this.ui.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement
+                            this.render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement
                         )
                     )
                 )
@@ -80,13 +88,13 @@ export default class Game {
     initSlides(slides: ILevel['MapObjects']['Interactive']['Slide']): Slide[] {
         const slidesArr: Slide[] = [];
         if (slides) {
-            (Object.keys(slides) as Direction[]).forEach((slideDirection) =>
+            (Object.keys(slides) as Direction[]).forEach(slideDirection =>
                 slides[slideDirection].forEach(coordinates => {
                     slidesArr.push(
                         new Slide(
                         { x: coordinates.x, y: coordinates.y },
                             slideDirection,
-                            this.render.gameTable[coordinates.x - 1][coordinates.y - 1]
+                            this.render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement
                         )
                     )
                 })
@@ -96,18 +104,13 @@ export default class Game {
     }
 
     initHayBales(hayBales: ILevel['MapObjects']['Interactive']['HayBale']): HayBale[] {
-        const hayBalesArr: HayBale[] = [];
-        if (hayBales) {
-            Object.values(hayBales).forEach(coordinates =>
-                hayBalesArr.push(
-                    new HayBale(
-                        coordinates,
-                        this.render.gameTable[coordinates.x - 1][coordinates.y - 1]
-                    )
-                )
+        let count = 0;
+        return Object.values(hayBales ?? {}).map(coordinates =>
+            new HayBale(
+                coordinates,
+                this.render.movableFields[count++] as HTMLElement
             )
-        }
-        return hayBalesArr;
+        );
     }
 
     initPits(pits: ILevel['MapObjects']['Interactive']['Pit']): Pit[] {
@@ -116,7 +119,7 @@ export default class Game {
             Object.values(pits).forEach(pit =>
                 new Pit(
                     pit.coordinates,
-                    this.render.gameTable[pit.coordinates.x - 1][pit.coordinates.y - 1],
+                    this.render.gameTable[pit.coordinates.y - 1][pit.coordinates.x - 1].firstChild as HTMLElement,
                     pit.activated
                 )
             )
@@ -128,12 +131,7 @@ export default class Game {
         const keysArr: Key[] = [];
         if (keys) {
             Object.values(keys).forEach(coordinates =>
-                keysArr.push(
-                    new Key(
-                        coordinates,
-                        this.render.gameTable[coordinates.x - 1][coordinates.y - 1]
-                    )
-                )
+                keysArr.push(new Key(coordinates, this.render.gameTable[coordinates.y - 1][coordinates.x - 1]))
             )
         }
         return keysArr;
@@ -141,7 +139,7 @@ export default class Game {
 
     initCows(cows: ILevel['GameObjects']['Cows']) {
         let count = 0;
-        return Object.values(cows).map((cow: ICow) =>
+        return Object.values(cows).map(cow =>
             new Cow(
                 cow.coordinates,
                 cow.direction,
@@ -156,24 +154,19 @@ export default class Game {
         let count = 0;
         (Object.keys(arrows) as ArrowColor[]).forEach(color => {
             (Object.keys(arrows[color]) as Direction[]).forEach(direction => {
-                arrows[color][direction].forEach(coordinates => {
+                arrows[color][direction].forEach((arrow) => {
+                    const coordinates = arrow.coordinates;
                     if (coordinates) {
                         arrowsArr.push(
                             new Arrow(
                                 direction,
                                 color,
-                                this.render.gameTable[coordinates.x - 1][coordinates.y - 1],
+                                this.render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement,
                                 coordinates
                             )
-                        )
+                        );
                     } else {
-                        arrowsArr.push(
-                            new Arrow(
-                                direction,
-                                color,
-                                this.ui.arrowsTable.flat(1)[count++]
-                            )
-                        )
+                        arrowsArr.push(new Arrow(direction, color, this.ui.arrowsTable.flat(1)[count++].firstChild as HTMLElement));
                     }
                 });
             })
@@ -188,16 +181,16 @@ export default class Game {
         ];
     }
 
-    /*findFieldByCoordinates(coordinates: Coordinates): IField | HayBale | undefined {
-        return [...this.staticFields, ...this.mobileFields].find((field: IField | HayBale) =>
+    findFieldByCoordinates(coordinates: Coordinates): IField | HayBale | undefined {
+        return [...this._nonInteractiveFields, ...this._interactiveFields].find((field: IField | HayBale) =>
             field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y);
-    }*/
+    }
 
-    /*findFieldByHtmlElement(htmlElement: HTMLElement): IField | Arrow | undefined {
-        return this.mapFields.find((field: IField | Arrow) =>
+    findMapObjectByHtmlElement(htmlElement: HTMLElement): IEntity | undefined {
+        return this._allObjects.find(field =>
             htmlElement === field?.linkedHtmlElement
         );
-    }*/
+    }
 
     findGameObjectByHtmlElement(htmlElement: HTMLElement): Arrow | Cow | undefined {
         return this.getGameObjects().find((obj: Arrow | Cow) =>
@@ -205,36 +198,46 @@ export default class Game {
         );
     }
 
-    /*findArrowByHtmlElement(htmlElement: HTMLElement): Arrow | undefined {
-        return this.arrows.find((arrow: Arrow) => arrow.linkedHtmlElement === htmlElement);
-    }*/
+    findArrowByHtmlElement(htmlElement: HTMLElement): Arrow | undefined {
+        return this._arrows.find((arrow: Arrow) => arrow.linkedHtmlElement === htmlElement);
+    }
+
+    spliceArrow(arrow: Arrow) {
+        return this._arrows.splice(this._arrows.indexOf(arrow), 1)[1];
+    }
+
+    placeArrowToMap(arrow: Arrow, coordinates: Coordinates, newLinkedHtmlElement: HTMLElement): void {
+        arrow.coordinates = coordinates;
+        arrow.linkedHtmlElement = newLinkedHtmlElement;
+    }
+
+    // -------------------- RENDER --------------------
 
     /*drawArrows(): void {
         this.render.drawArrows(this.arrows);
     }*/
 
-    /*renderScene(): void {
+    renderScene(): void {
         this.clearScene();
         this.render.drawScene(
-            this.staticFields,
-            {mobileFields: this.mobileFields, cows: this.cows},
-            this.mapArrows, this.goblet
+            this._staticObjects,
+            this._movableObjects
         );
-    }*/
-
-    clearScene(): void {
-        this.render.clearScene();
     }
 
+    clearScene(): void {
+        this.render.clearGameTable();
+    }
+
+    // -------------------- GAME --------------------
+
     checkArrows(cow: Cow): void {
-        if (this._arrows) {
-            Object.values(this._arrows).forEach((arrow: Arrow) => {
-                    if (arrow?.coordinates && cow.coordinates.x === arrow.coordinates.x && cow.coordinates.y === arrow.coordinates.y) {
-                        cow.direction = arrow.direction;
-                        this._arrows.splice(this._arrows.indexOf(arrow), 1);
-                    }
-            });
-        }
+        this._arrows.forEach((arrow: Arrow) => {
+                if (cow.coordinates.x === arrow?.coordinates?.x && cow.coordinates.y === arrow.coordinates.y) {
+                    cow.direction = arrow.direction;
+                    this._arrows.splice(this._arrows.indexOf(arrow), 1);
+                }
+        });
     }
 
     checkGoblet(cow: Cow): boolean {

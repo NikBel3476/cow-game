@@ -41,7 +41,7 @@ export class Slide implements IField {
     }
 
     getImg() {
-        switch(this.direction) {
+        switch (this.direction) {
             case "Up":
                 return MAPPED_SPRITES.SlideUp
             case "Right":

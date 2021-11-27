@@ -30,31 +30,42 @@ export default class UI {
             endGame();
         });
 
-        document.addEventListener("mousedown", (e: MouseEvent) => {
+        // HTML tables
+        document.addEventListener<'mousedown'>('mousedown', (e: MouseEvent) => {
             this.mouseX = e.clientX;
             this.mouseY = e.clientY;
         });
-        document.addEventListener("mousemove", (e: MouseEvent) => {
+
+        document.addEventListener<'mousemove'>('mousemove', (e: MouseEvent) => {
             if (this.selectedItem) {
                 this.selectedItem.style.top = `${-this.mouseY + e.clientY}px`;
                 this.selectedItem.style.left = `${-this.mouseX + e.clientX}px`;
             }
         });
-        document.addEventListener("mouseup", (e: MouseEvent) => {
+
+        /*this.htmlGameTable.addEventListener<'mouseup'>('mouseup', (e: MouseEvent) => {
+
+        });
+
+        this.htmlArrowsTable.addEventListener<'mouseup'>('mouseup', (e: MouseEvent) => {
+            if (this.selectedItem) {
+
+            }
+        });*/
+
+        /*document.addEventListener<'mouseup'>("mouseup", (e: MouseEvent) => {
             if (this.selectedItem) {
                 if ((e.target as HTMLElement).className.includes("game-field")) {
-                    if (
-                        !game.findFieldByHtmlElement(e.target as HTMLElement) &&
-                        !game.findGameObjectByHtmlElement(e.target as HTMLElement)
-                    ) {
+                    if (!game.findMapObjectByHtmlElement(e.target as HTMLElement)) {
                         // можно поставить на поле
                         const coordinates = (e.target as HTMLElement).className.split(" ")
-                            .filter(str => str.match(/^(x|y)-\d+$/g)).map(str => Number(str.slice(2)));
+                            .filter(str => str.match(/^[xy]-\d+$/g)).map(str => Number(str.slice(2)));
                         const arrow: Arrow | undefined = game.findArrowByHtmlElement(this.selectedItem);
                         let selectedArrow: Arrow | undefined;
                         if (arrow) {
-                            selectedArrow = game.arrows.splice(game.arrows.indexOf(arrow), 1)[0];
-                            game.mapArrows.push(selectedArrow);
+                            game.placeArrowToMap(arrow, { x: coordinates[0], y: coordinates[1]}, e.target as HTMLElement);
+                            // selectedArrow = game.spliceArrow(arrow);
+                            // game.mapArrows.push(selectedArrow);
                         } else {
                             selectedArrow = game.mapArrows.find((arrow: Arrow) => this.selectedItem === arrow.linkedHtmlElement);
                         }
@@ -85,7 +96,7 @@ export default class UI {
                 game.drawArrows();
                 game.renderScene();
             }
-        });
+        });*/
     }
 
     htmlTableToArray(htmlTable: HTMLTableElement): HTMLTableCellElement[][] {

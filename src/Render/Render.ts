@@ -1,6 +1,6 @@
 import UI from '../UI';
 import { ICow, ILevel } from "../Interfaces";
-import { Arrow, IField, Goblet, HayBale, Cow } from "../Game/Entities";
+import { Arrow, Goblet, HayBale, Cow, Field, IField, IGameObject } from "../Game/Entities";
 import { Coordinates } from "../types";
 
 export default class Render {
@@ -9,7 +9,7 @@ export default class Render {
     gameTable: HTMLElement[][];
     arrowsTable: HTMLElement[][];
     cowHtmlElements!: HTMLElement[];
-    mobileFields: HTMLElement[] = [];
+    movableFields: HTMLElement[] = [];
 
     constructor(ui: UI) {
         this.htmlGameTable = ui.htmlGameTable;
@@ -18,10 +18,10 @@ export default class Render {
         this.arrowsTable = ui.arrowsTable;
     }
 
-    createCowHtmlElements(cows: ICow[]): void {
+    createCowHtmlElements(cows: ILevel['GameObjects']['Cows']): void {
         let count = 0;
         const htmlElements: HTMLElement[] = [];
-        cows.forEach((cow: ICow) => {
+        cows.forEach(cow => {
             const divCow = document.createElement("div");
             divCow.className = `cow-wrapper cow-${count++}`;
             divCow.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect()
@@ -53,13 +53,17 @@ export default class Render {
                     htmlElements.push(divField);
                     document.getElementById("game-table-wrapper")?.appendChild(divField);
             });
-            this.mobileFields = htmlElements;
+            this.movableFields = htmlElements;
         }
     }
 
-    drawStaticElements(nonInteractive: IField[], Arrows: Arrow[], goblet: Goblet) {
-        nonInteractive.forEach((field: IField) => {
-            const elem = (this.gameTable[field.coordinates.y - 1][field.coordinates.x - 1].firstChild as HTMLElement)
+    drawStaticElements(fields: (IField | Arrow)[]) {
+        fields.forEach(object => {
+            object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
+        });
+
+        /*nonInteractive.forEach((field: Field) => {
+            const elem = this.gameTable[field.coordinates.y - 1][field.coordinates.x - 1].firstChild as HTMLElement
             elem.style.background = `url('${field.img}') center center / contain no-repeat`;
         });
 
@@ -71,55 +75,56 @@ export default class Render {
             }
         });
 
-        const gobletElem = (this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement)
-        gobletElem.style.background = `url('${goblet.img}') center center / contain no-repeat`;
+        const gobletElem = this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement
+        gobletElem.style.background = `url('${goblet.img}') center center / contain no-repeat`;*/
     }
 
-    drawNonStaticElements(hayBales: HayBale[], cows: Cow[]) {
-        hayBales.forEach((field: HayBale) => {
-            field.linkedHtmlElement.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
-                .getBoundingClientRect().height * (field.coordinates.y - 1)}px`;
-            field.linkedHtmlElement.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
-                .getBoundingClientRect().width * (field.coordinates.x - 1)}px`;
-            field.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
-            field.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
-            field.linkedHtmlElement.style.background = `url('${field.img}') center center / contain no-repeat`;
-        });
-
-        cows.forEach((cow: Cow) => {
-            const cssTop = cow.layer === 2 ?
-                (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (cow.coordinates.y - 1) - 30 :
-                (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (cow.coordinates.y - 1);
-            const cssLeft = (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().width * (cow.coordinates.x - 1);
-            cow.linkedHtmlElement.style.top = `${cssTop}px`;
-            cow.linkedHtmlElement.style.left = `${cssLeft}px`;
-            cow.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
-            cow.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
-            cow.linkedHtmlElement.style.background = `url('${cow.img}') center center / contain no-repeat`;
+    drawNonStaticElements(objects: (Cow | HayBale)[]) {
+        objects.forEach(object => {
+            if (object instanceof HayBale) {
+                object.linkedHtmlElement.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
+                    .getBoundingClientRect().height * (object.coordinates.y - 1)}px`;
+                object.linkedHtmlElement.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
+                    .getBoundingClientRect().width * (object.coordinates.x - 1)}px`;
+                object.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
+                object.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
+                object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
+            }
+            if (object instanceof Cow) {
+                const cssTop = object.layer === 2 ?
+                    (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (object.coordinates.y - 1) - 30 :
+                    (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (object.coordinates.y - 1);
+                const cssLeft = (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().width * (object.coordinates.x - 1);
+                object.linkedHtmlElement.style.top = `${cssTop}px`;
+                object.linkedHtmlElement.style.left = `${cssLeft}px`;
+                object.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
+                object.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
+                object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
+            }
         });
     }
 
-    drawArrows(arrows: Arrow[]) {
+    clearGameTable() {
+        this.gameTable.forEach(row =>
+            row.forEach((field: HTMLElement) =>
+                (field.firstChild as HTMLElement).style.background = ""
+            )
+        );
+    }
+
+    drawTableArrows(arrows: Arrow[]) {
         this.clearArrowsTable();
-        arrows.forEach((arrow: Arrow) => {
-            arrow.linkedHtmlElement.style.background = `url('${arrow.img}') center center / contain no-repeat`;
-        });
-    }
-
-    clearScene() {
-        this.gameTable.forEach(row => {
-            row.forEach((field: HTMLElement) => {
-                (field.firstChild as HTMLElement).style.background = "";
-            });
-        });
+        arrows.forEach((arrow: Arrow) =>
+            arrow.linkedHtmlElement.style.background = `url('${arrow.img}') center center / contain no-repeat`
+        );
     }
 
     clearArrowsTable() {
-        this.arrowsTable.forEach(row => {
+        this.arrowsTable.forEach(row =>
             row.forEach(field =>
                 (field.firstChild as HTMLElement).style.background = ""
             )
-        })
+        );
     }
 
     scaleArrowsTable() {
@@ -131,15 +136,15 @@ export default class Render {
         });
     }
 
+    /*initScene() {
+
+    }*/
+
     drawScene(
-        staticFields: IField[],
-        hayBales: HayBale[],
-        cows: Cow[],
-        mapArrows: Arrow[],
-        goblet: Goblet
+        staticElems: (IField | Arrow)[],
+        movableElems: (Cow | HayBale)[]
     ) {
-        this.drawStaticElements(staticFields, mapArrows, goblet);
-        this.drawNonStaticElements(hayBales, cows);
-        this.scaleArrowsTable();
+        this.drawStaticElements(staticElems);
+        this.drawNonStaticElements(movableElems);
     }
 }

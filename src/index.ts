@@ -26,7 +26,6 @@ export function endGame() {
 window.onload = () => {
     game.loadLevel(lvl4 as ILevel);
     game.renderScene();
-    game.drawArrows();
 }
 
 window.onresize = () => {

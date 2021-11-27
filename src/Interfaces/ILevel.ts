@@ -1,5 +1,5 @@
-import { ArrowColor, Direction, Coordinates, SpriteName } from '../types';
-import { ICow } from './ICow';
+import { ArrowColor, Direction, Coordinates, SpriteName, CowColor } from '../types';
+import { ICow } from '../Game/Entities/GameObjects/Cow/ICow';
 
 export interface ILevel {
     MapObjects: {
@@ -26,10 +26,14 @@ export interface ILevel {
         }
     }
     GameObjects: {
-        Cows: ICow[],
+        Cows: {
+            "coordinates": Coordinates,
+            "direction": Direction,
+            "color": CowColor
+        }[],
         Arrows: {
             [ k in ArrowColor]: {
-                [ k in Direction]: (Coordinates | null)[]
+                [ k in Direction]: { "coordinates": Coordinates | null }[]
             }
         }
     }

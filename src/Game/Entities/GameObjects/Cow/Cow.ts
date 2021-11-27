@@ -1,5 +1,5 @@
-import { Coordinates, Direction, CowColor, MAPPED_SPRITES } from "../../../types";
-import { ICow } from "../../../Interfaces";
+import { Coordinates, Direction, CowColor, MAPPED_SPRITES } from "../../../../types";
+import { ICow } from "../../../../Interfaces";
 
 export class Cow implements ICow {
     private _coordinates: Coordinates;

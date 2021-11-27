@@ -1,6 +1,5 @@
 import { IField } from "../IField";
-import { Coordinates } from "../../../../types";
-import { MAPPED_SPRITES } from "../../../../types";
+import { Coordinates, MAPPED_SPRITES } from "../../../../types";
 
 export class Key implements IField {
     private _coordinates: Coordinates;

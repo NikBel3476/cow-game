@@ -1,7 +1,7 @@
-import { Direction, ArrowColor, Coordinates, MAPPED_SPRITES } from "../../../types";
-import { IEntity } from "../IEntity";
+import { Direction, ArrowColor, Coordinates, MAPPED_SPRITES } from "../../../../types";
+import { IArrow } from "./IArrow";
 
-export class Arrow implements IEntity {
+export class Arrow implements IArrow {
     private _coordinates?: Coordinates;
     private _direction: Direction;
     private _color: ArrowColor;
@@ -23,6 +23,10 @@ export class Arrow implements IEntity {
 
     public get coordinates(): Coordinates | undefined {
         return this._coordinates;
+    }
+
+    public set coordinates(coordinates: Coordinates | undefined) {
+        this._coordinates = coordinates;
     }
 
     public get direction(): Direction {
@@ -47,6 +51,10 @@ export class Arrow implements IEntity {
 
     get linkedHtmlElement(): HTMLElement {
         return this._linkedHtmlElement;
+    }
+
+    set linkedHtmlElement(htmlElement: HTMLElement) {
+        this._linkedHtmlElement = htmlElement;
     }
 
     setImg() {

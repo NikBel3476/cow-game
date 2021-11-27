@@ -56,8 +56,8 @@
     "Arrows": {
       "Red": {
         "Up": [
-          { },
-          { }
+          { "coordinates": null },
+          { "coordinates": null }
         ],
         "Right": [
           { "coordinates": { "x": 11, "y": 9 } }
