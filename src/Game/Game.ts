@@ -285,181 +285,73 @@ export class Game {
                 this._staticObjects.splice(this._staticObjects.indexOf(key), 1);
             }
         });
-        console.log(this._CowKeysMap)
     }
 
     startGame(): void {
         if (!this._loop) {
             this._loop = setInterval(() => {
-                let nextField: IField | HayBale | undefined;
                 let isVictory = false;
+                let nextCoordinates: Coordinates;
                 Object.values(this._cows).forEach((cow: Cow) => {
-                    if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
                         this.checkArrows(cow);
                         isVictory = this.checkGoblet(cow);
                         this.checkKeys(cow);
                         if (!isVictory) {
-                            const currentField: IField | HayBale | undefined = this.findFieldByCoordinates({
-                                x: cow.coordinates.x,
-                                y: cow.coordinates.y
-                            });
+                            const currentField: IField | HayBale | undefined = this.findFieldByCoordinates(cow.coordinates);
                             if (currentField instanceof Slide) {
                                 cow.layer = cow.layer === 1 ? 2 : 1;
                             }
                             switch (cow.direction) {
                                 case "Up":
-                                    nextField = this.findFieldByCoordinates({
-                                        x: cow.coordinates.x,
-                                        y: cow.coordinates.y - 1
-                                    });
-                                    if (nextField) {
-                                        if (nextField instanceof Goblet) cow.move();
-                                        if (nextField instanceof Key) cow.move();
-                                        if (nextField instanceof LockDoor) {
-                                            const keys = this._CowKeysMap.get(cow);
-                                            if (keys) {
-                                                keys.pop();
-                                                this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
-                                                this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
-                                            }
-                                        }
-                                        if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
-                                        if (nextField instanceof HayBale) {
-                                            nextField.coordinates.y = Math.round((nextField.coordinates.y - 0.1) * 100) / 100;
-                                            cow.move();
-                                        }
-                                    } else {
-                                        cow.move();
-                                    }
+                                    nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y - 1 };
                                     break;
                                 case "Right":
-                                    nextField = this.findFieldByCoordinates({
-                                        x: cow.coordinates.x + 1,
-                                        y: cow.coordinates.y
-                                    });
-                                    if (cow.layer === 1) {
-                                        if (nextField) {
-                                            if (nextField instanceof Goblet) cow.move();
-                                            if (nextField instanceof Key) cow.move();
-                                            if (nextField instanceof LockDoor) {
-                                                const keys = this._CowKeysMap.get(cow);
-                                                if (keys) {
-                                                    keys.pop();
-                                                    this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
-                                                    this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
-                                                }
-                                            }
-                                            if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
-                                            if (nextField instanceof HayBale) {
-                                                nextField.coordinates.x = Math.round((nextField.coordinates.x + 0.1) * 100) / 100;
-                                                cow.move();
-                                            }
-                                        } else {
-                                            cow.move();
-                                        }
-                                    } else {
-                                        if (nextField) {
-                                            cow.move()
-                                        }
-                                    }
+                                    nextCoordinates = { x: cow.coordinates.x + 1, y: cow.coordinates.y };
                                     break;
                                 case "Down":
-                                    nextField = this.findFieldByCoordinates({
-                                        x: cow.coordinates.x,
-                                        y: cow.coordinates.y + 1
-                                    });
-                                    if (nextField) {
-                                        if (nextField instanceof Goblet) cow.move();
-                                        if (nextField instanceof Key) cow.move();
-                                        if (nextField instanceof LockDoor) {
-                                            const keys = this._CowKeysMap.get(cow);
-                                            if (keys) {
-                                                keys.pop();
-                                                this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
-                                                this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
-                                            }
-                                        }
-                                        if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
-                                        if (nextField instanceof HayBale) {
-                                            nextField.coordinates.y = Math.round((nextField.coordinates.y + 0.1) * 100) / 100;
-                                            cow.move();
-                                        }
-                                    } else {
-                                        cow.move();
-                                    }
+                                    nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y + 1 };
                                     break;
                                 case "Left":
-                                    nextField = this.findFieldByCoordinates({
-                                        x: cow.coordinates.x - 1,
-                                        y: cow.coordinates.y
-                                    });
-                                    if (nextField) {
-                                        if (nextField instanceof Goblet) cow.move();
-                                        if (nextField instanceof Key) cow.move();
-                                        if (nextField instanceof LockDoor) {
-                                            const keys = this._CowKeysMap.get(cow);
-                                            if (keys) {
-                                                keys.pop();
-                                                this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
-                                                this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
-                                            }
-                                        }
-                                        if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
-                                        if (nextField instanceof HayBale) {
-                                            nextField.coordinates.x = Math.round((nextField.coordinates.x - 0.1) * 100) / 100;
-                                            cow.move();
-                                        }
-                                    } else {
+                                    nextCoordinates = { x: cow.coordinates.x - 1, y: cow.coordinates.y };
+                                    break;
+                            }
+                            const nextField: IField | HayBale | undefined = this.findFieldByCoordinates(nextCoordinates);
+                            if (nextField?.impassable) {
+                                if (cow.layer === 2) cow.move();
+                                if (nextField instanceof LockDoor) {
+                                    const keys = this._CowKeysMap.get(cow);
+                                    if (keys) {
+                                        keys.pop();
+                                        this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                                        this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
                                         cow.move();
                                     }
-                                    break;
+                                }
+                                if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
+                                if (nextField instanceof HayBale) {
+                                    switch (cow.direction) {
+                                        case "Up":
+                                            nextField.coordinates.y = Math.round((nextCoordinates.y - 0.1) * 100) / 100;
+                                            break;
+                                        case "Right":
+                                            nextField.coordinates.x = Math.round((nextCoordinates.x + 0.1) * 100) / 100;
+                                            break;
+                                        case "Down":
+                                            nextField.coordinates.y = Math.round((nextCoordinates.y + 0.1) * 100) / 100;
+                                            break;
+                                        case "Left":
+                                            nextField.coordinates.x = Math.round((nextCoordinates.x - 0.1) * 100) / 100;
+                                            break;
+                                    }
+                                    cow.move();
+                                }
+                            } else {
+                                cow.move(); // FIXME: fix move on cow.layer === 2
                             }
                         } else {
                             this.endGame();
                             alert("YOU WIN!!!");
                         }
-                    } else { // FIXME: delete switch
-                        let nextField: IField | HayBale | undefined;
-                        switch (cow.direction) {
-                            case "Up":
-                                nextField = this.findFieldByCoordinates({
-                                    x: cow.coordinates.x,
-                                    y: cow.coordinates.y - 1
-                                });
-                                if (nextField instanceof HayBale) {
-                                    nextField.coordinates.y = Math.round((nextField.coordinates.y - 0.1) * 100) / 100;
-                                }
-                                break;
-                            case "Right":
-                                nextField = this.findFieldByCoordinates({
-                                    x: cow.coordinates.x + 1,
-                                    y: cow.coordinates.y
-                                });
-                                if (nextField instanceof HayBale) {
-                                    nextField.coordinates.x = Math.round((nextField.coordinates.x + 0.1) * 100) / 100;
-                                }
-                                break;
-                            case "Down":
-                                nextField = this.findFieldByCoordinates({
-                                    x: cow.coordinates.x,
-                                    y: cow.coordinates.y + 1
-                                });
-                                if (nextField instanceof HayBale) {
-                                    nextField.coordinates.x = Math.round((nextField.coordinates.y + 0.1) * 100) / 100;
-                                }
-                                break;
-                            case "Left":
-                                nextField = this.findFieldByCoordinates({
-                                    x: cow.coordinates.x - 1,
-                                    y: cow.coordinates.y
-                                });
-                                if (nextField instanceof HayBale) {
-                                    nextField.coordinates.x = Math.round((nextField.coordinates.x - 0.1) * 100) / 100;
-                                }
-                                break;
-                        }
-                        cow.move();
-                    }
                 });
                 this.renderScene();
             }, 40);

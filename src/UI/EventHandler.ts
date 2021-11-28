@@ -50,74 +50,11 @@ export class EventHandler {
             EventHandler.selectedItem = null;
         });
 
-       /* this.game.arrows.forEach(arrow => {
-            if (!arrow.coordinates)
-                arrow.linkedHtmlElement.addEventListener('mousedown', (e: MouseEvent) => {
-                    EventHandler.selectedItem = e.target as HTMLElement;
-                    EventHandler.selectedItem.style.pointerEvents = "none";
-                });
-        });*/
-
         this.game.arrows.forEach(arrow => {
             if (!arrow.coordinates) {
                 this.addArrowEventListener(arrow, 'mousedown', this.onArrowMousedown);
             }
         });
-
-        /*this.htmlGameTable.addEventListener<'mouseup'>('mouseup', (e: MouseEvent) => {
-
-        });
-
-        this.htmlArrowsTable.addEventListener<'mouseup'>('mouseup', (e: MouseEvent) => {
-            if (this.selectedItem) {
-
-            }
-        });*/
-
-        /*document.addEventListener<'mouseup'>("mouseup", (e: MouseEvent) => {
-            if (this.selectedItem) {
-                if ((e.target as HTMLElement).className.includes("game-field")) {
-                    if (!game.findMapObjectByHtmlElement(e.target as HTMLElement)) {
-                        // можно поставить на поле
-                        const coordinates = (e.target as HTMLElement).className.split(" ")
-                            .filter(str => str.match(/^[xy]-\d+$/g)).map(str => Number(str.slice(2)));
-                        const arrow: Arrow | undefined = game.findArrowByHtmlElement(this.selectedItem);
-                        let selectedArrow: Arrow | undefined;
-                        if (arrow) {
-                            game.placeArrowToMap(arrow, { x: coordinates[0], y: coordinates[1]}, e.target as HTMLElement);
-                            // selectedArrow = game.spliceArrow(arrow);
-                            // game.mapArrows.push(selectedArrow);
-                        } else {
-                            selectedArrow = game.mapArrows.find((arrow: Arrow) => this.selectedItem === arrow.linkedHtmlElement);
-                        }
-                        if (selectedArrow) {
-                            selectedArrow.coordinates.x = coordinates[0];
-                            selectedArrow.coordinates.y = coordinates[1];
-                            selectedArrow.linkedHtmlElement = (e.target as HTMLElement);
-                            selectedArrow.linkedHtmlElement.addEventListener("mousedown", (e) => {
-                                this.selectedItem = (e.target as HTMLElement);
-                                this.selectedItem.style.pointerEvents = "none";
-                            });
-                        }
-                    }
-                } else if ((e.target as HTMLElement).className.includes("arrow-field")) {
-                    const arrow = game.mapArrows.find(arrow => this.selectedItem === arrow.linkedHtmlElement);
-                    if (arrow) {
-                        const selectedArrow = game.mapArrows.splice(game.mapArrows.indexOf(arrow), 1)[0];
-                        selectedArrow.coordinates.x = 0;
-                        selectedArrow.coordinates.y = 0;
-                        selectedArrow.linkedHtmlElement = (e.target as HTMLElement);
-                        game.arrows.push(selectedArrow);
-                    }
-                }
-                this.selectedItem.style.pointerEvents = "";
-                this.selectedItem.style.top = "0";
-                this.selectedItem.style.left = "0";
-                this.selectedItem = null;
-                game.drawArrows();
-                game.renderScene();
-            }
-        });*/
     }
 
     onArrowMousedown(e: Event) {
