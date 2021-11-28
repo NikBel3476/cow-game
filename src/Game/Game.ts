@@ -1,9 +1,8 @@
 import { render } from '../Render';
 import { ui } from '../UI';
-import { ILevel } from '../Interfaces';
+import { ILevel } from '../levels/ILevel';
 import { ArrowColor, Direction, Coordinates, SpriteName, MAPPED_SPRITES } from '../types';
-import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity } from "./Entities";
-import CONF from "../Conf";
+import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity, LockDoor, DoorsOrientation } from "./Entities";
 
 export class Game {
     private _nonInteractiveFields: Field[] = [];
@@ -11,13 +10,19 @@ export class Game {
     private _staticObjects: (IField | Arrow)[] = [];
     private _movableObjects: (Cow | HayBale)[] = [];
     private _allObjects: IEntity[] = [];
+
     private _goblet!: Goblet;
     private _slides!: Slide[];
     private _hayBales!: HayBale[];
     private _pits!: Pit[];
     private _keys!: Key[];
+    private _lockDoors!: LockDoor[];
+
     private _cows!: Cow[];
     private _arrows!: Arrow[];
+
+    private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
+
     private _loop!: NodeJS.Timer;
 
     constructor() {
@@ -34,6 +39,7 @@ export class Game {
                     HayBale,
                     Pit,
                     Key,
+                    LockDoor,
                     ActivatingCouple
                 },
             },
@@ -50,13 +56,16 @@ export class Game {
         this._hayBales = this.initHayBales(HayBale);
         this._pits = this.initPits(Pit);
         this._keys = this.initKeys(Key);
+        this._lockDoors = this.initLockDoors(LockDoor);
 
         this._cows = this.initCows(Cows);
         this._arrows = this.initArrows(Arrows);
 
-        this._interactiveFields = [this._goblet, ...this._slides, ...this._hayBales, ...this._pits, ...this._keys];
+        this._cows.forEach(cow => this._CowKeysMap.set(cow, []));
+
+        this._interactiveFields = [this._goblet, ...this._slides, ...this._hayBales, ...this._pits, ...this._keys, ...this._lockDoors];
         // TODO: add activatingCouple to _staticObjects
-        this._staticObjects = [...this._nonInteractiveFields, this._goblet, ...this._slides, ...this._pits, ...this._keys, ...this._arrows];
+        this._staticObjects = [...this._nonInteractiveFields, this._goblet, ...this._slides, ...this._pits, ...this._keys, ...this._lockDoors, ...this._arrows];
         this._movableObjects = [...this._cows, ...this._hayBales];
         this._allObjects = [...this._nonInteractiveFields, ...this._interactiveFields, ...this._cows, ...this._arrows];
     }
@@ -133,10 +142,28 @@ export class Game {
         const keysArr: Key[] = [];
         if (keys) {
             Object.values(keys).forEach(coordinates =>
-                keysArr.push(new Key(coordinates, render.gameTable[coordinates.y - 1][coordinates.x - 1]))
+                keysArr.push(new Key(coordinates, render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement))
             )
         }
         return keysArr;
+    }
+
+    private initLockDoors(lockDoors: ILevel['MapObjects']['Interactive']['LockDoor']): LockDoor[] {
+        const lockDoorsArr: LockDoor[] = [];
+        if (lockDoors) {
+            (Object.keys(lockDoors) as DoorsOrientation[]).forEach(lockDoorOrientation => {
+               lockDoors[lockDoorOrientation].forEach(coordinates => {
+                    lockDoorsArr.push(
+                        new LockDoor(
+                            coordinates,
+                            lockDoorOrientation,
+                            render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement
+                        )
+                    )
+               });
+            });
+        }
+        return lockDoorsArr;
     }
 
     private initCows(cows: ILevel['GameObjects']['Cows']) {
@@ -251,6 +278,16 @@ export class Game {
             this._goblet.coordinates.y === cow.coordinates.y;
     }
 
+    checkKeys(cow: Cow): void {
+        this._keys.forEach(key => {
+            if (cow.coordinates.x === key.coordinates.x && cow.coordinates.y === key.coordinates.y) {
+                this._CowKeysMap.get(cow)?.push(key);
+                this._staticObjects.splice(this._staticObjects.indexOf(key), 1);
+            }
+        });
+        console.log(this._CowKeysMap)
+    }
+
     startGame(): void {
         if (!this._loop) {
             this._loop = setInterval(() => {
@@ -260,6 +297,7 @@ export class Game {
                     if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
                         this.checkArrows(cow);
                         isVictory = this.checkGoblet(cow);
+                        this.checkKeys(cow);
                         if (!isVictory) {
                             const currentField: IField | HayBale | undefined = this.findFieldByCoordinates({
                                 x: cow.coordinates.x,
@@ -276,6 +314,15 @@ export class Game {
                                     });
                                     if (nextField) {
                                         if (nextField instanceof Goblet) cow.move();
+                                        if (nextField instanceof Key) cow.move();
+                                        if (nextField instanceof LockDoor) {
+                                            const keys = this._CowKeysMap.get(cow);
+                                            if (keys) {
+                                                keys.pop();
+                                                this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                                                this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
+                                            }
+                                        }
                                         if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.y = Math.round((nextField.coordinates.y - 0.1) * 100) / 100;
@@ -293,6 +340,15 @@ export class Game {
                                     if (cow.layer === 1) {
                                         if (nextField) {
                                             if (nextField instanceof Goblet) cow.move();
+                                            if (nextField instanceof Key) cow.move();
+                                            if (nextField instanceof LockDoor) {
+                                                const keys = this._CowKeysMap.get(cow);
+                                                if (keys) {
+                                                    keys.pop();
+                                                    this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                                                    this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
+                                                }
+                                            }
                                             if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                             if (nextField instanceof HayBale) {
                                                 nextField.coordinates.x = Math.round((nextField.coordinates.x + 0.1) * 100) / 100;
@@ -314,6 +370,15 @@ export class Game {
                                     });
                                     if (nextField) {
                                         if (nextField instanceof Goblet) cow.move();
+                                        if (nextField instanceof Key) cow.move();
+                                        if (nextField instanceof LockDoor) {
+                                            const keys = this._CowKeysMap.get(cow);
+                                            if (keys) {
+                                                keys.pop();
+                                                this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                                                this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
+                                            }
+                                        }
                                         if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.y = Math.round((nextField.coordinates.y + 0.1) * 100) / 100;
@@ -330,6 +395,15 @@ export class Game {
                                     });
                                     if (nextField) {
                                         if (nextField instanceof Goblet) cow.move();
+                                        if (nextField instanceof Key) cow.move();
+                                        if (nextField instanceof LockDoor) {
+                                            const keys = this._CowKeysMap.get(cow);
+                                            if (keys) {
+                                                keys.pop();
+                                                this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                                                this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
+                                            }
+                                        }
                                         if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
                                         if (nextField instanceof HayBale) {
                                             nextField.coordinates.x = Math.round((nextField.coordinates.x - 0.1) * 100) / 100;

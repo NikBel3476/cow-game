@@ -1,5 +1,5 @@
 import { ui } from '../UI';
-import { ICow, ILevel } from "../Interfaces";
+import { ILevel } from "../levels/ILevel";
 import { Arrow, Goblet, HayBale, Cow, Field, IField, IGameObject } from "../Game";
 import { Coordinates } from "../types";
 

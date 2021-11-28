@@ -1,6 +1,6 @@
 {
-  "mapObjects": {
-    "staticFields": {
+  "MapObjects": {
+    "NonInteractive": {
       "Pillar": [
         [1, 1], [12, 1], [20, 1],
         [12, 6], [15, 6], [17, 6], [20, 6],
@@ -21,27 +21,48 @@
         [20, 8], [20, 9], [20, 10], [20, 11], [20, 12], [20, 13]
       ]
     },
-    "activeFields": {
+    "Interactive": {
+      "Goblet": {
+        "coordinates": { "x": 16, "y": 3 }
+      },
       "Key": [
-        [10, 8]
-      ]
-    },
-    "goblet": {
-      "coordinates": { "x": 16, "y": 3 }
+        { "x": 10, "y": 8 }
+      ],
+      "LockDoor":{
+        "Horizontal": [
+          { "x": 16, "y": 6 }
+        ],
+        "Vertical": []
+      }
     }
   },
-  "cows": [
-    {
-      "coordinates": { "x": 5, "y": 3 },
-      "direction": "Right",
-      "color": "Grey"
-    }
-  ],
-  "arrows": {
-    "Red": {
-      "Up": 1,
-      "Right": 1,
-      "Down": 1
+  "GameObjects": {
+    "Cows": [
+      {
+        "coordinates": { "x": 5, "y": 3 },
+        "direction": "Right",
+        "color": "Grey"
+      }
+    ],
+    "Arrows": {
+      "Red": {
+        "Up": [
+          { "coordinates": null }
+        ],
+        "Right": [
+          { "coordinates": null }
+        ],
+        "Down": [
+          { "coordinates": null }
+        ],
+        "Left": []
+      },
+      "Blue": {
+        "Up": [],
+        "Right": [],
+        "Down": [],
+        "Left": []
+      }
     }
   }
 }

@@ -1,5 +1,4 @@
 import { ArrowColor, Direction, Coordinates, SpriteName, CowColor } from '../types';
-import { ICow } from '../Game/Entities/GameObjects/Cow/ICow';
 
 export interface ILevel {
     MapObjects: {
@@ -18,7 +17,11 @@ export interface ILevel {
                 coordinates: Coordinates,
                 activated: boolean
             }[],
-            Key?: Coordinates[]
+            Key?: Coordinates[],
+            LockDoor?: {
+                Horizontal: Coordinates[],
+                Vertical: Coordinates[]
+            }
             ActivatingCouple?: { // TODO: change structure
                 "InteractiveObjects": { coordinates: Coordinates } // door | piston secondary
                 "Button": { coordinates: Coordinates }[] // button | lever firstly
