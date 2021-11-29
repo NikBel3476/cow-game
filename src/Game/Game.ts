@@ -6,7 +6,7 @@ import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity, L
 
 export class Game {
     private _nonInteractiveFields: Field[] = [];
-    private _interactiveFields: IField[] = [];
+    private _interactiveFields: (IField | Arrow)[] = [];
     private _staticObjects: (IField | Arrow)[] = [];
     private _movableObjects: (Cow | HayBale)[] = [];
     private _allObjects: IEntity[] = [];
@@ -63,11 +63,11 @@ export class Game {
 
         this._cows.forEach(cow => this._CowKeysMap.set(cow, []));
 
-        this._interactiveFields = [this._goblet, ...this._slides, ...this._hayBales, ...this._pits, ...this._keys, ...this._lockDoors];
+        this._interactiveFields = [this._goblet, ...this._slides, ...this._hayBales, ...this._pits, ...this._keys, ...this._lockDoors, ...this._arrows];
         // TODO: add activatingCouple to _staticObjects
         this._staticObjects = [...this._nonInteractiveFields, this._goblet, ...this._slides, ...this._pits, ...this._keys, ...this._lockDoors, ...this._arrows];
         this._movableObjects = [...this._cows, ...this._hayBales];
-        this._allObjects = [...this._nonInteractiveFields, ...this._interactiveFields, ...this._cows, ...this._arrows];
+        this._allObjects = [...this._nonInteractiveFields, ...this._interactiveFields, ...this._cows];
     }
 
     public get arrows(): Arrow[] {
@@ -217,9 +217,11 @@ export class Game {
         return undefined;
     }
 
-    findFieldByCoordinates(coordinates: Coordinates): IField | HayBale | undefined {
-        return [...this._nonInteractiveFields, ...this._interactiveFields].find((field: IField | HayBale) =>
-            field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y);
+    findFieldByCoordinates(coordinates: Coordinates): IField | Arrow | undefined {
+        return [...this._nonInteractiveFields, ...this._interactiveFields].find(field => {
+            if (field.coordinates)
+                return field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y;
+        });
     }
 
     findMapObjectByHtmlElement(htmlElement: HTMLElement): IEntity | undefined {
@@ -290,17 +292,39 @@ export class Game {
     startGame(): void {
         if (!this._loop) {
             this._loop = setInterval(() => {
-                let isVictory = false;
-                let nextCoordinates: Coordinates;
                 Object.values(this._cows).forEach((cow: Cow) => {
-                        this.checkArrows(cow);
-                        isVictory = this.checkGoblet(cow);
-                        this.checkKeys(cow);
-                        if (!isVictory) {
-                            const currentField: IField | HayBale | undefined = this.findFieldByCoordinates(cow.coordinates);
+                            const currentField: IField | Arrow | undefined = this.findFieldByCoordinates(cow.coordinates);
                             if (currentField instanceof Slide) {
                                 cow.layer = cow.layer === 1 ? 2 : 1;
                             }
+                            if (currentField instanceof Arrow) {
+                                if (cow.coordinates.x === currentField?.coordinates?.x && cow.coordinates.y === currentField.coordinates.y) {
+                                    cow.direction = currentField.direction;
+                                    // FIXME: delete checking staticObjects and interactiveFields at the same time
+                                    this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
+                                    this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
+                                }
+                            }
+                            if (currentField instanceof Key) {
+                                if (cow.coordinates.x === currentField.coordinates.x && cow.coordinates.y === currentField.coordinates.y) {
+                                    this._CowKeysMap.get(cow)?.push(currentField);
+                                    // FIXME: delete checking staticObjects and interactiveFields at the same time
+                                    this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
+                                    this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
+                                }
+                            }
+                            if (currentField instanceof Goblet) {
+                                if (
+                                    cow.color === "Grey" &&
+                                    this._goblet.coordinates.x === cow.coordinates.x &&
+                                    this._goblet.coordinates.y === cow.coordinates.y)
+                                {
+                                    this.endGame();
+                                    return alert("YOU WIN!!!");
+                                }
+                            }
+
+                            let nextCoordinates: Coordinates;
                             switch (cow.direction) {
                                 case "Up":
                                     nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y - 1 };
@@ -315,43 +339,42 @@ export class Game {
                                     nextCoordinates = { x: cow.coordinates.x - 1, y: cow.coordinates.y };
                                     break;
                             }
-                            const nextField: IField | HayBale | undefined = this.findFieldByCoordinates(nextCoordinates);
-                            if (nextField?.impassable) {
-                                if (cow.layer === 2) cow.move();
-                                if (nextField instanceof LockDoor) {
-                                    const keys = this._CowKeysMap.get(cow);
-                                    if (keys) {
-                                        keys.pop();
-                                        this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
-                                        this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
-                                        cow.move();
+                            const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
+                            if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
+                                if (nextField?.impassable) {
+                                    if (cow.layer === 2) cow.move();
+                                    if (nextField instanceof LockDoor) {
+                                        const keys = this._CowKeysMap.get(cow);
+                                        if (keys && keys.length !== 0) {
+                                            keys.pop();
+                                            this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                                            this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
+                                            cow.move();
+                                        }
                                     }
+                                    if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
+                                } else { // passable field
+                                    if (cow.layer === 1) cow.move();
                                 }
-                                if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
-                                if (nextField instanceof HayBale) {
-                                    switch (cow.direction) {
-                                        case "Up":
-                                            nextField.coordinates.y = Math.round((nextCoordinates.y - 0.1) * 100) / 100;
-                                            break;
-                                        case "Right":
-                                            nextField.coordinates.x = Math.round((nextCoordinates.x + 0.1) * 100) / 100;
-                                            break;
-                                        case "Down":
-                                            nextField.coordinates.y = Math.round((nextCoordinates.y + 0.1) * 100) / 100;
-                                            break;
-                                        case "Left":
-                                            nextField.coordinates.x = Math.round((nextCoordinates.x - 0.1) * 100) / 100;
-                                            break;
-                                    }
-                                    cow.move();
-                                }
-                            } else {
-                                cow.move(); // FIXME: fix move on cow.layer === 2
+                            } else { // cow coordinates is not integer
+                                cow.move();
                             }
-                        } else {
-                            this.endGame();
-                            alert("YOU WIN!!!");
-                        }
+                            if (nextField instanceof HayBale && cow.layer === 1) {
+                                switch (cow.direction) {
+                                    case "Up":
+                                        nextField.coordinates.y = Math.round((nextCoordinates.y - 0.1) * 100) / 100;
+                                        break;
+                                    case "Right":
+                                        nextField.coordinates.x = Math.round((nextCoordinates.x + 0.1) * 100) / 100;
+                                        break;
+                                    case "Down":
+                                        nextField.coordinates.y = Math.round((nextCoordinates.y + 0.1) * 100) / 100;
+                                        break;
+                                    case "Left":
+                                        nextField.coordinates.x = Math.round((nextCoordinates.x - 0.1) * 100) / 100;
+                                        break;
+                                }
+                            }
                 });
                 this.renderScene();
             }, 40);

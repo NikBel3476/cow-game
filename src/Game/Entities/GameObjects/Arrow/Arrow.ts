@@ -4,6 +4,7 @@ import { IArrow } from "./IArrow";
 export class Arrow implements IArrow {
     private _coordinates?: Coordinates;
     private _direction: Direction;
+    private _impassable: boolean = false;
     private _color: ArrowColor;
     private _img: string;
     private _linkedHtmlElement: HTMLElement;
@@ -35,6 +36,10 @@ export class Arrow implements IArrow {
 
     public set direction(direction: Direction) {
         this._direction = direction;
+    }
+
+    get impassable(): boolean {
+        return this._impassable;
     }
 
     public get color(): ArrowColor {
