@@ -23,17 +23,22 @@ export interface ILevel {
                 Horizontal: Coordinates[],
                 Vertical: Coordinates[]
             }
-            ActivatingTuple?: { // TODO: change structure
-                Button: Coordinates[]
-                InteractiveObjects: {
-                    AutoDoor: {
-                        [k in DoorOrientation]: Coordinates[]
-                    },
-                    Piston: {
-                        [k in Direction]: Coordinates[]
-                    }
-                }
+            Button?: {
+                coordinates: Coordinates,
+                linkedElementIds: number[]
             }[]
+            AutoDoor?: {
+                [k in DoorOrientation]: {
+                    id: number,
+                    coordinates: Coordinates
+                }[]
+            },
+            Piston?: {
+                [k in Direction]: {
+                    id: number,
+                    coordinates: Coordinates
+                }[]
+            }
         }
     }
     GameObjects: {

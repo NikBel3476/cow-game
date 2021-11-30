@@ -7,7 +7,9 @@ import ArrowRedLeft from '../../../assets/sprites/svg/ArrowRedLeft.svg';
 import ArrowRedRight from '../../../assets/sprites/svg/ArrowRedRight.svg';
 import ArrowRedUp from '../../../assets/sprites/svg/ArrowRedUp.svg';
 import AutoDoorH from '../../../assets/sprites/svg/AutoDoorH.png';
+import AutoDoorHActivated from '../../../assets/sprites/svg/AutoDoorHActivated.png';
 import AutoDoorV from '../../../assets/sprites/svg/AutoDoorV.png';
+import AutoDoorVActivated from '../../../assets/sprites/svg/AutoDoorVActivated.png';
 import Block from '../../../assets/sprites/svg/Block.png';
 import Button from '../../../assets/sprites/svg/Button.png';
 import CowGreyUp from '../../../assets/sprites/svg/CowGreyUp.svg';
@@ -40,7 +42,9 @@ export const MAPPED_SPRITES = {
     ArrowRedRight,
     ArrowRedUp,
     AutoDoorH,
+    AutoDoorHActivated,
     AutoDoorV,
+    AutoDoorVActivated,
     Block,
     Button,
     CowGreyUp,

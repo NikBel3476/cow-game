@@ -31,25 +31,19 @@
           "activated": false
         }
       ],
-      "ActivatingTuple": [
+      "AutoDoor": {
+        "Horizontal": [
+          {
+            "id": 1,
+            "coordinates": { "x": 16, "y": 5 }
+          }
+        ],
+        "Vertical": []
+      },
+      "Button": [
         {
-          "InteractiveObjects": {
-            "AutoDoor": {
-              "Horizontal": [
-                { "x": 16, "y": 5 }
-              ],
-              "Vertical": []
-            },
-            "Piston": {
-              "Up": [],
-              "Right": [],
-              "Down": [],
-              "Left": []
-            }
-          },
-          "Button": [
-            { "x": 16, "y": 7 }
-          ]
+          "coordinates": { "x": 16, "y": 7 },
+          "linkedElementIds": [1]
         }
       ]
     }
@@ -60,11 +54,6 @@
         "coordinates": { "x": 5, "y": 8 },
         "direction": "Right",
         "color": "Grey"
-      },
-      {
-        "coordinates": { "x": 11, "y":  10},
-        "direction": "Up",
-        "color": "Brown"
       }
     ],
     "Arrows": {

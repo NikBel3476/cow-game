@@ -2,7 +2,23 @@ import { render } from '../Render';
 import { ui } from '../UI';
 import { ILevel } from '../levels/ILevel';
 import { ArrowColor, Direction, Coordinates, SpriteName, MAPPED_SPRITES } from '../types';
-import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity, LockDoor, DoorOrientation, AutoDoor } from "./Entities";
+import {
+    IField,
+    HayBale,
+    Arrow,
+    Goblet,
+    Cow,
+    Slide,
+    Pit,
+    Key,
+    Field,
+    IEntity,
+    LockDoor,
+    DoorOrientation,
+    AutoDoor,
+    Button,
+    Piston
+} from "./Entities";
 
 export class Game {
     private _nonInteractiveFields: Field[] = [];
@@ -17,6 +33,8 @@ export class Game {
     private _pits!: Pit[];
     private _keys!: Key[];
     private _lockDoors!: LockDoor[];
+    private _buttons!: Button[];
+    private _autoDoors!: AutoDoor[];
 
     private _cows!: Cow[];
     private _arrows!: Arrow[];
@@ -40,7 +58,9 @@ export class Game {
                     Pit,
                     Key,
                     LockDoor,
-                    ActivatingTuple
+                    Button,
+                    AutoDoor,
+                    Piston
                 },
             },
             GameObjects: {
@@ -58,16 +78,46 @@ export class Game {
         this._keys = this.initKeys(Key);
         this._lockDoors = this.initLockDoors(LockDoor);
 
+        this._autoDoors = this.initAutoDoors(AutoDoor);
+        this._buttons = this.initButtons(Button);
+
         this._cows = this.initCows(Cows);
         this._arrows = this.initArrows(Arrows);
 
         this._cows.forEach(cow => this._CowKeysMap.set(cow, []));
 
-        this._interactiveFields = [this._goblet, ...this._slides, ...this._hayBales, ...this._pits, ...this._keys, ...this._lockDoors, ...this._arrows];
-        // TODO: add activatingCouple to _staticObjects
-        this._staticObjects = [...this._nonInteractiveFields, this._goblet, ...this._slides, ...this._pits, ...this._keys, ...this._lockDoors, ...this._arrows];
-        this._movableObjects = [...this._cows, ...this._hayBales];
-        this._allObjects = [...this._nonInteractiveFields, ...this._interactiveFields, ...this._cows];
+        // FIXME: unite entities in single array
+        this._interactiveFields = [
+            this._goblet,
+            ...this._slides,
+            ...this._hayBales,
+            ...this._pits,
+            ...this._keys,
+            ...this._lockDoors,
+            ...this._arrows,
+            ...this._buttons,
+            ...this._autoDoors
+        ];
+        this._staticObjects = [
+            ...this._nonInteractiveFields,
+            this._goblet,
+            ...this._slides,
+            ...this._pits,
+            ...this._keys,
+            ...this._lockDoors,
+            ...this._arrows,
+            ...this._buttons,
+            ...this._autoDoors
+        ];
+        this._movableObjects = [
+            ...this._cows,
+            ...this._hayBales
+        ];
+        this._allObjects = [
+            ...this._nonInteractiveFields,
+            ...this._interactiveFields,
+            ...this._cows
+        ];
     }
 
     public get arrows(): Arrow[] {
@@ -168,8 +218,41 @@ export class Game {
         return lockDoorsArr;
     }
 
-    private initActivatingTuple(activatingTuple: ILevel['MapObjects']['Interactive']['ActivatingTuple']) {
+    private initAutoDoors(doors: ILevel['MapObjects']['Interactive']['AutoDoor']): AutoDoor[] {
+        const autoDoorsArr: AutoDoor[] = [];
+        if (doors) {
+            (Object.keys(doors) as DoorOrientation[]).forEach(orientation =>
+                doors[orientation].forEach(door =>
+                    autoDoorsArr.push(
+                        new AutoDoor(
+                            door.id,
+                            door.coordinates,
+                            orientation,
+                            render.gameTable[door.coordinates.y - 1][door.coordinates.x - 1].firstChild as HTMLElement
+                        )
+                    )
+                )
+            );
+        }
+        return autoDoorsArr;
+    }
 
+    private initButtons(buttons: ILevel['MapObjects']['Interactive']['Button']): Button[] {
+        return buttons?.map(button => {
+            const linkedElems: (AutoDoor | Piston)[] = [];
+            this._autoDoors.forEach(door => {
+                if (button.linkedElementIds.includes(door.id)) {
+                    linkedElems.push(door);
+                }
+            });
+            // TODO: add Pistons array checking
+            return new Button(
+                button.coordinates,
+                linkedElems,
+                render.gameTable[button.coordinates.y - 1][button.coordinates.x - 1].firstChild as HTMLElement
+            )
+        }
+        ) ?? [];
     }
 
     private initCows(cows: ILevel['GameObjects']['Cows']) {
@@ -303,6 +386,9 @@ export class Game {
                     if (currentField instanceof Pit) {
                         currentField.activate();
                         cow.move();
+                    }
+                    if (currentField instanceof Button) {
+                        currentField.activate();
                     }
 
                     let nextCoordinates: Coordinates;
