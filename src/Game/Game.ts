@@ -2,7 +2,7 @@ import { render } from '../Render';
 import { ui } from '../UI';
 import { ILevel } from '../levels/ILevel';
 import { ArrowColor, Direction, Coordinates, SpriteName, MAPPED_SPRITES } from '../types';
-import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity, LockDoor, DoorsOrientation } from "./Entities";
+import { IField, HayBale, Arrow, Goblet, Cow, Slide, Pit, Key, Field, IEntity, LockDoor, DoorOrientation, AutoDoor } from "./Entities";
 
 export class Game {
     private _nonInteractiveFields: Field[] = [];
@@ -40,7 +40,7 @@ export class Game {
                     Pit,
                     Key,
                     LockDoor,
-                    ActivatingCouple
+                    ActivatingTuple
                 },
             },
             GameObjects: {
@@ -128,10 +128,12 @@ export class Game {
         const pitsArr: Pit[] = [];
         if (pits) {
             Object.values(pits).forEach(pit =>
-                new Pit(
-                    pit.coordinates,
-                    render.gameTable[pit.coordinates.y - 1][pit.coordinates.x - 1].firstChild as HTMLElement,
-                    pit.activated
+                pitsArr.push(
+                    new Pit(
+                        pit.coordinates,
+                        render.gameTable[pit.coordinates.y - 1][pit.coordinates.x - 1].firstChild as HTMLElement,
+                        pit.activated
+                    )
                 )
             )
         }
@@ -151,7 +153,7 @@ export class Game {
     private initLockDoors(lockDoors: ILevel['MapObjects']['Interactive']['LockDoor']): LockDoor[] {
         const lockDoorsArr: LockDoor[] = [];
         if (lockDoors) {
-            (Object.keys(lockDoors) as DoorsOrientation[]).forEach(lockDoorOrientation => {
+            (Object.keys(lockDoors) as DoorOrientation[]).forEach(lockDoorOrientation => {
                lockDoors[lockDoorOrientation].forEach(coordinates => {
                     lockDoorsArr.push(
                         new LockDoor(
@@ -164,6 +166,10 @@ export class Game {
             });
         }
         return lockDoorsArr;
+    }
+
+    private initActivatingTuple(activatingTuple: ILevel['MapObjects']['Interactive']['ActivatingTuple']) {
+
     }
 
     private initCows(cows: ILevel['GameObjects']['Cows']) {
@@ -240,10 +246,6 @@ export class Game {
         return this._arrows.find((arrow: Arrow) => arrow.linkedHtmlElement === htmlElement);
     }
 
-    spliceArrow(arrow: Arrow) {
-        return this._arrows.splice(this._arrows.indexOf(arrow), 1)[1];
-    }
-
     placeArrowToMap(arrow: Arrow, coordinates: Coordinates, newLinkedHtmlElement: HTMLElement): void {
         arrow.coordinates = coordinates;
         arrow.linkedHtmlElement = newLinkedHtmlElement;
@@ -264,117 +266,96 @@ export class Game {
     }
 
     // -------------------- GAME --------------------
-
-    checkArrows(cow: Cow): void {
-        this._arrows.forEach((arrow: Arrow) => {
-            if (cow.coordinates.x === arrow?.coordinates?.x && cow.coordinates.y === arrow.coordinates.y) {
-                cow.direction = arrow.direction;
-                this._staticObjects.splice(this._staticObjects.indexOf(arrow), 1);
-            }
-        });
-    }
-
-    checkGoblet(cow: Cow): boolean {
-        return cow.color === "Grey" &&
-            this._goblet.coordinates.x === cow.coordinates.x &&
-            this._goblet.coordinates.y === cow.coordinates.y;
-    }
-
-    checkKeys(cow: Cow): void {
-        this._keys.forEach(key => {
-            if (cow.coordinates.x === key.coordinates.x && cow.coordinates.y === key.coordinates.y) {
-                this._CowKeysMap.get(cow)?.push(key);
-                this._staticObjects.splice(this._staticObjects.indexOf(key), 1);
-            }
-        });
-    }
-
     startGame(): void {
         if (!this._loop) {
             this._loop = setInterval(() => {
                 Object.values(this._cows).forEach((cow: Cow) => {
-                            const currentField: IField | Arrow | undefined = this.findFieldByCoordinates(cow.coordinates);
-                            if (currentField instanceof Slide) {
-                                cow.layer = cow.layer === 1 ? 2 : 1;
-                            }
-                            if (currentField instanceof Arrow) {
-                                if (cow.coordinates.x === currentField?.coordinates?.x && cow.coordinates.y === currentField.coordinates.y) {
-                                    cow.direction = currentField.direction;
-                                    // FIXME: delete checking staticObjects and interactiveFields at the same time
-                                    this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
-                                    this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
-                                }
-                            }
-                            if (currentField instanceof Key) {
-                                if (cow.coordinates.x === currentField.coordinates.x && cow.coordinates.y === currentField.coordinates.y) {
-                                    this._CowKeysMap.get(cow)?.push(currentField);
-                                    // FIXME: delete checking staticObjects and interactiveFields at the same time
-                                    this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
-                                    this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
-                                }
-                            }
-                            if (currentField instanceof Goblet) {
-                                if (
-                                    cow.color === "Grey" &&
-                                    this._goblet.coordinates.x === cow.coordinates.x &&
-                                    this._goblet.coordinates.y === cow.coordinates.y)
-                                {
-                                    this.endGame();
-                                    return alert("YOU WIN!!!");
-                                }
-                            }
+                    const currentField: IField | Arrow | undefined = this.findFieldByCoordinates(cow.coordinates);
+                    if (currentField instanceof Slide) {
+                        cow.layer = cow.layer === 1 ? 2 : 1;
+                    }
+                    if (currentField instanceof Arrow) {
+                        if (cow.coordinates.x === currentField?.coordinates?.x && cow.coordinates.y === currentField.coordinates.y) {
+                            cow.direction = currentField.direction;
+                            // FIXME: delete checking staticObjects and interactiveFields at the same time
+                            this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
+                            this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
+                        }
+                    }
+                    if (currentField instanceof Key) {
+                        if (cow.coordinates.x === currentField.coordinates.x && cow.coordinates.y === currentField.coordinates.y) {
+                            this._CowKeysMap.get(cow)?.push(currentField);
+                            // FIXME: delete checking staticObjects and interactiveFields at the same time
+                            this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
+                            this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
+                        }
+                    }
+                    if (currentField instanceof Goblet) {
+                        if (
+                            cow.color === "Grey" &&
+                            this._goblet.coordinates.x === cow.coordinates.x &&
+                            this._goblet.coordinates.y === cow.coordinates.y)
+                        {
+                            this.endGame();
+                            return alert("YOU WIN!!!");
+                        }
+                    }
+                    if (currentField instanceof Pit) {
+                        currentField.activate();
+                        cow.move();
+                    }
 
-                            let nextCoordinates: Coordinates;
-                            switch (cow.direction) {
-                                case "Up":
-                                    nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y - 1 };
-                                    break;
-                                case "Right":
-                                    nextCoordinates = { x: cow.coordinates.x + 1, y: cow.coordinates.y };
-                                    break;
-                                case "Down":
-                                    nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y + 1 };
-                                    break;
-                                case "Left":
-                                    nextCoordinates = { x: cow.coordinates.x - 1, y: cow.coordinates.y };
-                                    break;
-                            }
-                            const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
-                            if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
-                                if (nextField?.impassable) {
-                                    if (cow.layer === 2) cow.move();
-                                    if (nextField instanceof LockDoor) {
-                                        const keys = this._CowKeysMap.get(cow);
-                                        if (keys && keys.length !== 0) {
-                                            keys.pop();
-                                            this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
-                                            this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
-                                            cow.move();
-                                        }
-                                    }
-                                    if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
-                                } else { // passable field
-                                    if (cow.layer === 1) cow.move();
-                                }
-                            } else { // cow coordinates is not integer
-                                cow.move();
-                            }
-                            if (nextField instanceof HayBale && cow.layer === 1) {
-                                switch (cow.direction) {
-                                    case "Up":
-                                        nextField.coordinates.y = Math.round((nextCoordinates.y - 0.1) * 100) / 100;
-                                        break;
-                                    case "Right":
-                                        nextField.coordinates.x = Math.round((nextCoordinates.x + 0.1) * 100) / 100;
-                                        break;
-                                    case "Down":
-                                        nextField.coordinates.y = Math.round((nextCoordinates.y + 0.1) * 100) / 100;
-                                        break;
-                                    case "Left":
-                                        nextField.coordinates.x = Math.round((nextCoordinates.x - 0.1) * 100) / 100;
-                                        break;
+                    let nextCoordinates: Coordinates;
+                    switch (cow.direction) {
+                        case "Up":
+                            nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y - 1 };
+                            break;
+                        case "Right":
+                            nextCoordinates = { x: cow.coordinates.x + 1, y: cow.coordinates.y };
+                            break;
+                        case "Down":
+                            nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y + 1 };
+                            break;
+                        case "Left":
+                            nextCoordinates = { x: cow.coordinates.x - 1, y: cow.coordinates.y };
+                            break;
+                    }
+                    const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
+                    if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
+                        if (nextField?.impassable) {
+                            if (cow.layer === 2) cow.move();
+                            if (nextField instanceof LockDoor) {
+                                const keys = this._CowKeysMap.get(cow);
+                                if (keys && keys.length !== 0) {
+                                    keys.pop();
+                                    this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                                    this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
+                                    cow.move();
                                 }
                             }
+                            if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
+                        } else { // passable field
+                            if (cow.layer === 1) cow.move();
+                        }
+                    } else { // cow coordinates is not integer
+                        cow.move();
+                    }
+                    if (nextField instanceof HayBale && cow.layer === 1) {
+                        switch (cow.direction) {
+                            case "Up":
+                                nextField.coordinates.y = Math.round(Number((nextCoordinates.y - 0.1).toFixed(1)));
+                                break;
+                            case "Right":
+                                nextField.coordinates.x = Math.round(Number((nextCoordinates.x + 0.1).toFixed(1)));
+                                break;
+                            case "Down":
+                                nextField.coordinates.y = Math.round(Number((nextCoordinates.y + 0.1).toFixed(1)));
+                                break;
+                            case "Left":
+                                nextField.coordinates.x = Math.round(Number((nextCoordinates.x - 0.1).toFixed(1)));
+                                break;
+                        }
+                    }
                 });
                 this.renderScene();
             }, 40);

@@ -1,12 +1,15 @@
-import ArrowBlueUp from '../../../assets/sprites/svg/ArrowBlueUp.svg';
-import ArrowBlueRight from '../../../assets/sprites/svg/ArrowBlueRight.svg';
 import ArrowBlueDown from '../../../assets/sprites/svg/ArrowBlueDown.svg';
 import ArrowBlueLeft from '../../../assets/sprites/svg/ArrowBlueLeft.svg';
-import ArrowRedUp from '../../../assets/sprites/svg/ArrowRedUp.svg';
-import ArrowRedRight from '../../../assets/sprites/svg/ArrowRedRight.svg';
+import ArrowBlueRight from '../../../assets/sprites/svg/ArrowBlueRight.svg';
+import ArrowBlueUp from '../../../assets/sprites/svg/ArrowBlueUp.svg';
 import ArrowRedDown from '../../../assets/sprites/svg/ArrowRedDown.svg';
 import ArrowRedLeft from '../../../assets/sprites/svg/ArrowRedLeft.svg';
+import ArrowRedRight from '../../../assets/sprites/svg/ArrowRedRight.svg';
+import ArrowRedUp from '../../../assets/sprites/svg/ArrowRedUp.svg';
+import AutoDoorH from '../../../assets/sprites/svg/AutoDoorH.png';
+import AutoDoorV from '../../../assets/sprites/svg/AutoDoorV.png';
 import Block from '../../../assets/sprites/svg/Block.png';
+import Button from '../../../assets/sprites/svg/Button.png';
 import CowGreyUp from '../../../assets/sprites/svg/CowGreyUp.svg';
 import CowGreyRight from '../../../assets/sprites/svg/CowGreyRight.svg';
 import CowGreyDown from '../../../assets/sprites/svg/CowGreyDown.svg';
@@ -28,15 +31,18 @@ import SlideLeft from '../../../assets/sprites/svg/SlideLeft.png';
 import Tree from '../../../assets/sprites/svg/Tree.svg';
 
 export const MAPPED_SPRITES = {
-    ArrowBlueUp,
-    ArrowBlueRight,
     ArrowBlueDown,
     ArrowBlueLeft,
-    ArrowRedUp,
-    ArrowRedRight,
+    ArrowBlueRight,
+    ArrowBlueUp,
     ArrowRedDown,
     ArrowRedLeft,
+    ArrowRedRight,
+    ArrowRedUp,
+    AutoDoorH,
+    AutoDoorV,
     Block,
+    Button,
     CowGreyUp,
     CowGreyRight,
     CowGreyDown,

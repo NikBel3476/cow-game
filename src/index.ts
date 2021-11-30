@@ -3,7 +3,7 @@ import { EventHandler } from "./UI";
 import { MAPPED_LEVELS } from "./levels";
 
 const game = new Game();
-game.loadLevel(MAPPED_LEVELS[4]);
+game.loadLevel(MAPPED_LEVELS[3]);
 const handler = new EventHandler(game);
 
 document.ondragstart = function() {

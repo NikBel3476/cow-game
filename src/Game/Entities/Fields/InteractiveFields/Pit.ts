@@ -16,14 +16,20 @@ export class Pit implements IField {
         activated: boolean
     ) {
         this._coordinates = coordinates;
-        this._activated = activated;
-        this._img = this.getImg();
         this._linkedHtmlElement = linkedHtmlElement;
+        this._activated = activated;
+        this._img = this._activated ? MAPPED_SPRITES.PitActivated : MAPPED_SPRITES.PitNonActivated;
         this._impassable = activated;
     }
 
     get activated(): boolean {
         return this._activated;
+    }
+
+    private set activated(activated: boolean) {
+        this._activated = true;
+        this._impassable = true;
+        this._img = MAPPED_SPRITES.PitActivated;
     }
 
     get coordinates(): Coordinates {
@@ -46,7 +52,7 @@ export class Pit implements IField {
         return this._movable;
     }
 
-    getImg(): string {
-        return this._activated ? MAPPED_SPRITES.PitActivated : MAPPED_SPRITES.PitNonActivated;
+    activate() {
+        this.activated = true;
     }
 }
