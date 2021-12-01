@@ -20,6 +20,7 @@ import FenceH from '../../../assets/sprites/svg/FenceH.svg';
 import FenceV from '../../../assets/sprites/svg/FenceV.svg';
 import Goblet from '../../../assets/sprites/svg/Goblet.svg';
 import HayBale from '../../../assets/sprites/svg/HayBale.png';
+import HayBaleInPit from '../../../assets/sprites/svg/HayBaleInPit.png';
 import Key from '../../../assets/sprites/svg/Key.png';
 import LockDoorH from '../../../assets/sprites/svg/LockDoorH.png';
 import LockDoorV from '../../../assets/sprites/svg/LockDoorV.png';
@@ -55,6 +56,7 @@ export const MAPPED_SPRITES = {
     FenceV,
     Goblet,
     HayBale,
+    HayBaleInPit,
     Key,
     LockDoorH,
     LockDoorV,

@@ -31,6 +31,9 @@
           "activated": false
         }
       ],
+      "HayBale": [
+        { "x": 7, "y": 8 }
+      ],
       "AutoDoor": {
         "Horizontal": [
           {
@@ -53,6 +56,11 @@
       {
         "coordinates": { "x": 5, "y": 8 },
         "direction": "Right",
+        "color": "Grey"
+      },
+      {
+        "coordinates": { "x": 11, "y": 10 },
+        "direction": "Up",
         "color": "Grey"
       }
     ],

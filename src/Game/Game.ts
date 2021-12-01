@@ -132,6 +132,7 @@ export class Game {
                     staticFieldsArray.push(
                         new Field(
                             { x: fieldCoordinates[0], y: fieldCoordinates[1] },
+                            false,
                             MAPPED_SPRITES[fieldName],
                             render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement
                         )
@@ -313,6 +314,13 @@ export class Game {
         });
     }
 
+    findStaticFieldByCoordinates(coordinates: Coordinates): IField | Arrow | undefined {
+        return this._staticObjects.find(field => {
+            if (field.coordinates)
+                return field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y
+        });
+    }
+
     findMapObjectByHtmlElement(htmlElement: HTMLElement): IEntity | undefined {
         return this._allObjects.find(field =>
             htmlElement === field?.linkedHtmlElement
@@ -429,17 +437,41 @@ export class Game {
                     if (nextField instanceof HayBale && cow.layer === 1) {
                         switch (cow.direction) {
                             case "Up":
-                                nextField.coordinates.y = Math.round(Number((nextCoordinates.y - 0.1).toFixed(1)));
+                                nextField.coordinates.y = Math.round((nextCoordinates.y - 0.1) * 100) / 100;
                                 break;
                             case "Right":
-                                nextField.coordinates.x = Math.round(Number((nextCoordinates.x + 0.1).toFixed(1)));
+                                nextField.coordinates.x = Math.round((nextCoordinates.x + 0.1) * 100) / 100;
                                 break;
                             case "Down":
-                                nextField.coordinates.y = Math.round(Number((nextCoordinates.y + 0.1).toFixed(1)));
+                                nextField.coordinates.y = Math.round((nextCoordinates.y + 0.1) * 100) / 100;
                                 break;
                             case "Left":
-                                nextField.coordinates.x = Math.round(Number((nextCoordinates.x - 0.1).toFixed(1)));
+                                nextField.coordinates.x = Math.round((nextCoordinates.x - 0.1) * 100) / 100;
                                 break;
+                        }
+                        const fieldUnderHayBale = this.findStaticFieldByCoordinates(nextField.coordinates);
+                        if (fieldUnderHayBale instanceof Pit && fieldUnderHayBale.activated) {
+                            this._movableObjects.splice(this._movableObjects.indexOf(nextField), 1);
+                            this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1)
+                            nextField.linkedHtmlElement.style.background = '' // FIXME: move change style to render
+                            this._staticObjects.splice(this._staticObjects.indexOf(fieldUnderHayBale), 1);
+                            this._interactiveFields.splice(this._interactiveFields.indexOf(fieldUnderHayBale), 1);
+                            this._staticObjects.push(
+                                new Field(
+                                    { x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y},
+                                    false,
+                                    MAPPED_SPRITES.HayBaleInPit,
+                                    fieldUnderHayBale.linkedHtmlElement
+                                )
+                            );
+                            this._nonInteractiveFields.push(
+                                new Field(
+                                    { x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y},
+                                    false,
+                                    MAPPED_SPRITES.HayBaleInPit,
+                                    fieldUnderHayBale.linkedHtmlElement
+                                )
+                            );
                         }
                     }
                 });
