@@ -132,7 +132,7 @@ export class Game {
                     staticFieldsArray.push(
                         new Field(
                             { x: fieldCoordinates[0], y: fieldCoordinates[1] },
-                            false,
+                            true,
                             MAPPED_SPRITES[fieldName],
                             render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement
                         )

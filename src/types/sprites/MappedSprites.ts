@@ -11,6 +11,7 @@ import AutoDoorHActivated from '../../../assets/sprites/svg/AutoDoorHActivated.p
 import AutoDoorV from '../../../assets/sprites/svg/AutoDoorV.png';
 import AutoDoorVActivated from '../../../assets/sprites/svg/AutoDoorVActivated.png';
 import Block from '../../../assets/sprites/svg/Block.png';
+import BlockTile from '../../../assets/sprites/svg/BlockTile.png';
 import Button from '../../../assets/sprites/svg/Button.png';
 import CowGreyUp from '../../../assets/sprites/svg/CowGreyUp.svg';
 import CowGreyRight from '../../../assets/sprites/svg/CowGreyRight.svg';
@@ -25,6 +26,10 @@ import Key from '../../../assets/sprites/svg/Key.png';
 import LockDoorH from '../../../assets/sprites/svg/LockDoorH.png';
 import LockDoorV from '../../../assets/sprites/svg/LockDoorV.png';
 import Pillar from '../../../assets/sprites/svg/Pillar.svg';
+import PistonDown from '../../../assets/sprites/svg/PistonDown.png';
+import PistonLeft from '../../../assets/sprites/svg/PistonLeft.png';
+import PistonRight from '../../../assets/sprites/svg/PistonRight.png';
+import PistonUp from '../../../assets/sprites/svg/PistonUp.png';
 import PitActivated from '../../../assets/sprites/svg/PitActivated.png';
 import PitNonActivated from '../../../assets/sprites/svg/PitNonActivated.png';
 import SlideUp from '../../../assets/sprites/svg/SlideUp.png';
@@ -47,6 +52,7 @@ export const MAPPED_SPRITES = {
     AutoDoorV,
     AutoDoorVActivated,
     Block,
+    BlockTile,
     Button,
     CowGreyUp,
     CowGreyRight,
@@ -61,6 +67,10 @@ export const MAPPED_SPRITES = {
     LockDoorH,
     LockDoorV,
     Pillar,
+    PistonDown,
+    PistonLeft,
+    PistonRight,
+    PistonUp,
     PitActivated,
     PitNonActivated,
     SlideUp,
