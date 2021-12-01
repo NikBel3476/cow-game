@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "es2015",
     "module": "ES6",
     "moduleResolution": "Node",
     "noImplicitAny": true,
     "sourceMap": true,
     "removeComments": true,
+    "resolveJsonModule": true,
     "outDir": "./dist/",
     "baseUrl": ".",
     "paths": {

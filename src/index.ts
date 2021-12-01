@@ -1,12 +1,10 @@
-import UI from './UI';
-import Render from './Render';
-import Game from './Game';
-import { lvl1, lvl2, lvl4 } from './levels';
+import { Game } from './Game';
+import { EventHandler } from "./UI";
+import { MAPPED_LEVELS } from "./levels";
 
-const ui: UI = new UI("#game-table-wrapper", "#ui-table-wrapper");
-const render: Render = new Render(ui);
-// FIXME: delete export
-export const game: Game = new Game(render, ui);
+const game = new Game();
+game.loadLevel(MAPPED_LEVELS[3]);
+const handler = new EventHandler(game);
 
 document.ondragstart = function() {
     return false;
@@ -21,9 +19,7 @@ export function endGame() {
 }
 
 window.onload = () => {
-    game.loadLevel(lvl2);
     game.renderScene();
-    game.drawArrows();
 }
 
 window.onresize = () => {

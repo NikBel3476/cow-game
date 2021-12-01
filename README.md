@@ -25,6 +25,21 @@ https://nikbel3476.github.io/cow-game/
 - [ ] Разработать все уровни игры (сделано: 2 / 25)
 
 ### Коды уровней
+- 1 lvheuughaf
+- 2 abminzefod
+- 3 dngabgrase
+- 4 pwieseryyn
+- 5 ppqwiesebk
+- 6 altorfjbfs
+- 7 lmjmichael
+- 8 wlyqwalkin
+- 9 ohmmkrisfz
+- 10 ssmilchzht
+- 11 cmilkmanud
+- 12 beixqdorfx
+- 13 snjoeybcow
+- 14 ydhxgizmox
+- 15 thdqwalkin
 - 16 mabgrasemh
 - 17 qikshamada
 - 18 zwmxmilchx
@@ -44,3 +59,11 @@ https://nikbel3476.github.io/cow-game/
 - 32 dfxqwalki
 - 33 zekgethome
 - 34 soabraxasa
+- 35
+- 36 kfxgizmoxw
+- 37 hniniveaoh
+- 38 vltreckerk
+- 39 jeieieiepy
+- 40 cbjustqulp
+- 41 aqwalkinnm
+- 42 mhxtraktor
