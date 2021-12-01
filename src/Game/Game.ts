@@ -35,6 +35,7 @@ export class Game {
     private _lockDoors!: LockDoor[];
     private _buttons!: Button[];
     private _autoDoors!: AutoDoor[];
+    private _pistons!: Piston[];
 
     private _cows!: Cow[];
     private _arrows!: Arrow[];
@@ -79,6 +80,7 @@ export class Game {
         this._lockDoors = this.initLockDoors(LockDoor);
 
         this._autoDoors = this.initAutoDoors(AutoDoor);
+        this._pistons = this.initPistons(Piston);
         this._buttons = this.initButtons(Button);
 
         this._cows = this.initCows(Cows);
@@ -96,7 +98,8 @@ export class Game {
             ...this._lockDoors,
             ...this._arrows,
             ...this._buttons,
-            ...this._autoDoors
+            ...this._autoDoors,
+            ...this._pistons
         ];
         this._staticObjects = [
             ...this._nonInteractiveFields,
@@ -107,7 +110,8 @@ export class Game {
             ...this._lockDoors,
             ...this._arrows,
             ...this._buttons,
-            ...this._autoDoors
+            ...this._autoDoors,
+            ...this._pistons
         ];
         this._movableObjects = [
             ...this._cows,
@@ -238,6 +242,26 @@ export class Game {
         return autoDoorsArr;
     }
 
+    private initPistons(pistons: ILevel['MapObjects']['Interactive']['Piston']): Piston[] {
+        const pistonsArr: Piston[] = [];
+        if (pistons) {
+            (Object.keys(pistons) as Direction[]).forEach(direction => {
+                pistons[direction].forEach(piston =>
+                    pistonsArr.push(
+                        new Piston(
+                            piston.coordinates,
+                            piston.id,
+                            direction,
+                            piston.activated,
+                            render.gameTable[piston.coordinates.y - 1][piston.coordinates.x - 1].firstChild as HTMLElement
+                        )
+                    )
+                )
+            });
+        }
+        return pistonsArr;
+    }
+
     private initButtons(buttons: ILevel['MapObjects']['Interactive']['Button']): Button[] {
         return buttons?.map(button => {
             const linkedElems: (AutoDoor | Piston)[] = [];
@@ -246,7 +270,11 @@ export class Game {
                     linkedElems.push(door);
                 }
             });
-            // TODO: add Pistons array checking
+            this._pistons.forEach(piston => {
+                if (button.linkedElementIds.includes(piston.id)) {
+                    linkedElems.push(piston);
+                }
+            });
             return new Button(
                 button.coordinates,
                 linkedElems,
@@ -397,6 +425,26 @@ export class Game {
                     }
                     if (currentField instanceof Button) {
                         currentField.activate();
+                        this._cows.forEach(cow => {
+                           this._pistons.forEach(piston => {
+                              if (cow.coordinates.x === piston.coordinates.x && cow.coordinates.y === piston.coordinates.y) {
+                                  switch (piston.direction) {
+                                      case "Up":
+                                          cow.coordinates.y--;
+                                          break;
+                                      case "Right":
+                                          cow.coordinates.x++;
+                                          break;
+                                      case "Down":
+                                          cow.coordinates.y++;
+                                          break;
+                                      case "Left":
+                                          cow.coordinates.x--;
+                                          break;
+                                  }
+                              }
+                           });
+                        });
                     }
 
                     let nextCoordinates: Coordinates;

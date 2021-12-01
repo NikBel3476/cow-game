@@ -1,6 +1,6 @@
 import { ui } from '../UI';
 import { ILevel } from "../levels/ILevel";
-import { Arrow, Goblet, HayBale, Cow, Field, IField, IGameObject } from "../Game";
+import { Arrow, HayBale, Cow, IField, Piston } from "../Game";
 import { Coordinates } from "../types";
 
 class Render {
@@ -59,24 +59,12 @@ class Render {
 
     drawStaticElements(fields: (IField | Arrow)[]) {
         fields.forEach(object => {
+            object.linkedHtmlElement.style.top = object instanceof Piston && !object.activated ?
+                 `-${(this.htmlGameTable.querySelector("td") as HTMLElement)
+                    .getBoundingClientRect().height}px` :
+                '0px';
             object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
         });
-
-        /*nonInteractive.forEach((field: Field) => {
-            const elem = this.gameTable[field.coordinates.y - 1][field.coordinates.x - 1].firstChild as HTMLElement
-            elem.style.background = `url('${field.img}') center center / contain no-repeat`;
-        });
-
-        Arrows.forEach(arrow => {
-            if (arrow.coordinates) {
-                const elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild as HTMLElement;
-                elem.style.background = `url('${arrow.img}') center center / contain no-repeat`;
-                elem.style.zIndex = '10';
-            }
-        });
-
-        const gobletElem = this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement
-        gobletElem.style.background = `url('${goblet.img}') center center / contain no-repeat`;*/
     }
 
     drawNonStaticElements(objects: (Cow | HayBale)[]) {
@@ -111,13 +99,6 @@ class Render {
         this.arrowsTable.forEach(row =>
             row.forEach(cell => (cell.firstChild as HTMLElement).style.background = '')
         )
-    }
-
-    drawTableArrows(arrows: Arrow[]) {
-        this.clearArrowsTable();
-        arrows.forEach((arrow: Arrow) =>
-            arrow.linkedHtmlElement.style.background = `url('${arrow.img}') center center / contain no-repeat`
-        );
     }
 
     clearArrowsTable() {

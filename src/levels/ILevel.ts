@@ -36,7 +36,8 @@ export interface ILevel {
             Piston?: {
                 [k in Direction]: {
                     id: number,
-                    coordinates: Coordinates
+                    coordinates: Coordinates,
+                    activated: boolean
                 }[]
             }
         }
