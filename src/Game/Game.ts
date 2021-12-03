@@ -1,6 +1,6 @@
 import { render } from '../Render';
 import { ui } from '../UI';
-import { ILevel } from '../levels/ILevel';
+import { ILevel } from '../levels';
 import { ArrowColor, Direction, Coordinates, SpriteName, MAPPED_SPRITES } from '../types';
 import {
     IField,
@@ -43,10 +43,6 @@ export class Game {
     private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
     private _loop!: NodeJS.Timer;
-
-    constructor() {
-
-    }
 
     loadLevel(level: ILevel) {
         const {
@@ -342,6 +338,10 @@ export class Game {
         });
     }
 
+    findCowByCoordinates(coordinates: Coordinates): Cow | undefined{
+        return this._cows.find(cow => cow.coordinates.x === coordinates.x && cow.coordinates.y === coordinates.y);
+    }
+
     findStaticFieldByCoordinates(coordinates: Coordinates): IField | Arrow | undefined {
         return this._staticObjects.find(field => {
             if (field.coordinates)
@@ -462,6 +462,7 @@ export class Game {
                             nextCoordinates = { x: cow.coordinates.x - 1, y: cow.coordinates.y };
                             break;
                     }
+                    // TODO: remove coordinates checking for integer only
                     const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
                     if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
                         if (nextField?.impassable) {
@@ -482,6 +483,7 @@ export class Game {
                     } else { // cow coordinates is not integer
                         cow.move();
                     }
+                    // FIXME: HayBale moving through walls
                     if (nextField instanceof HayBale && cow.layer === 1) {
                         switch (cow.direction) {
                             case "Up":
@@ -521,6 +523,25 @@ export class Game {
                                 )
                             );
                         }
+                    }
+                    let cowAhead: Cow | undefined;
+                    switch (cow.direction) {
+                        case 'Up':
+                            cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1});
+                            if (cowAhead && !nextField) cowAhead.coordinates.y -= 0.1;
+                            break;
+                        case 'Right':
+                            cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y });
+                            if (cowAhead && !nextField) cowAhead.coordinates.x += 0.1;
+                            break;
+                        case 'Down':
+                            cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1});
+                            if (cowAhead && !nextField) cowAhead.coordinates.y += 0.1;
+                            break;
+                        case 'Left':
+                            cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y});
+                            if (cowAhead && !nextField) cowAhead.coordinates.x -= 0.1;
+                            break;
                     }
                 });
                 this.renderScene();
