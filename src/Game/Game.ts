@@ -41,7 +41,7 @@ export class Game {
 
     private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
-    private _loop!: NodeJS.Timer;
+    private _requestAnimId!: number;
     private levelLoader: LevelLoader;
 
     constructor() {
@@ -405,15 +405,20 @@ export class Game {
             }
         });
         this.renderScene();
+        window.requestAnimationFrame(() => {
+            this.mainLoopFunc();
+        });
     }
 
     startGame(): void {
-        if (!this._loop) {
-            this._loop = setInterval(() => this.mainLoopFunc(), 40);
+        if (!this._requestAnimId) {
+            this._requestAnimId = window.requestAnimationFrame(() => {
+                this.mainLoopFunc();
+            });
         }
     }
 
     endGame() {
-        clearInterval(this._loop);
+        window.cancelAnimationFrame(this._requestAnimId);
     }
 }
