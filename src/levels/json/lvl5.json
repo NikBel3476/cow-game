@@ -24,7 +24,7 @@
       "Button": [
         {
           "coordinates": { "x": 10, "y": 5 },
-          "linkedElementIds": [1]
+          "linkedElementsIds": [1]
         }
       ],
       "Piston": {

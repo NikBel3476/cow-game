@@ -1,7 +1,7 @@
 import { render } from '../Render';
 import { ui } from '../UI';
 import { ILevel } from '../levels';
-import { ArrowColor, Direction, Coordinates, SpriteName, MAPPED_SPRITES } from '../types';
+import { ArrowColor, Direction, Coordinates, MAPPED_SPRITES } from '../types';
 import {
     IField,
     HayBale,
@@ -19,6 +19,7 @@ import {
     Button,
     Piston
 } from "./Entities";
+import { LevelLoader } from "./LevelLoader";
 
 export class Game {
     private _nonInteractiveFields: Field[] = [];
@@ -43,6 +44,12 @@ export class Game {
     private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
     private _loop!: NodeJS.Timer;
+    private levelLoader: LevelLoader;
+
+    constructor() {
+        this.levelLoader = new LevelLoader();
+    }
+
 
     loadLevel(level: ILevel) {
         const {
@@ -67,17 +74,18 @@ export class Game {
         } = level;
         render.createCowHtmlElements(Cows);
         render.createMovableHtmlElements(HayBale);
-        this._nonInteractiveFields = this.initNonInteractiveFields(NonInteractive);
-        this._goblet = this.initGoblet(Goblet);
-        this._slides = this.initSlides(Slide);
-        this._hayBales = this.initHayBales(HayBale);
-        this._pits = this.initPits(Pit);
-        this._keys = this.initKeys(Key);
-        this._lockDoors = this.initLockDoors(LockDoor);
+        this._nonInteractiveFields = this.levelLoader.initNonInteractiveFields(NonInteractive);
+        this._goblet = this.levelLoader.initGoblet(Goblet);
+        this._slides = this.levelLoader.initSlides(Slide);
+        this._hayBales = this.levelLoader.initHayBales(HayBale);
+        this._pits = this.levelLoader.initPits(Pit);
+        this._keys = this.levelLoader.initKeys(Key);
+        this._lockDoors = this.levelLoader.initLockDoors(LockDoor);
 
-        this._autoDoors = this.initAutoDoors(AutoDoor);
-        this._pistons = this.initPistons(Piston);
-        this._buttons = this.initButtons(Button);
+        this._autoDoors = this.levelLoader.initAutoDoors(AutoDoor);
+        this._pistons = this.levelLoader.initPistons(Piston);
+        this._buttons = this.levelLoader.initButtons(Button);
+        this.linkButtonsWithActiveObjects(this._buttons);
 
         this._cows = this.initCows(Cows);
         this._arrows = this.initArrows(Arrows);
@@ -124,160 +132,21 @@ export class Game {
         return this._arrows;
     }
 
-    private initNonInteractiveFields(staticFields?: ILevel['MapObjects']['NonInteractive']): Field[] {
-        const staticFieldsArray: Field[] = [];
-        if (staticFields) {
-            (Object.keys(staticFields) as SpriteName[]).forEach((fieldName) =>
-                staticFields[fieldName]?.forEach((fieldCoordinates) =>
-                    staticFieldsArray.push(
-                        new Field(
-                            { x: fieldCoordinates[0], y: fieldCoordinates[1] },
-                            true,
-                            MAPPED_SPRITES[fieldName],
-                            render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1].firstChild as HTMLElement
-                        )
-                    )
-                )
-            );
-        }
-        return staticFieldsArray;
-    }
-
-    private initGoblet(goblet: ILevel['MapObjects']['Interactive']['Goblet']): Goblet {
-        return new Goblet(goblet.coordinates, ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement)
-    }
-
-    private initSlides(slides: ILevel['MapObjects']['Interactive']['Slide']): Slide[] {
-        const slidesArr: Slide[] = [];
-        if (slides) {
-            (Object.keys(slides) as Direction[]).forEach(slideDirection =>
-                slides[slideDirection].forEach(coordinates => {
-                    slidesArr.push(
-                        new Slide(
-                        { x: coordinates.x, y: coordinates.y },
-                            slideDirection,
-                            render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement
-                        )
-                    )
-                })
-            )
-        }
-        return slidesArr;
-    }
-
-    private initHayBales(hayBales: ILevel['MapObjects']['Interactive']['HayBale']): HayBale[] {
-        let count = 0;
-        return Object.values(hayBales ?? {}).map(coordinates =>
-            new HayBale(
-                coordinates,
-                render.movableFields[count++] as HTMLElement
-            )
-        );
-    }
-
-    private initPits(pits: ILevel['MapObjects']['Interactive']['Pit']): Pit[] {
-        const pitsArr: Pit[] = [];
-        if (pits) {
-            Object.values(pits).forEach(pit =>
-                pitsArr.push(
-                    new Pit(
-                        pit.coordinates,
-                        render.gameTable[pit.coordinates.y - 1][pit.coordinates.x - 1].firstChild as HTMLElement,
-                        pit.activated
-                    )
-                )
-            )
-        }
-        return pitsArr;
-    }
-
-    private initKeys(keys: ILevel['MapObjects']['Interactive']['Key']): Key[] {
-        const keysArr: Key[] = [];
-        if (keys) {
-            Object.values(keys).forEach(coordinates =>
-                keysArr.push(new Key(coordinates, render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement))
-            )
-        }
-        return keysArr;
-    }
-
-    private initLockDoors(lockDoors: ILevel['MapObjects']['Interactive']['LockDoor']): LockDoor[] {
-        const lockDoorsArr: LockDoor[] = [];
-        if (lockDoors) {
-            (Object.keys(lockDoors) as DoorOrientation[]).forEach(lockDoorOrientation => {
-               lockDoors[lockDoorOrientation].forEach(coordinates => {
-                    lockDoorsArr.push(
-                        new LockDoor(
-                            coordinates,
-                            lockDoorOrientation,
-                            render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement
-                        )
-                    )
-               });
-            });
-        }
-        return lockDoorsArr;
-    }
-
-    private initAutoDoors(doors: ILevel['MapObjects']['Interactive']['AutoDoor']): AutoDoor[] {
-        const autoDoorsArr: AutoDoor[] = [];
-        if (doors) {
-            (Object.keys(doors) as DoorOrientation[]).forEach(orientation =>
-                doors[orientation].forEach(door =>
-                    autoDoorsArr.push(
-                        new AutoDoor(
-                            door.id,
-                            door.coordinates,
-                            orientation,
-                            render.gameTable[door.coordinates.y - 1][door.coordinates.x - 1].firstChild as HTMLElement
-                        )
-                    )
-                )
-            );
-        }
-        return autoDoorsArr;
-    }
-
-    private initPistons(pistons: ILevel['MapObjects']['Interactive']['Piston']): Piston[] {
-        const pistonsArr: Piston[] = [];
-        if (pistons) {
-            (Object.keys(pistons) as Direction[]).forEach(direction => {
-                pistons[direction].forEach(piston =>
-                    pistonsArr.push(
-                        new Piston(
-                            piston.coordinates,
-                            piston.id,
-                            direction,
-                            piston.activated,
-                            render.gameTable[piston.coordinates.y - 1][piston.coordinates.x - 1].firstChild as HTMLElement
-                        )
-                    )
-                )
-            });
-        }
-        return pistonsArr;
-    }
-
-    private initButtons(buttons: ILevel['MapObjects']['Interactive']['Button']): Button[] {
-        return buttons?.map(button => {
+    private linkButtonsWithActiveObjects(buttons: Button[]): void {
+        buttons.forEach(button => {
             const linkedElems: (AutoDoor | Piston)[] = [];
             this._autoDoors.forEach(door => {
-                if (button.linkedElementIds.includes(door.id)) {
+                if (button.linkedElementsIds.includes(door.id)) {
                     linkedElems.push(door);
                 }
             });
             this._pistons.forEach(piston => {
-                if (button.linkedElementIds.includes(piston.id)) {
+                if (button.linkedElementsIds.includes(piston.id)) {
                     linkedElems.push(piston);
                 }
             });
-            return new Button(
-                button.coordinates,
-                linkedElems,
-                render.gameTable[button.coordinates.y - 1][button.coordinates.x - 1].firstChild as HTMLElement
-            )
-        }
-        ) ?? [];
+            button.linkedElements = linkedElems;
+        });
     }
 
     private initCows(cows: ILevel['GameObjects']['Cows']) {

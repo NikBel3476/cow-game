@@ -23,7 +23,7 @@
         "Button": [
           {
             "coordinates": { "x": 10, "y": 8 },
-            "linkedElementIds": [1]
+            "linkedElementsIds": [1]
           }
         ],
         "AutoDoor": {
@@ -76,4 +76,3 @@
       }
     }
   }
-  
