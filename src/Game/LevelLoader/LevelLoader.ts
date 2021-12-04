@@ -143,7 +143,8 @@ export class LevelLoader {
         return buttons?.map(button => {
                 return new Button(
                     button.coordinates,
-                    button.linkedElementsIds,                    render.gameTable[button.coordinates.y - 1][button.coordinates.x - 1].firstChild as HTMLElement
+                    button.linkedElementsIds,
+                    render.gameTable[button.coordinates.y - 1][button.coordinates.x - 1].firstChild as HTMLElement
                 )
             }
         ) ?? [];
