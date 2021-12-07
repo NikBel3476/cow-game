@@ -1,6 +1,6 @@
 import { ILevel } from "../../levels";
-import { AutoDoor, Button, DoorOrientation, Field, Goblet, HayBale, Key, LockDoor, Piston, Pit, Slide } from "../Entities";
-import { Direction, MAPPED_SPRITES, SpriteName } from "../../types";
+import { Arrow, AutoDoor, Button, Cow, DoorOrientation, Field, Goblet, HayBale, Key, LockDoor, Piston, Pit, Slide } from "../Entities";
+import { ArrowColor, Direction, MAPPED_SPRITES, SpriteName } from "../../types";
 import { render } from "../../Render";
 import { ui } from "../../UI";
 
@@ -51,7 +51,7 @@ export class LevelLoader {
         return Object.values(hayBales ?? {}).map(coordinates =>
             new HayBale(
                 coordinates,
-                render.movableFields[count++] as HTMLElement
+                render.movableFields[count++]
             )
         );
     }
@@ -148,5 +148,42 @@ export class LevelLoader {
                 )
             }
         ) ?? [];
+    }
+
+    initArrows(arrows: ILevel['GameObjects']['Arrows']): Arrow[] {
+        const arrowsArr: Arrow[] = [];
+        let count = 0;
+        (Object.keys(arrows) as ArrowColor[]).forEach(color => {
+            (Object.keys(arrows[color]) as Direction[]).forEach(direction => {
+                arrows[color][direction].forEach((arrow) => {
+                    const coordinates = arrow.coordinates;
+                    if (coordinates) {
+                        arrowsArr.push(
+                            new Arrow(
+                                direction,
+                                color,
+                                render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement,
+                                coordinates
+                            )
+                        );
+                    } else {
+                        arrowsArr.push(new Arrow(direction, color, ui.arrowsTable.flat(1)[count++].firstChild as HTMLElement));
+                    }
+                });
+            })
+        })
+        return arrowsArr;
+    }
+
+    initCows(cows: ILevel['GameObjects']['Cows']) {
+        let count = 0;
+        return Object.values(cows).map(cow =>
+            new Cow(
+                cow.coordinates,
+                cow.direction,
+                cow.color,
+                render.cowHtmlElements[count++]
+            )
+        );
     }
 }

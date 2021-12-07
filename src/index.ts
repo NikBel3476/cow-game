@@ -4,7 +4,7 @@ import { MAPPED_LEVELS } from "./levels";
 import { render } from "./Render";
 
 const game = new Game();
-game.loadLevel(MAPPED_LEVELS[6]);
+game.loadLevel(MAPPED_LEVELS[3]);
 const handler = new EventHandler(game);
 
 document.ondragstart = function() {

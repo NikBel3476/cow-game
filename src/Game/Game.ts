@@ -1,7 +1,7 @@
 import { render } from '../Render';
 import { ui } from '../UI';
 import { ILevel } from '../levels';
-import { ArrowColor, Direction, Coordinates, MAPPED_SPRITES } from '../types';
+import { Coordinates, MAPPED_SPRITES } from '../types';
 import {
     IField,
     HayBale,
@@ -16,15 +16,17 @@ import {
     LockDoor,
     AutoDoor,
     Button,
-    Piston
+    Piston, IGameObject
 } from "./Entities";
 import { LevelLoader } from "./LevelLoader";
+import { CONF } from "../Conf";
 
 export class Game {
     private _nonInteractiveFields: Field[] = [];
     private _interactiveFields: (IField | Arrow)[] = [];
     private _staticObjects: (IField | Arrow)[] = [];
     private _movableObjects: (Cow | HayBale)[] = [];
+    private _mapObjects: (IField | IGameObject)[] = [];
 
     private _goblet!: Goblet;
     private _slides!: Slide[];
@@ -41,7 +43,7 @@ export class Game {
 
     private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
-    private _requestAnimId!: number;
+    private _loop!: NodeJS.Timer;
     private levelLoader: LevelLoader;
 
     constructor() {
@@ -84,12 +86,26 @@ export class Game {
         this._buttons = this.levelLoader.initButtons(Button);
         this.linkButtonsWithActiveObjects(this._buttons);
 
-        this._cows = this.initCows(Cows);
-        this._arrows = this.initArrows(Arrows);
+        this._cows = this.levelLoader.initCows(Cows);
+        this._arrows = this.levelLoader.initArrows(Arrows);
 
         this._cows.forEach(cow => this._CowKeysMap.set(cow, []));
 
         // FIXME: unite entities in single array
+        this._mapObjects = [
+            ...this._nonInteractiveFields,
+            this._goblet,
+            ...this._slides,
+            ...this._hayBales,
+            ...this._pits,
+            ...this._keys,
+            ...this._lockDoors,
+            ...this._autoDoors,
+            ...this._pistons,
+            ...this._buttons,
+            ...this._cows,
+            ...this._arrows
+        ];
         this._interactiveFields = [
             this._goblet,
             ...this._slides,
@@ -139,43 +155,6 @@ export class Game {
             });
             button.linkedElements = linkedElems;
         });
-    }
-
-    private initCows(cows: ILevel['GameObjects']['Cows']) {
-        let count = 0;
-        return Object.values(cows).map(cow =>
-            new Cow(
-                cow.coordinates,
-                cow.direction,
-                cow.color,
-                render.cowHtmlElements[count++]
-            )
-        );
-    }
-
-    private initArrows(arrows: ILevel['GameObjects']['Arrows']): Arrow[] {
-        const arrowsArr: Arrow[] = [];
-        let count = 0;
-        (Object.keys(arrows) as ArrowColor[]).forEach(color => {
-            (Object.keys(arrows[color]) as Direction[]).forEach(direction => {
-                arrows[color][direction].forEach((arrow) => {
-                    const coordinates = arrow.coordinates;
-                    if (coordinates) {
-                        arrowsArr.push(
-                            new Arrow(
-                                direction,
-                                color,
-                                render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement,
-                                coordinates
-                            )
-                        );
-                    } else {
-                        arrowsArr.push(new Arrow(direction, color, ui.arrowsTable.flat(1)[count++].firstChild as HTMLElement));
-                    }
-                });
-            })
-        })
-        return arrowsArr;
     }
 
     getGameObjects(): (Arrow | Cow)[] {
@@ -239,10 +218,7 @@ export class Game {
     }
 
     renderScene(): void {
-        render.drawScene(
-            this._staticObjects,
-            this._movableObjects
-        );
+        render.drawScene(this._staticObjects, this._movableObjects);
     }
 
     // -------------------- GAME --------------------
@@ -257,8 +233,10 @@ export class Game {
                 if (cow.coordinates.x === currentField?.coordinates?.x && cow.coordinates.y === currentField.coordinates.y) {
                     cow.direction = currentField.direction;
                     // FIXME: delete checking staticObjects and interactiveFields at the same time
-                    this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
-                    this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
+                    if (currentField.color === 'Red') {
+                        this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
+                        this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
+                    }
                 }
             }
             if (currentField instanceof Key) {
@@ -363,7 +341,7 @@ export class Game {
                 if (fieldUnderHayBale instanceof Pit && fieldUnderHayBale.activated) {
                     this._movableObjects.splice(this._movableObjects.indexOf(nextField), 1);
                     this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1)
-                    nextField.linkedHtmlElement.style.background = '' // FIXME: move change style to render
+                    nextField.linkedHtmlElement.style.background = ''; // FIXME: move style changing to render
                     this._staticObjects.splice(this._staticObjects.indexOf(fieldUnderHayBale), 1);
                     this._interactiveFields.splice(this._interactiveFields.indexOf(fieldUnderHayBale), 1);
                     this._staticObjects.push(
@@ -405,20 +383,17 @@ export class Game {
             }
         });
         this.renderScene();
-        window.requestAnimationFrame(() => {
-            this.mainLoopFunc();
-        });
     }
 
     startGame(): void {
-        if (!this._requestAnimId) {
-            this._requestAnimId = window.requestAnimationFrame(() => {
-                this.mainLoopFunc();
-            });
+        if (!this._loop) {
+            this._loop = setInterval(() => this.mainLoopFunc(), CONF.loopTime);
         }
     }
 
     endGame() {
-        window.cancelAnimationFrame(this._requestAnimId);
+        if (this._loop) {
+            clearInterval(this._loop);
+        }
     }
 }
