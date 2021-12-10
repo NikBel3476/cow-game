@@ -302,39 +302,39 @@ export class Game {
             }
             // TODO: remove coordinates checking for integer only
             const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
-            if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
-                if (nextField?.impassable) {
-                    if (cow.layer === 2) cow.move();
-                    if (nextField instanceof LockDoor) {
-                        const keys = this._CowKeysMap.get(cow);
-                        if (keys && keys.length !== 0) {
-                            keys.pop();
-                            this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
-                            this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
-                            cow.move();
-                        }
+            if (nextField?.impassable) {
+                if (cow.layer === 2) cow.move();
+                if (nextField instanceof LockDoor) {
+                    const keys = this._CowKeysMap.get(cow);
+                    if (keys && keys.length !== 0) {
+                        keys.pop();
+                        this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                        this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
+                        cow.move();
                     }
-                    if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
-                } else { // passable field
-                    if (cow.layer === 1) cow.move();
                 }
-            } else { // cow coordinates is not integer
-                cow.move();
+                if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
+            } else { // passable field
+                if (cow.layer === 1) cow.move();
             }
             // FIXME: HayBale moving through walls
             if (nextField instanceof HayBale && cow.layer === 1) {
                 switch (cow.direction) {
                     case "Up":
                         nextField.coordinates.y = Math.round((nextCoordinates.y - 1) * 100) / 100;
+                        cow.move();
                         break;
                     case "Right":
                         nextField.coordinates.x = Math.round((nextCoordinates.x + 1) * 100) / 100;
+                        cow.move();
                         break;
                     case "Down":
                         nextField.coordinates.y = Math.round((nextCoordinates.y + 1) * 100) / 100;
+                        cow.move();
                         break;
                     case "Left":
                         nextField.coordinates.x = Math.round((nextCoordinates.x - 1) * 100) / 100;
+                        cow.move();
                         break;
                 }
                 const fieldUnderHayBale = this.findStaticFieldByCoordinates(nextField.coordinates);
