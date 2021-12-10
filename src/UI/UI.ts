@@ -1,4 +1,4 @@
-import CONF from '../Conf';
+import { CONF } from '../Conf';
 
 class UI {
     htmlGameTable: HTMLTableElement;

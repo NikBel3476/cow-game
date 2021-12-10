@@ -141,19 +141,3 @@ body {
     width: 100%;
     height: 25%;
 }
-
-#cow-right {
-    background: url("../../src/sprites/svg/CowGreyRight.svg") no-repeat center;
-}
-
-#cow-down {
-    background: url("../../src/sprites/svg/CowGreyDown.svg") no-repeat center;
-}
-
-#cow-left {
-    background: url("../../src/sprites/svg/CowGreyLeft.svg") no-repeat center;
-}
-
-#cow-up {
-    background: url("../../src/sprites/svg/CowGreyUp.svg") no-repeat center;
-}

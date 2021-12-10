@@ -1,4 +1,5 @@
 import { ArrowColor, Direction, Coordinates, SpriteName, CowColor } from '../types';
+import { DoorOrientation } from "../Game";
 
 export interface ILevel {
     MapObjects: {
@@ -22,17 +23,30 @@ export interface ILevel {
                 Horizontal: Coordinates[],
                 Vertical: Coordinates[]
             }
-            ActivatingCouple?: { // TODO: change structure
-                "InteractiveObjects": { coordinates: Coordinates } // door | piston secondary
-                "Button": { coordinates: Coordinates }[] // button | lever firstly
+            Button?: {
+                coordinates: Coordinates,
+                linkedElementsIds: number[]
             }[]
+            AutoDoor?: {
+                [k in DoorOrientation]: {
+                    id: number,
+                    coordinates: Coordinates
+                }[]
+            },
+            Piston?: {
+                [k in Direction]: {
+                    id: number,
+                    coordinates: Coordinates,
+                    activated: boolean
+                }[]
+            }
         }
     }
     GameObjects: {
         Cows: {
-            "coordinates": Coordinates,
-            "direction": Direction,
-            "color": CowColor
+            coordinates: Coordinates,
+            direction: Direction,
+            color: CowColor
         }[],
         Arrows: {
             [ k in ArrowColor]: {

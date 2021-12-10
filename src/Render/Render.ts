@@ -1,7 +1,8 @@
 import { ui } from '../UI';
-import { ILevel } from "../levels/ILevel";
-import { Arrow, Goblet, HayBale, Cow, Field, IField, IGameObject } from "../Game";
+import { ILevel } from "../levels";
+import { Arrow, HayBale, Cow, IField, Piston, IGameObject } from "../Game";
 import { Coordinates } from "../types";
+import { CONF } from "../Conf";
 
 class Render {
     htmlGameTable: HTMLElement;
@@ -24,13 +25,10 @@ class Render {
         cows.forEach(cow => {
             const divCow = document.createElement("div");
             divCow.className = `cow-wrapper cow-${count++}`;
-            divCow.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect()
-                .height * (cow.coordinates.y - 1)}px`;
-            divCow.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect()
-                .width * (cow.coordinates.x - 1)}px`;
             divCow.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
             divCow.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
             divCow.style.zIndex = '30';
+            divCow.style.transition = `all ${CONF.loopTime / 1000}s linear`;
             htmlElements.push(divCow);
             document.getElementById("game-table-wrapper")?.appendChild(divCow);
         });
@@ -43,13 +41,10 @@ class Render {
             hayBales.forEach((coordinates: Coordinates) => {
                     const divField = document.createElement("div");
                     divField.className = `mobile-field`;
-                    divField.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
-                        .getBoundingClientRect().height * (coordinates.x - 1)}px`;
-                    divField.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
-                        .getBoundingClientRect().width * (coordinates.y - 1)}px`;
                     divField.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
                     divField.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
                     divField.style.zIndex = '20';
+                    divField.style.transition = `all ${CONF.loopTime / 1000}s linear`;
                     htmlElements.push(divField);
                     document.getElementById("game-table-wrapper")?.appendChild(divField);
             });
@@ -59,48 +54,49 @@ class Render {
 
     drawStaticElements(fields: (IField | Arrow)[]) {
         fields.forEach(object => {
+            object.linkedHtmlElement.style.top = object instanceof Piston && !object.activated ?
+                 `-${(this.htmlGameTable.querySelector("td") as HTMLElement)
+                    .getBoundingClientRect().height}px` :
+                '0px';
             object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
         });
-
-        /*nonInteractive.forEach((field: Field) => {
-            const elem = this.gameTable[field.coordinates.y - 1][field.coordinates.x - 1].firstChild as HTMLElement
-            elem.style.background = `url('${field.img}') center center / contain no-repeat`;
-        });
-
-        Arrows.forEach(arrow => {
-            if (arrow.coordinates) {
-                const elem = this.gameTable[arrow.coordinates.y - 1][arrow.coordinates.x - 1].firstChild as HTMLElement;
-                elem.style.background = `url('${arrow.img}') center center / contain no-repeat`;
-                elem.style.zIndex = '10';
-            }
-        });
-
-        const gobletElem = this.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1].firstChild as HTMLElement
-        gobletElem.style.background = `url('${goblet.img}') center center / contain no-repeat`;*/
     }
 
     drawNonStaticElements(objects: (Cow | HayBale)[]) {
         objects.forEach(object => {
             if (object instanceof HayBale) {
-                object.linkedHtmlElement.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
-                    .getBoundingClientRect().height * (object.coordinates.y - 1)}px`;
-                object.linkedHtmlElement.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
-                    .getBoundingClientRect().width * (object.coordinates.x - 1)}px`;
-                object.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
-                object.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
+                const tdElement = this.htmlGameTable.querySelector("td") as HTMLElement;
+                object.linkedHtmlElement.style.transform = `translate(
+                    ${tdElement.getBoundingClientRect().width * (object.coordinates.x - 1)}px,
+                    ${tdElement.getBoundingClientRect().height * (object.coordinates.y - 1)}px)`;
+                object.linkedHtmlElement.style.top = '0px';
+                object.linkedHtmlElement.style.left = '0px';
+                object.linkedHtmlElement.style.width = `${tdElement?.clientWidth}px`;
+                object.linkedHtmlElement.style.height = `${tdElement?.clientHeight}px`;
                 object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
             }
             if (object instanceof Cow) {
-                const cssTop = object.layer === 2 ?
-                    (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (object.coordinates.y - 1) - 30 :
-                    (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height * (object.coordinates.y - 1);
-                const cssLeft = (this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().width * (object.coordinates.x - 1);
-                object.linkedHtmlElement.style.top = `${cssTop}px`;
-                object.linkedHtmlElement.style.left = `${cssLeft}px`;
-                object.linkedHtmlElement.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
-                object.linkedHtmlElement.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
+                const tdElement = this.htmlGameTable.querySelector("td") as HTMLElement;
+                const cssTranslateY = object.layer === 2 ?
+                    tdElement.getBoundingClientRect().height * (object.coordinates.y - 1) - 30 :
+                    tdElement.getBoundingClientRect().height * (object.coordinates.y - 1);
+                const cssTranslateX = tdElement.getBoundingClientRect().width * (object.coordinates.x - 1);
+                object.linkedHtmlElement.style.top = '0px';
+                object.linkedHtmlElement.style.left = '0px';
+                object.linkedHtmlElement.style.transform = `translate(${cssTranslateX}px, ${cssTranslateY}px)`;
+                object.linkedHtmlElement.style.width = `${tdElement?.clientWidth}px`;
+                object.linkedHtmlElement.style.height = `${tdElement?.clientHeight}px`;
                 object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
             }
+        });
+    }
+
+    drawElements(elems: (IField | IGameObject)[]): void {
+        elems.forEach(elem => {
+            elem.linkedHtmlElement.style.transform = elem instanceof Piston && !elem.activated ?
+                `translateY(-${(this.htmlGameTable.querySelector("td") as HTMLElement).getBoundingClientRect().height}px)` :
+                '';
+            elem.linkedHtmlElement.style.background = `url('${elem.img}') center center / contain no-repeat`;
         });
     }
 
@@ -111,13 +107,6 @@ class Render {
         this.arrowsTable.forEach(row =>
             row.forEach(cell => (cell.firstChild as HTMLElement).style.background = '')
         )
-    }
-
-    drawTableArrows(arrows: Arrow[]) {
-        this.clearArrowsTable();
-        arrows.forEach((arrow: Arrow) =>
-            arrow.linkedHtmlElement.style.background = `url('${arrow.img}') center center / contain no-repeat`
-        );
     }
 
     clearArrowsTable() {
@@ -137,12 +126,9 @@ class Render {
         });
     }
 
-    drawScene(
-        staticElems: (IField | Arrow)[],
-        movableElems: (Cow | HayBale)[]
-    ) {
-        this.drawStaticElements(staticElems);
-        this.drawNonStaticElements(movableElems);
+    drawScene(staticElements: (IField | Arrow)[], movableElements: (Cow | HayBale)[]) {
+        this.drawStaticElements(staticElements);
+        this.drawNonStaticElements(movableElements);
     }
 }
 

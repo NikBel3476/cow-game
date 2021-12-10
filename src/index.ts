@@ -1,9 +1,10 @@
 import { Game } from './Game';
 import { EventHandler } from "./UI";
 import { MAPPED_LEVELS } from "./levels";
+import { render } from "./Render";
 
 const game = new Game();
-game.loadLevel(MAPPED_LEVELS[4]);
+game.loadLevel(MAPPED_LEVELS[3]);
 const handler = new EventHandler(game);
 
 document.ondragstart = function() {
@@ -24,4 +25,5 @@ window.onload = () => {
 
 window.onresize = () => {
     game.renderScene();
+    render.scaleArrowsTable();
 }

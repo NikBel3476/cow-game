@@ -1,3 +1,3 @@
-export * from './DoorsOrientation';
+export * from './DoorOrientation';
 export * from './LockDoor';
 export * from './AutoDoor';

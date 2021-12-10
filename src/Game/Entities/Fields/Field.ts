@@ -5,11 +5,12 @@ export class Field implements IField {
     private _coordinates: Coordinates;
     private _img: string;
     private _linkedHtmlElement: HTMLElement;
-    private _impassable: boolean = true;
+    private _impassable: boolean;
     private _movable: boolean = false;
 
-    constructor(coordinates: Coordinates, img: string, linkedHtmlElement: HTMLElement) {
+    constructor(coordinates: Coordinates, impassable: boolean, img: string, linkedHtmlElement: HTMLElement) {
         this._coordinates = coordinates;
+        this._impassable = impassable;
         this._img = img;
         this._linkedHtmlElement = linkedHtmlElement;
     }
