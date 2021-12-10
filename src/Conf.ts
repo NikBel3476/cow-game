@@ -7,5 +7,5 @@ export const CONF = {
         width: 3,
         height: 7
     },
-    loopTime: 25
+    loopTime: 250
 }

@@ -325,16 +325,16 @@ export class Game {
             if (nextField instanceof HayBale && cow.layer === 1) {
                 switch (cow.direction) {
                     case "Up":
-                        nextField.coordinates.y = Math.round((nextCoordinates.y - 0.1) * 100) / 100;
+                        nextField.coordinates.y = Math.round((nextCoordinates.y - 1) * 100) / 100;
                         break;
                     case "Right":
-                        nextField.coordinates.x = Math.round((nextCoordinates.x + 0.1) * 100) / 100;
+                        nextField.coordinates.x = Math.round((nextCoordinates.x + 1) * 100) / 100;
                         break;
                     case "Down":
-                        nextField.coordinates.y = Math.round((nextCoordinates.y + 0.1) * 100) / 100;
+                        nextField.coordinates.y = Math.round((nextCoordinates.y + 1) * 100) / 100;
                         break;
                     case "Left":
-                        nextField.coordinates.x = Math.round((nextCoordinates.x - 0.1) * 100) / 100;
+                        nextField.coordinates.x = Math.round((nextCoordinates.x - 1) * 100) / 100;
                         break;
                 }
                 const fieldUnderHayBale = this.findStaticFieldByCoordinates(nextField.coordinates);
@@ -366,19 +366,19 @@ export class Game {
             switch (cow.direction) {
                 case 'Up':
                     cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1});
-                    if (cowAhead && !nextField) cowAhead.coordinates.y -= 0.1;
+                    if (cowAhead && !nextField) cowAhead.coordinates.y -= 1;
                     break;
                 case 'Right':
                     cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y });
-                    if (cowAhead && !nextField) cowAhead.coordinates.x += 0.1;
+                    if (cowAhead && !nextField) cowAhead.coordinates.x += 1;
                     break;
                 case 'Down':
                     cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1});
-                    if (cowAhead && !nextField) cowAhead.coordinates.y += 0.1;
+                    if (cowAhead && !nextField) cowAhead.coordinates.y += 1;
                     break;
                 case 'Left':
                     cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y});
-                    if (cowAhead && !nextField) cowAhead.coordinates.x -= 0.1;
+                    if (cowAhead && !nextField) cowAhead.coordinates.x -= 1;
                     break;
             }
         });

@@ -28,7 +28,7 @@ class Render {
             divCow.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
             divCow.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
             divCow.style.zIndex = '30';
-            divCow.style.transition = `all ${CONF.loopTime / 200}s linear`;
+            divCow.style.transition = `all ${CONF.loopTime / 1000}s linear`;
             htmlElements.push(divCow);
             document.getElementById("game-table-wrapper")?.appendChild(divCow);
         });
@@ -44,7 +44,7 @@ class Render {
                     divField.style.width = `${this.htmlGameTable.querySelector("td")?.clientWidth}px`;
                     divField.style.height = `${this.htmlGameTable.querySelector("td")?.clientHeight}px`;
                     divField.style.zIndex = '20';
-                    divField.style.transition = `all ${CONF.loopTime / 200}s linear`;
+                    divField.style.transition = `all ${CONF.loopTime / 1000}s linear`;
                     htmlElements.push(divField);
                     document.getElementById("game-table-wrapper")?.appendChild(divField);
             });
