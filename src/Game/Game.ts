@@ -234,6 +234,7 @@ export class Game {
                     cow.direction = currentField.direction;
                     // FIXME: delete checking staticObjects and interactiveFields at the same time
                     if (currentField.color === 'Red') {
+                        currentField.linkedHtmlElement.style.background = '';
                         this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
                         this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
                     }
@@ -259,7 +260,6 @@ export class Game {
             }
             if (currentField instanceof Pit) {
                 currentField.activate();
-                cow.move();
             }
             if (currentField instanceof Button) {
                 currentField.activate();
