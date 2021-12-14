@@ -1,6 +1,6 @@
 import { render } from '../Render';
-import { ui } from '../UI';
-import { ILevel } from '../levels';
+import { EventHandler, ui } from '../UI';
+import { ILevel, MAPPED_LEVELS } from '../levels';
 import { Coordinates, MAPPED_SPRITES } from '../types';
 import {
     IField,
@@ -22,6 +22,8 @@ import { LevelLoader } from "./LevelLoader";
 import { CONF } from "../Conf";
 
 export class Game {
+    private _currentLevel: keyof typeof MAPPED_LEVELS;
+
     private _nonInteractiveFields: Field[] = [];
     private _interactiveFields: (IField | Arrow)[] = [];
     private _staticObjects: (IField | Arrow)[] = [];
@@ -43,11 +45,16 @@ export class Game {
 
     private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
-    private _loop!: NodeJS.Timer;
+    private _loop!: number;
     private levelLoader: LevelLoader;
 
-    constructor() {
+    private eventHandler: EventHandler;
+
+    constructor(currentLevel: keyof typeof MAPPED_LEVELS = 1) {
+        this._currentLevel = currentLevel;
         this.levelLoader = new LevelLoader();
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        this.eventHandler = new EventHandler(this);
     }
 
     loadLevel(level: ILevel) {
@@ -71,6 +78,7 @@ export class Game {
                 Arrows
             }
         } = level;
+        render.deleteScene();
         render.createCowHtmlElements(Cows);
         render.createMovableHtmlElements(HayBale);
         this._nonInteractiveFields = this.levelLoader.initNonInteractiveFields(NonInteractive);
@@ -134,6 +142,12 @@ export class Game {
             ...this._cows,
             ...this._hayBales
         ];
+    }
+
+    private loadNextLevel() {
+        if (this._currentLevel < CONF.levelsAmount) this._currentLevel++;
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        this.eventHandler.addArrowsEventListeners();
     }
 
     public get arrows(): Arrow[] {
@@ -243,6 +257,7 @@ export class Game {
             if (currentField instanceof Key) {
                 if (cow.coordinates.x === currentField.coordinates.x && cow.coordinates.y === currentField.coordinates.y) {
                     this._CowKeysMap.get(cow)?.push(currentField);
+                    currentField.linkedHtmlElement.style.background = '';
                     // FIXME: delete checking staticObjects and interactiveFields at the same time
                     this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
                     this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
@@ -308,6 +323,7 @@ export class Game {
                     const keys = this._CowKeysMap.get(cow);
                     if (keys && keys.length !== 0) {
                         keys.pop();
+                        nextField.linkedHtmlElement.style.background = '';
                         this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
                         this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
                         cow.move();
@@ -385,13 +401,15 @@ export class Game {
 
     startGame(): void {
         if (!this._loop) {
-            this._loop = setInterval(() => this.mainLoopFunc(), CONF.loopTime);
+            this._loop = window.setInterval(() => this.mainLoopFunc(), CONF.loopTime);
         }
     }
 
     endGame() {
         if (this._loop) {
             clearInterval(this._loop);
+            this._loop = 0;
+            this.loadNextLevel();
         }
     }
 }

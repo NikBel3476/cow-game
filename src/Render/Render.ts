@@ -9,7 +9,7 @@ class Render {
     htmlArrowsTable: HTMLElement;
     gameTable: HTMLElement[][];
     arrowsTable: HTMLElement[][];
-    cowHtmlElements!: HTMLElement[];
+    cowHtmlElements: HTMLElement[] = [];
     movableFields: HTMLElement[] = [];
 
     constructor() {
@@ -115,6 +115,15 @@ class Render {
                 (field.firstChild as HTMLElement).style.background = ""
             )
         );
+    }
+
+    deleteScene() {
+        this.clearScene();
+        this.clearArrowsTable();
+        this.cowHtmlElements.forEach(element => element.remove());
+        this.movableFields.forEach(field => field.remove());
+        this.cowHtmlElements = [];
+        this.movableFields = [];
     }
 
     scaleArrowsTable() {

@@ -33,10 +33,10 @@ export class EventHandler {
         document.addEventListener('mouseup', (e: MouseEvent) => {
             const targetElement = e.target as HTMLElement;
             if (EventHandler.selectedItem && targetElement) {
-                const gameObject = game.findMapObjectByHtmlElement(targetElement);
+                const gameObject = this.game.findMapObjectByHtmlElement(targetElement);
                 if (!gameObject) {
-                    const coordinates = game.getFieldCoordinates(targetElement);
-                    const arrow = game.findArrowByHtmlElement(EventHandler.selectedItem);
+                    const coordinates = this.game.getFieldCoordinates(targetElement);
+                    const arrow = this.game.findArrowByHtmlElement(EventHandler.selectedItem);
                     if (coordinates && arrow) {
                         targetElement.addEventListener('mousedown', this.onArrowMousedown);
                         this.game.placeArrowToMap(arrow, coordinates, targetElement);
@@ -51,6 +51,10 @@ export class EventHandler {
             EventHandler.selectedItem = null;
         });
 
+        this.addArrowsEventListeners();
+    }
+
+    addArrowsEventListeners() {
         this.game.arrows.forEach(arrow => {
             if (!arrow.coordinates) {
                 this.addArrowEventListener(arrow, 'mousedown', this.onArrowMousedown);
