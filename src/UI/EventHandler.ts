@@ -38,6 +38,7 @@ export class EventHandler {
                     const coordinates = game.getFieldCoordinates(targetElement);
                     const arrow = game.findArrowByHtmlElement(EventHandler.selectedItem);
                     if (coordinates && arrow) {
+                        targetElement.addEventListener('mousedown', this.onArrowMousedown);
                         this.game.placeArrowToMap(arrow, coordinates, targetElement);
                         EventHandler.selectedItem.removeEventListener('mousedown', this.onArrowMousedown);
                     }

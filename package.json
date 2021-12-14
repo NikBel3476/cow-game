@@ -7,8 +7,8 @@
     "build:watch": "webpack --mode=development --watch",
     "build": "webpack --mode=development",
     "build:production": "webpack --mode=production",
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
-    "prebuild:watch": "tslint -c tslint.json -p tsconfig.json --fix"
+    "prebuild": "tslint -c tslint.json -p tsconfig.json",
+    "prebuild:watch": "tslint -c tslint.json -p tsconfig.json"
   },
   "repository": {
     "type": "git",

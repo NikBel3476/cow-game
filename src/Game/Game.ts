@@ -362,24 +362,22 @@ export class Game {
                     );
                 }
             }
-            let cowAhead: Cow | undefined;
-            switch (cow.direction) {
-                case 'Up':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1});
-                    if (cowAhead && !nextField) cowAhead.coordinates.y -= 1;
-                    break;
-                case 'Right':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y });
-                    if (cowAhead && !nextField) cowAhead.coordinates.x += 1;
-                    break;
-                case 'Down':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1});
-                    if (cowAhead && !nextField) cowAhead.coordinates.y += 1;
-                    break;
-                case 'Left':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y});
-                    if (cowAhead && !nextField) cowAhead.coordinates.x -= 1;
-                    break;
+            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y });
+            if (cowAhead && cowAhead !== cow) {
+                switch (cow.direction) {
+                    case 'Up':
+                        if (!nextField) cowAhead.coordinates.y -= 1;
+                        break;
+                    case 'Right':
+                        if (!nextField) cowAhead.coordinates.x += 1;
+                        break;
+                    case 'Down':
+                        if (!nextField) cowAhead.coordinates.y += 1;
+                        break;
+                    case 'Left':
+                        if (!nextField) cowAhead.coordinates.x -= 1;
+                        break;
+                }
             }
         });
         this.renderScene();
