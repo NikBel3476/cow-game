@@ -15,7 +15,7 @@ export function startGame() {
 }
 
 export function endGame() {
-    // game.endGame();
+    game.reloadLevel();
 }
 
 window.onload = () => {

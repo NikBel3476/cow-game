@@ -50,11 +50,16 @@ export class Game {
 
     private eventHandler: EventHandler;
 
-    constructor(currentLevel: keyof typeof MAPPED_LEVELS = 1) {
-        this._currentLevel = currentLevel;
+    constructor() {
+        const levelFromStorage= window.localStorage.getItem('level');
+        this._currentLevel = levelFromStorage ? levelFromStorage as unknown as keyof typeof MAPPED_LEVELS : 1;
         this.levelLoader = new LevelLoader();
         this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
         this.eventHandler = new EventHandler(this);
+    }
+
+    public get arrows(): Arrow[] {
+        return this._arrows;
     }
 
     loadLevel(level: ILevel) {
@@ -145,13 +150,16 @@ export class Game {
     }
 
     private loadNextLevel() {
-        if (this._currentLevel < CONF.levelsAmount) this._currentLevel++;
-        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
-        this.eventHandler.addArrowsEventListeners();
+        if (this._currentLevel < CONF.levelsAmount) {
+            this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+            this.eventHandler.addArrowsEventListeners();
+        }
     }
 
-    public get arrows(): Arrow[] {
-        return this._arrows;
+    reloadLevel(): void {
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        this.eventHandler.addArrowsEventListeners();
+        this.renderScene();
     }
 
     private linkButtonsWithActiveObjects(buttons: Button[]): void {
@@ -182,7 +190,6 @@ export class Game {
         const indexes = ui.getMapElementIndex(htmlElement);
         if (indexes)
             return { x: indexes[1] + 1, y: indexes[0] + 1}
-        return undefined;
     }
 
     findFieldByCoordinates(coordinates: Coordinates): IField | Arrow | undefined {
@@ -405,11 +412,13 @@ export class Game {
         }
     }
 
-    endGame() {
+    private endGame() {
         if (this._loop) {
             clearInterval(this._loop);
             this._loop = 0;
-            this.loadNextLevel();
         }
+        this._currentLevel++;
+        this.loadNextLevel();
+        window.localStorage.setItem('level', `${this._currentLevel}`);
     }
 }
