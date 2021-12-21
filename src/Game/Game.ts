@@ -51,7 +51,7 @@ export class Game {
     private eventHandler: EventHandler;
 
     constructor() {
-        const levelFromStorage= window.localStorage.getItem('level');
+        const levelFromStorage = window.localStorage.getItem('level');
         this._currentLevel = levelFromStorage ? levelFromStorage as unknown as keyof typeof MAPPED_LEVELS : 1;
         this.levelLoader = new LevelLoader();
         this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
@@ -227,6 +227,13 @@ export class Game {
 
     placeArrowToMap(arrow: Arrow, coordinates: Coordinates, newLinkedHtmlElement: HTMLElement): void {
         arrow.coordinates = coordinates;
+        arrow.linkedHtmlElement = newLinkedHtmlElement;
+        this.clearScene();
+        this.renderScene();
+    }
+
+    placeArrowToTable(arrow: Arrow, newLinkedHtmlElement: HTMLElement): void {
+        arrow.coordinates = undefined;
         arrow.linkedHtmlElement = newLinkedHtmlElement;
         this.clearScene();
         this.renderScene();

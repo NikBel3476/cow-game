@@ -1,5 +1,6 @@
 import { endGame, startGame } from "../index";
 import { Arrow, Game } from "../Game";
+import { ui } from "./UI";
 
 export class EventHandler {
     game: Game;
@@ -38,8 +39,15 @@ export class EventHandler {
                     const coordinates = this.game.getFieldCoordinates(targetElement);
                     const arrow = this.game.findArrowByHtmlElement(EventHandler.selectedItem);
                     if (coordinates && arrow) {
+                        targetElement.style.zIndex = '10';
                         targetElement.addEventListener('mousedown', this.onArrowMousedown);
                         this.game.placeArrowToMap(arrow, coordinates, targetElement);
+                        EventHandler.selectedItem.removeEventListener('mousedown', this.onArrowMousedown);
+                    }
+                    const isArrowTableElement = ui.getArrowTableElement(targetElement);
+                    if (isArrowTableElement && arrow) {
+                        targetElement.addEventListener('mousedown', this.onArrowMousedown);
+                        this.game.placeArrowToTable(arrow, targetElement);
                         EventHandler.selectedItem.removeEventListener('mousedown', this.onArrowMousedown);
                     }
                 }
