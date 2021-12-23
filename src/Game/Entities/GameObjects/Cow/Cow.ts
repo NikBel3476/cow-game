@@ -80,25 +80,25 @@ export class Cow implements ICow {
     move(direction: Direction = this._direction) {
         switch (direction) {
             case "Up":
-                this._coordinates.y = Math.round((this._coordinates.y - 0.1) * 100) / 100;
+                this._coordinates.y = Math.round((this._coordinates.y - 1) * 100) / 100;
                 if (this._direction !== "Up") {
                     this._direction = "Up";
                 }
                 break;
             case "Right":
-                this._coordinates.x = Math.round((this._coordinates.x + 0.1) * 100) / 100;
+                this._coordinates.x = Math.round((this._coordinates.x + 1) * 100) / 100;
                 if (this._direction !== "Right") {
                     this._direction = "Right";
                 }
                 break;
             case "Down":
-                this._coordinates.y = Math.round((this._coordinates.y + 0.1) * 100) / 100;
+                this._coordinates.y = Math.round((this._coordinates.y + 1) * 100) / 100;
                 if (this._direction !== "Down") {
                     this._direction = "Down";
                 }
                 break;
             case "Left":
-                this._coordinates.x = Math.round((this._coordinates.x - 0.1) * 100) / 100;
+                this._coordinates.x = Math.round((this._coordinates.x - 1) * 100) / 100;
                 if (this._direction !== "Left") {
                     this._direction = "Left";
                 }

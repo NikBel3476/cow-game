@@ -1,4 +1,4 @@
-import CONF from '../Conf';
+import { CONF } from '../Conf';
 
 class UI {
     htmlGameTable: HTMLTableElement;
@@ -17,6 +17,15 @@ class UI {
 
     htmlTableToArray(htmlTable: HTMLTableElement): HTMLTableCellElement[][] {
         return Array.from(htmlTable.rows).map((row: HTMLTableRowElement) => Array.from(row.cells));
+    }
+
+    getArrowTableElement(htmlElement: HTMLElement): boolean {
+        return this.arrowsTable.some(row => row.some(arrowElement => htmlElement === arrowElement.firstChild as HTMLElement))
+        /*for (let i = 0; i < this.arrowsTable.length; i++) {
+            for (let j = 0; j < this.arrowsTable[i].length; j++) {
+                if (htmlElement === this.arrowsTable[i][j]) return this.arrowsTable[i][j].firstChild as HTMLDivElement;
+            }
+        }*/
     }
 
     createGameTable(): HTMLTableElement {
@@ -70,7 +79,6 @@ class UI {
                 }
             }
         }
-        return undefined;
     }
 }
 

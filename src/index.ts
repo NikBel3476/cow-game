@@ -1,11 +1,10 @@
 import { Game } from './Game';
-import { EventHandler } from "./UI";
 import { MAPPED_LEVELS } from "./levels";
 import { render } from "./Render";
 
+export let currentLevel: keyof typeof MAPPED_LEVELS = 1;
+
 const game = new Game();
-game.loadLevel(MAPPED_LEVELS[6]);
-const handler = new EventHandler(game);
 
 document.ondragstart = function() {
     return false;
@@ -16,7 +15,7 @@ export function startGame() {
 }
 
 export function endGame() {
-    game.endGame();
+    game.reloadLevel();
 }
 
 window.onload = () => {

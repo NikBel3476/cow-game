@@ -1,7 +1,7 @@
 import { render } from '../Render';
-import { ui } from '../UI';
-import { ILevel } from '../levels';
-import { ArrowColor, Direction, Coordinates, MAPPED_SPRITES } from '../types';
+import { EventHandler, ui } from '../UI';
+import { ILevel, MAPPED_LEVELS } from '../levels';
+import { Coordinates, MAPPED_SPRITES } from '../types';
 import {
     IField,
     HayBale,
@@ -16,15 +16,19 @@ import {
     LockDoor,
     AutoDoor,
     Button,
-    Piston
+    Piston, IGameObject
 } from "./Entities";
 import { LevelLoader } from "./LevelLoader";
+import { CONF } from "../Conf";
 
 export class Game {
+    private _currentLevel: keyof typeof MAPPED_LEVELS;
+
     private _nonInteractiveFields: Field[] = [];
     private _interactiveFields: (IField | Arrow)[] = [];
     private _staticObjects: (IField | Arrow)[] = [];
     private _movableObjects: (Cow | HayBale)[] = [];
+    private _mapObjects: (IField | IGameObject)[] = [];
 
     private _goblet!: Goblet;
     private _slides!: Slide[];
@@ -41,11 +45,21 @@ export class Game {
 
     private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
-    private _requestAnimId!: number;
+    private _loop!: number;
     private levelLoader: LevelLoader;
 
+    private eventHandler: EventHandler;
+
     constructor() {
+        const levelFromStorage = window.localStorage.getItem('level');
+        this._currentLevel = levelFromStorage ? levelFromStorage as unknown as keyof typeof MAPPED_LEVELS : 1;
         this.levelLoader = new LevelLoader();
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        this.eventHandler = new EventHandler(this);
+    }
+
+    public get arrows(): Arrow[] {
+        return this._arrows;
     }
 
     loadLevel(level: ILevel) {
@@ -69,6 +83,7 @@ export class Game {
                 Arrows
             }
         } = level;
+        render.deleteScene();
         render.createCowHtmlElements(Cows);
         render.createMovableHtmlElements(HayBale);
         this._nonInteractiveFields = this.levelLoader.initNonInteractiveFields(NonInteractive);
@@ -84,12 +99,26 @@ export class Game {
         this._buttons = this.levelLoader.initButtons(Button);
         this.linkButtonsWithActiveObjects(this._buttons);
 
-        this._cows = this.initCows(Cows);
-        this._arrows = this.initArrows(Arrows);
+        this._cows = this.levelLoader.initCows(Cows);
+        this._arrows = this.levelLoader.initArrows(Arrows);
 
         this._cows.forEach(cow => this._CowKeysMap.set(cow, []));
 
         // FIXME: unite entities in single array
+        this._mapObjects = [
+            ...this._nonInteractiveFields,
+            this._goblet,
+            ...this._slides,
+            ...this._hayBales,
+            ...this._pits,
+            ...this._keys,
+            ...this._lockDoors,
+            ...this._autoDoors,
+            ...this._pistons,
+            ...this._buttons,
+            ...this._cows,
+            ...this._arrows
+        ];
         this._interactiveFields = [
             this._goblet,
             ...this._slides,
@@ -120,8 +149,17 @@ export class Game {
         ];
     }
 
-    public get arrows(): Arrow[] {
-        return this._arrows;
+    private loadNextLevel() {
+        if (this._currentLevel < CONF.levelsAmount) {
+            this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+            this.eventHandler.addArrowsEventListeners();
+        }
+    }
+
+    reloadLevel(): void {
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        this.eventHandler.addArrowsEventListeners();
+        this.renderScene();
     }
 
     private linkButtonsWithActiveObjects(buttons: Button[]): void {
@@ -141,43 +179,6 @@ export class Game {
         });
     }
 
-    private initCows(cows: ILevel['GameObjects']['Cows']) {
-        let count = 0;
-        return Object.values(cows).map(cow =>
-            new Cow(
-                cow.coordinates,
-                cow.direction,
-                cow.color,
-                render.cowHtmlElements[count++]
-            )
-        );
-    }
-
-    private initArrows(arrows: ILevel['GameObjects']['Arrows']): Arrow[] {
-        const arrowsArr: Arrow[] = [];
-        let count = 0;
-        (Object.keys(arrows) as ArrowColor[]).forEach(color => {
-            (Object.keys(arrows[color]) as Direction[]).forEach(direction => {
-                arrows[color][direction].forEach((arrow) => {
-                    const coordinates = arrow.coordinates;
-                    if (coordinates) {
-                        arrowsArr.push(
-                            new Arrow(
-                                direction,
-                                color,
-                                render.gameTable[coordinates.y - 1][coordinates.x - 1].firstChild as HTMLElement,
-                                coordinates
-                            )
-                        );
-                    } else {
-                        arrowsArr.push(new Arrow(direction, color, ui.arrowsTable.flat(1)[count++].firstChild as HTMLElement));
-                    }
-                });
-            })
-        })
-        return arrowsArr;
-    }
-
     getGameObjects(): (Arrow | Cow)[] {
         return [
             ...this._cows,
@@ -189,7 +190,6 @@ export class Game {
         const indexes = ui.getMapElementIndex(htmlElement);
         if (indexes)
             return { x: indexes[1] + 1, y: indexes[0] + 1}
-        return undefined;
     }
 
     findFieldByCoordinates(coordinates: Coordinates): IField | Arrow | undefined {
@@ -232,6 +232,13 @@ export class Game {
         this.renderScene();
     }
 
+    placeArrowToTable(arrow: Arrow, newLinkedHtmlElement: HTMLElement): void {
+        arrow.coordinates = undefined;
+        arrow.linkedHtmlElement = newLinkedHtmlElement;
+        this.clearScene();
+        this.renderScene();
+    }
+
     // -------------------- RENDER --------------------
 
     clearScene(): void {
@@ -239,10 +246,7 @@ export class Game {
     }
 
     renderScene(): void {
-        render.drawScene(
-            this._staticObjects,
-            this._movableObjects
-        );
+        render.drawScene(this._staticObjects, this._movableObjects);
     }
 
     // -------------------- GAME --------------------
@@ -257,13 +261,17 @@ export class Game {
                 if (cow.coordinates.x === currentField?.coordinates?.x && cow.coordinates.y === currentField.coordinates.y) {
                     cow.direction = currentField.direction;
                     // FIXME: delete checking staticObjects and interactiveFields at the same time
-                    this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
-                    this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
+                    if (currentField.color === 'Red') {
+                        currentField.linkedHtmlElement.style.background = '';
+                        this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
+                        this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
+                    }
                 }
             }
             if (currentField instanceof Key) {
                 if (cow.coordinates.x === currentField.coordinates.x && cow.coordinates.y === currentField.coordinates.y) {
                     this._CowKeysMap.get(cow)?.push(currentField);
+                    currentField.linkedHtmlElement.style.background = '';
                     // FIXME: delete checking staticObjects and interactiveFields at the same time
                     this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
                     this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
@@ -281,7 +289,6 @@ export class Game {
             }
             if (currentField instanceof Pit) {
                 currentField.activate();
-                cow.move();
             }
             if (currentField instanceof Button) {
                 currentField.activate();
@@ -324,46 +331,47 @@ export class Game {
             }
             // TODO: remove coordinates checking for integer only
             const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
-            if (Number.isInteger(cow.coordinates.x) && Number.isInteger(cow.coordinates.y)) {
-                if (nextField?.impassable) {
-                    if (cow.layer === 2) cow.move();
-                    if (nextField instanceof LockDoor) {
-                        const keys = this._CowKeysMap.get(cow);
-                        if (keys && keys.length !== 0) {
-                            keys.pop();
-                            this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
-                            this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
-                            cow.move();
-                        }
+            if (nextField?.impassable) {
+                if (cow.layer === 2) cow.move();
+                if (nextField instanceof LockDoor) {
+                    const keys = this._CowKeysMap.get(cow);
+                    if (keys && keys.length !== 0) {
+                        keys.pop();
+                        nextField.linkedHtmlElement.style.background = '';
+                        this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
+                        this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
+                        cow.move();
                     }
-                    if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
-                } else { // passable field
-                    if (cow.layer === 1) cow.move();
                 }
-            } else { // cow coordinates is not integer
-                cow.move();
+                if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
+            } else { // passable field
+                if (cow.layer === 1) cow.move();
             }
             // FIXME: HayBale moving through walls
             if (nextField instanceof HayBale && cow.layer === 1) {
                 switch (cow.direction) {
                     case "Up":
-                        nextField.coordinates.y = Math.round((nextCoordinates.y - 0.1) * 100) / 100;
+                        nextField.coordinates.y = Math.round((nextCoordinates.y - 1) * 100) / 100;
+                        cow.move();
                         break;
                     case "Right":
-                        nextField.coordinates.x = Math.round((nextCoordinates.x + 0.1) * 100) / 100;
+                        nextField.coordinates.x = Math.round((nextCoordinates.x + 1) * 100) / 100;
+                        cow.move();
                         break;
                     case "Down":
-                        nextField.coordinates.y = Math.round((nextCoordinates.y + 0.1) * 100) / 100;
+                        nextField.coordinates.y = Math.round((nextCoordinates.y + 1) * 100) / 100;
+                        cow.move();
                         break;
                     case "Left":
-                        nextField.coordinates.x = Math.round((nextCoordinates.x - 0.1) * 100) / 100;
+                        nextField.coordinates.x = Math.round((nextCoordinates.x - 1) * 100) / 100;
+                        cow.move();
                         break;
                 }
                 const fieldUnderHayBale = this.findStaticFieldByCoordinates(nextField.coordinates);
                 if (fieldUnderHayBale instanceof Pit && fieldUnderHayBale.activated) {
                     this._movableObjects.splice(this._movableObjects.indexOf(nextField), 1);
                     this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1)
-                    nextField.linkedHtmlElement.style.background = '' // FIXME: move change style to render
+                    nextField.linkedHtmlElement.style.background = ''; // FIXME: move style changing to render
                     this._staticObjects.splice(this._staticObjects.indexOf(fieldUnderHayBale), 1);
                     this._interactiveFields.splice(this._interactiveFields.indexOf(fieldUnderHayBale), 1);
                     this._staticObjects.push(
@@ -384,41 +392,40 @@ export class Game {
                     );
                 }
             }
-            let cowAhead: Cow | undefined;
-            switch (cow.direction) {
-                case 'Up':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1});
-                    if (cowAhead && !nextField) cowAhead.coordinates.y -= 0.1;
-                    break;
-                case 'Right':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y });
-                    if (cowAhead && !nextField) cowAhead.coordinates.x += 0.1;
-                    break;
-                case 'Down':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1});
-                    if (cowAhead && !nextField) cowAhead.coordinates.y += 0.1;
-                    break;
-                case 'Left':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y});
-                    if (cowAhead && !nextField) cowAhead.coordinates.x -= 0.1;
-                    break;
+            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y });
+            if (cowAhead && cowAhead !== cow) {
+                switch (cow.direction) {
+                    case 'Up':
+                        if (!nextField) cowAhead.coordinates.y -= 1;
+                        break;
+                    case 'Right':
+                        if (!nextField) cowAhead.coordinates.x += 1;
+                        break;
+                    case 'Down':
+                        if (!nextField) cowAhead.coordinates.y += 1;
+                        break;
+                    case 'Left':
+                        if (!nextField) cowAhead.coordinates.x -= 1;
+                        break;
+                }
             }
         });
         this.renderScene();
-        window.requestAnimationFrame(() => {
-            this.mainLoopFunc();
-        });
     }
 
     startGame(): void {
-        if (!this._requestAnimId) {
-            this._requestAnimId = window.requestAnimationFrame(() => {
-                this.mainLoopFunc();
-            });
+        if (!this._loop) {
+            this._loop = window.setInterval(() => this.mainLoopFunc(), CONF.loopTime);
         }
     }
 
-    endGame() {
-        window.cancelAnimationFrame(this._requestAnimId);
+    private endGame() {
+        if (this._loop) {
+            clearInterval(this._loop);
+            this._loop = 0;
+        }
+        this._currentLevel++;
+        this.loadNextLevel();
+        window.localStorage.setItem('level', `${this._currentLevel}`);
     }
 }
