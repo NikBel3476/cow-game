@@ -25,7 +25,7 @@ export interface ILevel {
             }
             Button?: {
                 coordinates: Coordinates,
-                linkedElementIds: number[]
+                linkedElementsIds: number[]
             }[]
             AutoDoor?: {
                 [k in DoorOrientation]: {
@@ -36,7 +36,8 @@ export interface ILevel {
             Piston?: {
                 [k in Direction]: {
                     id: number,
-                    coordinates: Coordinates
+                    coordinates: Coordinates,
+                    activated: boolean
                 }[]
             }
         }

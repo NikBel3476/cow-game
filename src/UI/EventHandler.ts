@@ -10,11 +10,11 @@ export class EventHandler {
     constructor(game: Game) {
         this.game = game;
 
-        (document.getElementById("start-game-button") as HTMLElement).addEventListener('click', (e: MouseEvent) => {
+        (document.getElementById('start-game-button') as HTMLElement).addEventListener('click', (e: MouseEvent) => {
             startGame();
         });
 
-        (document.getElementById("end-game-button") as HTMLElement).addEventListener('click', (e: MouseEvent) => {
+        (document.getElementById('end-game-button') as HTMLElement).addEventListener('click', (e: MouseEvent) => {
             endGame();
         });
 
@@ -40,12 +40,12 @@ export class EventHandler {
                     if (coordinates && arrow) {
                         this.game.placeArrowToMap(arrow, coordinates, targetElement);
                         EventHandler.selectedItem.removeEventListener('mousedown', this.onArrowMousedown);
-                        this.game.renderScene();
                     }
                 }
                 EventHandler.selectedItem.style.top = '0';
                 EventHandler.selectedItem.style.left = '0';
-                EventHandler.selectedItem.style.pointerEvents = "";
+                EventHandler.selectedItem.style.pointerEvents = '';
+
             }
             EventHandler.selectedItem = null;
         });

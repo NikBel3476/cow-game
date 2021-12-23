@@ -46,7 +46,7 @@
       "Button": [
         {
           "coordinates": { "x": 16, "y": 7 },
-          "linkedElementIds": [1]
+          "linkedElementsIds": [1]
         }
       ]
     }

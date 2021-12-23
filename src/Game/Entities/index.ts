@@ -1,3 +1,3 @@
-export * from './IEntity';
-export * from './GameObjects';
 export * from './Fields';
+export * from './GameObjects';
+export * from './IEntity';
