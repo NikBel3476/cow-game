@@ -1,6 +1,6 @@
 import { render } from '../Render';
-import { ui } from '../UI';
-import { ILevel } from '../levels';
+import { EventHandler, ui } from '../UI';
+import { ILevel, MAPPED_LEVELS } from '../levels';
 import { Coordinates, MAPPED_SPRITES } from '../types';
 import {
     IField,
@@ -22,6 +22,8 @@ import { LevelLoader } from "./LevelLoader";
 import { CONF } from "../Conf";
 
 export class Game {
+    private _currentLevel: keyof typeof MAPPED_LEVELS;
+
     private _nonInteractiveFields: Field[] = [];
     private _interactiveFields: (IField | Arrow)[] = [];
     private _staticObjects: (IField | Arrow)[] = [];
@@ -43,11 +45,21 @@ export class Game {
 
     private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
-    private _loop!: NodeJS.Timer;
+    private _loop!: number;
     private levelLoader: LevelLoader;
 
+    private eventHandler: EventHandler;
+
     constructor() {
+        const levelFromStorage = window.localStorage.getItem('level');
+        this._currentLevel = levelFromStorage ? levelFromStorage as unknown as keyof typeof MAPPED_LEVELS : 1;
         this.levelLoader = new LevelLoader();
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        this.eventHandler = new EventHandler(this);
+    }
+
+    public get arrows(): Arrow[] {
+        return this._arrows;
     }
 
     loadLevel(level: ILevel) {
@@ -71,6 +83,7 @@ export class Game {
                 Arrows
             }
         } = level;
+        render.deleteScene();
         render.createCowHtmlElements(Cows);
         render.createMovableHtmlElements(HayBale);
         this._nonInteractiveFields = this.levelLoader.initNonInteractiveFields(NonInteractive);
@@ -136,8 +149,17 @@ export class Game {
         ];
     }
 
-    public get arrows(): Arrow[] {
-        return this._arrows;
+    private loadNextLevel() {
+        if (this._currentLevel < CONF.levelsAmount) {
+            this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+            this.eventHandler.addArrowsEventListeners();
+        }
+    }
+
+    reloadLevel(): void {
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        this.eventHandler.addArrowsEventListeners();
+        this.renderScene();
     }
 
     private linkButtonsWithActiveObjects(buttons: Button[]): void {
@@ -168,7 +190,6 @@ export class Game {
         const indexes = ui.getMapElementIndex(htmlElement);
         if (indexes)
             return { x: indexes[1] + 1, y: indexes[0] + 1}
-        return undefined;
     }
 
     findFieldByCoordinates(coordinates: Coordinates): IField | Arrow | undefined {
@@ -211,6 +232,13 @@ export class Game {
         this.renderScene();
     }
 
+    placeArrowToTable(arrow: Arrow, newLinkedHtmlElement: HTMLElement): void {
+        arrow.coordinates = undefined;
+        arrow.linkedHtmlElement = newLinkedHtmlElement;
+        this.clearScene();
+        this.renderScene();
+    }
+
     // -------------------- RENDER --------------------
 
     clearScene(): void {
@@ -234,6 +262,7 @@ export class Game {
                     cow.direction = currentField.direction;
                     // FIXME: delete checking staticObjects and interactiveFields at the same time
                     if (currentField.color === 'Red') {
+                        currentField.linkedHtmlElement.style.background = '';
                         this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
                         this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
                     }
@@ -242,6 +271,7 @@ export class Game {
             if (currentField instanceof Key) {
                 if (cow.coordinates.x === currentField.coordinates.x && cow.coordinates.y === currentField.coordinates.y) {
                     this._CowKeysMap.get(cow)?.push(currentField);
+                    currentField.linkedHtmlElement.style.background = '';
                     // FIXME: delete checking staticObjects and interactiveFields at the same time
                     this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
                     this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
@@ -259,7 +289,6 @@ export class Game {
             }
             if (currentField instanceof Pit) {
                 currentField.activate();
-                cow.move();
             }
             if (currentField instanceof Button) {
                 currentField.activate();
@@ -308,6 +337,7 @@ export class Game {
                     const keys = this._CowKeysMap.get(cow);
                     if (keys && keys.length !== 0) {
                         keys.pop();
+                        nextField.linkedHtmlElement.style.background = '';
                         this._staticObjects.splice(this._staticObjects.indexOf(nextField), 1);
                         this._interactiveFields.splice(this._interactiveFields.indexOf(nextField), 1);
                         cow.move();
@@ -362,24 +392,22 @@ export class Game {
                     );
                 }
             }
-            let cowAhead: Cow | undefined;
-            switch (cow.direction) {
-                case 'Up':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1});
-                    if (cowAhead && !nextField) cowAhead.coordinates.y -= 1;
-                    break;
-                case 'Right':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y });
-                    if (cowAhead && !nextField) cowAhead.coordinates.x += 1;
-                    break;
-                case 'Down':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1});
-                    if (cowAhead && !nextField) cowAhead.coordinates.y += 1;
-                    break;
-                case 'Left':
-                    cowAhead = this.findCowByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y});
-                    if (cowAhead && !nextField) cowAhead.coordinates.x -= 1;
-                    break;
+            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y });
+            if (cowAhead && cowAhead !== cow) {
+                switch (cow.direction) {
+                    case 'Up':
+                        if (!nextField) cowAhead.coordinates.y -= 1;
+                        break;
+                    case 'Right':
+                        if (!nextField) cowAhead.coordinates.x += 1;
+                        break;
+                    case 'Down':
+                        if (!nextField) cowAhead.coordinates.y += 1;
+                        break;
+                    case 'Left':
+                        if (!nextField) cowAhead.coordinates.x -= 1;
+                        break;
+                }
             }
         });
         this.renderScene();
@@ -387,13 +415,17 @@ export class Game {
 
     startGame(): void {
         if (!this._loop) {
-            this._loop = setInterval(() => this.mainLoopFunc(), CONF.loopTime);
+            this._loop = window.setInterval(() => this.mainLoopFunc(), CONF.loopTime);
         }
     }
 
-    endGame() {
+    private endGame() {
         if (this._loop) {
             clearInterval(this._loop);
+            this._loop = 0;
         }
+        this._currentLevel++;
+        this.loadNextLevel();
+        window.localStorage.setItem('level', `${this._currentLevel}`);
     }
 }

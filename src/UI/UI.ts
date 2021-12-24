@@ -19,6 +19,15 @@ class UI {
         return Array.from(htmlTable.rows).map((row: HTMLTableRowElement) => Array.from(row.cells));
     }
 
+    getArrowTableElement(htmlElement: HTMLElement): boolean {
+        return this.arrowsTable.some(row => row.some(arrowElement => htmlElement === arrowElement.firstChild as HTMLElement))
+        /*for (let i = 0; i < this.arrowsTable.length; i++) {
+            for (let j = 0; j < this.arrowsTable[i].length; j++) {
+                if (htmlElement === this.arrowsTable[i][j]) return this.arrowsTable[i][j].firstChild as HTMLDivElement;
+            }
+        }*/
+    }
+
     createGameTable(): HTMLTableElement {
         const table = document.createElement("table");
         table.id = "game-table";
@@ -70,7 +79,6 @@ class UI {
                 }
             }
         }
-        return undefined;
     }
 }
 
