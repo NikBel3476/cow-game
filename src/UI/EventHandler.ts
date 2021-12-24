@@ -1,4 +1,4 @@
-import { endGame, startGame } from "../index";
+import { endGame, startGame, restartGame } from "../index";
 import { Arrow, Game } from "../Game";
 import { ui } from "./UI";
 
@@ -17,6 +17,10 @@ export class EventHandler {
 
         (document.getElementById('end-game-button') as HTMLElement).addEventListener('click', (e: MouseEvent) => {
             endGame();
+        });
+
+        (document.getElementById('restart-game-button') as HTMLElement).addEventListener('click', (e: MouseEvent) => {
+            restartGame();
         });
 
         document.addEventListener('mousedown', (e: MouseEvent) => {

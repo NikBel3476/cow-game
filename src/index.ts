@@ -18,6 +18,10 @@ export function endGame() {
     game.reloadLevel();
 }
 
+export function restartGame() {
+    game.restartGame();
+}
+
 window.onload = () => {
     game.renderScene();
 }

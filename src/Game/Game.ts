@@ -162,6 +162,12 @@ export class Game {
         this.renderScene();
     }
 
+    restartGame(): void {
+        this._currentLevel = 1;
+        window.localStorage.setItem('level', `${this._currentLevel}`);
+        this.reloadLevel();
+    }
+
     private linkButtonsWithActiveObjects(buttons: Button[]): void {
         buttons.forEach(button => {
             const linkedElems: (AutoDoor | Piston)[] = [];
