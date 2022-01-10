@@ -7,6 +7,6 @@ export const CONF = {
         width: 3,
         height: 7
     },
-    levelsAmount: 6,
+    levelsAmount: 13,
     loopTime: 250
 }
