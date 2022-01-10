@@ -179,7 +179,7 @@ export class LevelLoader {
         let count = 0;
         return Object.values(cows).map(cow =>
             new Cow(
-                cow.coordinates,
+                { x: cow.coordinates.x, y: cow.coordinates.y },
                 cow.direction,
                 cow.color,
                 render.cowHtmlElements[count++]

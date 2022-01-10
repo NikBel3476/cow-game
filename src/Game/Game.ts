@@ -101,6 +101,7 @@ export class Game {
 
         this._cows = this.levelLoader.initCows(Cows);
         this._arrows = this.levelLoader.initArrows(Arrows);
+        console.log(this._cows);
 
         this._cows.forEach(cow => this._CowKeysMap.set(cow, []));
 
@@ -157,9 +158,19 @@ export class Game {
     }
 
     reloadLevel(): void {
+        if (this._loop) {
+            clearInterval(this._loop);
+            this._loop = 0;
+        }
         this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
         this.eventHandler.addArrowsEventListeners();
         this.renderScene();
+    }
+
+    restartGame(): void {
+        this._currentLevel = 1;
+        window.localStorage.setItem('level', `${this._currentLevel}`);
+        this.reloadLevel();
     }
 
     private linkButtonsWithActiveObjects(buttons: Button[]): void {

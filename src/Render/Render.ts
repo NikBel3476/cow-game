@@ -111,9 +111,7 @@ class Render {
 
     clearArrowsTable() {
         this.arrowsTable.forEach(row =>
-            row.forEach(field =>
-                (field.firstChild as HTMLElement).style.background = ""
-            )
+            row.forEach(field => (field.firstChild as HTMLElement).style.background = '')
         );
     }
 

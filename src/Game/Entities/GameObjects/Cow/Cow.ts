@@ -56,24 +56,16 @@ export class Cow implements ICow {
         return this._linkedHtmlElement;
     }
 
-    /*layerUp(): void {
-        ++this._layer;
-    }
-
-    layerDown(): void {
-        --this._layer;
-    }*/
-
     setImg(): string {
         switch (this._direction) {
             case "Up":
-                return MAPPED_SPRITES.CowGreyUp; /*this._color === 'Grey' : GreyUpSprite : BrownUpSprite;*/
+                return this._color === 'Grey' ? MAPPED_SPRITES.CowGreyUp : MAPPED_SPRITES.CowBrownUp;
             case "Right":
-                return MAPPED_SPRITES.CowGreyRight; /*this._color === 'Grey' : GreyRightSprite : BrownRightSprite;*/
+                return this._color === 'Grey' ? MAPPED_SPRITES.CowGreyRight : MAPPED_SPRITES.CowBrownRight;
             case "Down":
-                return MAPPED_SPRITES.CowGreyDown; /*this._color === 'Grey' : GreyDownSprite : BrownDownSprite;*/
+                return this._color === 'Grey' ? MAPPED_SPRITES.CowGreyDown : MAPPED_SPRITES.CowBrownDown;
             case "Left":
-                return MAPPED_SPRITES.CowGreyLeft; /*this._color === 'Grey' : GreyLeftSprite : BrownLeftSprite;*/
+                return this._color === 'Grey' ? MAPPED_SPRITES.CowGreyLeft : MAPPED_SPRITES.CowBrownLeft;
         }
     }
 
