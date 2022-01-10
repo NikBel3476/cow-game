@@ -12,7 +12,12 @@ import AutoDoorV from '../../../assets/sprites/svg/AutoDoorV.svg';
 import AutoDoorVActivated from '../../../assets/sprites/svg/AutoDoorVActivated.svg';
 import Block from '../../../assets/sprites/svg/Block.svg';
 import BlockTile from '../../../assets/sprites/svg/BlockTile.svg';
+import Bush from '../../../assets/sprites/svg/Bush.svg';
 import Button from '../../../assets/sprites/svg/Button.svg';
+import CowBrownUp from '../../../assets/sprites/svg/CowBrownUp.svg';
+import CowBrownRight from '../../../assets/sprites/svg/CowBrownRight.svg';
+import CowBrownDown from '../../../assets/sprites/svg/CowBrownDown.svg';
+import CowBrownLeft from '../../../assets/sprites/svg/CowBrownLeft.svg';
 import CowGreyUp from '../../../assets/sprites/svg/CowGreyUp.svg';
 import CowGreyRight from '../../../assets/sprites/svg/CowGreyRight.svg';
 import CowGreyDown from '../../../assets/sprites/svg/CowGreyDown.svg';
@@ -53,7 +58,12 @@ export const MAPPED_SPRITES = {
     AutoDoorVActivated,
     Block,
     BlockTile,
+    Bush,
     Button,
+    CowBrownUp,
+    CowBrownRight,
+    CowBrownDown,
+    CowBrownLeft,
     CowGreyUp,
     CowGreyRight,
     CowGreyDown,
