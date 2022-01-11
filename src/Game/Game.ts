@@ -22,7 +22,7 @@ import { LevelLoader } from "./LevelLoader";
 import { CONF } from "../Conf";
 
 export class Game {
-    private _currentLevel: keyof typeof MAPPED_LEVELS;
+    private _currentLevel: number;
 
     private _nonInteractiveFields: Field[] = [];
     private _interactiveFields: (IField | Arrow)[] = [];
@@ -42,7 +42,7 @@ export class Game {
 
     private _cows!: Cow[];
     private _arrows!: Arrow[];
-    private _pastArrows: Arrow[] | undefined = [];
+    private _pastArrows: Arrow[] = [];
 
     private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
@@ -53,18 +53,14 @@ export class Game {
 
     constructor() {
         const levelFromStorage = window.localStorage.getItem('level');
-        this._currentLevel = levelFromStorage ? levelFromStorage as unknown as keyof typeof MAPPED_LEVELS : 1;
+        this._currentLevel = levelFromStorage ? Number(levelFromStorage) : 1;
         this.levelLoader = new LevelLoader();
-        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
         this.eventHandler = new EventHandler(this);
     }
 
     public get arrows(): Arrow[] {
         return this._arrows;
-    }
-
-    public get pastArrows(): Arrow[] | undefined {
-        return this._pastArrows;
     }
 
     loadLevel(level: ILevel) {
@@ -105,12 +101,7 @@ export class Game {
         this.linkButtonsWithActiveObjects(this._buttons);
 
         this._cows = this.levelLoader.initCows(Cows);
-        if (this._pastArrows instanceof Array && this._pastArrows.length !== 0) {
-            this._arrows = this._pastArrows.slice();
-        } else {
-            this._arrows = this.levelLoader.initArrows(Arrows);
-        };
-        console.log(this._cows);
+        this._arrows = this._pastArrows.length !== 0 ? this._pastArrows.slice() : this.levelLoader.initArrows(Arrows);
 
         this._cows.forEach(cow => this._CowKeysMap.set(cow, []));
 
@@ -160,7 +151,8 @@ export class Game {
     }
 
     private loadNextLevel() {
-        if (this._currentLevel < CONF.levelsAmount) {
+        ++this._currentLevel;
+        if (this._currentLevel < MAPPED_LEVELS.length) {
             this._pastArrows = [];
             this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
             this.eventHandler.addArrowsEventListeners();
@@ -171,20 +163,15 @@ export class Game {
         if (this._loop) {
             clearInterval(this._loop);
             this._loop = 0;
-        };
-        if (this._pastArrows instanceof Array) {
-            this._pastArrows = this._arrows.slice();
-        } else {
-            this._pastArrows = [];
-        };
-        this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+        }
+        this._pastArrows = this._arrows.slice();
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
         this.eventHandler.addArrowsEventListeners();
         this.renderScene();
     }
 
     restartGame(): void {
-        this._pastArrows = undefined;
-        console.log(this._pastArrows);
+        this._pastArrows = [];
         this._currentLevel = 1;
         window.localStorage.setItem('level', `${this._currentLevel}`);
         this.reloadLevel();
@@ -452,7 +439,6 @@ export class Game {
             clearInterval(this._loop);
             this._loop = 0;
         }
-        this._currentLevel++;
         this.loadNextLevel();
         window.localStorage.setItem('level', `${this._currentLevel}`);
     }
