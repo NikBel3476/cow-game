@@ -154,7 +154,7 @@ export class Game {
         ++this._currentLevel;
         if (this._currentLevel < MAPPED_LEVELS.length) {
             this._pastArrows = [];
-            this.loadLevel(MAPPED_LEVELS[this._currentLevel]);
+            this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
             this.eventHandler.addArrowsEventListeners();
         }
     }
@@ -174,7 +174,9 @@ export class Game {
         this._pastArrows = [];
         this._currentLevel = 1;
         window.localStorage.setItem('level', `${this._currentLevel}`);
-        this.reloadLevel();
+        this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
+        this.eventHandler.addArrowsEventListeners();
+        this.renderScene();
     }
 
     private linkButtonsWithActiveObjects(buttons: Button[]): void {

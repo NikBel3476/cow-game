@@ -50,7 +50,7 @@ export class LevelLoader {
         let count = 0;
         return Object.values(hayBales ?? {}).map(coordinates =>
             new HayBale(
-                coordinates,
+                { x: coordinates.x, y: coordinates.y },
                 render.movableFields[count++]
             )
         );
