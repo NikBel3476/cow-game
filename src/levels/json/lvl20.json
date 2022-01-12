@@ -57,7 +57,7 @@
                 "Left": [
                     {
                         "id": 1,
-                        "coordinates": { "x": 12, "y": 9 },
+                        "coordinates": { "x": 11, "y": 8 },
                         "activated": false
                     }
                 ]

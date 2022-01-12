@@ -54,10 +54,29 @@ class Render {
 
     drawStaticElements(fields: (IField | Arrow)[]) {
         fields.forEach(object => {
-            object.linkedHtmlElement.style.top = object instanceof Piston && !object.activated ?
-                 `-${(this.htmlGameTable.querySelector("td") as HTMLElement)
-                    .getBoundingClientRect().height}px` :
-                '0px';
+            if (object instanceof Piston && !object.activated) {
+                switch (object.direction) {
+                    case "Up":
+                        object.linkedHtmlElement.style.top = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
+                            .getBoundingClientRect().height}px`;
+                        break;
+                    case "Right":
+                        object.linkedHtmlElement.style.left = `-${(this.htmlGameTable.querySelector("td") as HTMLElement)
+                            .getBoundingClientRect().width}px`;
+                        break;
+                    case "Down":
+                        object.linkedHtmlElement.style.top = `-${(this.htmlGameTable.querySelector("td") as HTMLElement)
+                            .getBoundingClientRect().height}px`;
+                        break;
+                    case "Left":
+                        object.linkedHtmlElement.style.left = `${(this.htmlGameTable.querySelector("td") as HTMLElement)
+                            .getBoundingClientRect().width}px`;
+                        break;
+                }
+            } else {
+                object.linkedHtmlElement.style.top = '0px';
+                object.linkedHtmlElement.style.left = '0px';
+            }
             object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
         });
     }
