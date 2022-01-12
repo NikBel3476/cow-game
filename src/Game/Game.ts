@@ -338,16 +338,16 @@ export class Game {
             let nextCoordinates: Coordinates;
             switch (cow.direction) {
                 case "Up":
-                    nextCoordinates = {x: cow.coordinates.x, y: cow.coordinates.y - 1};
+                    nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y - 1 };
                     break;
                 case "Right":
-                    nextCoordinates = {x: cow.coordinates.x + 1, y: cow.coordinates.y};
+                    nextCoordinates = { x: cow.coordinates.x + 1, y: cow.coordinates.y };
                     break;
                 case "Down":
-                    nextCoordinates = {x: cow.coordinates.x, y: cow.coordinates.y + 1};
+                    nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y + 1 };
                     break;
                 case "Left":
-                    nextCoordinates = {x: cow.coordinates.x - 1, y: cow.coordinates.y};
+                    nextCoordinates = { x: cow.coordinates.x - 1, y: cow.coordinates.y };
                     break;
             }
             const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
@@ -397,7 +397,7 @@ export class Game {
                     this._interactiveFields.splice(this._interactiveFields.indexOf(fieldUnderHayBale), 1);
                     this._staticObjects.push(
                         new Field(
-                            {x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y},
+                            { x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y },
                             false,
                             MAPPED_SPRITES.HayBaleInPit,
                             fieldUnderHayBale.linkedHtmlElement
@@ -405,7 +405,7 @@ export class Game {
                     );
                     this._nonInteractiveFields.push(
                         new Field(
-                            {x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y},
+                            { x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y },
                             false,
                             MAPPED_SPRITES.HayBaleInPit,
                             fieldUnderHayBale.linkedHtmlElement
@@ -414,7 +414,7 @@ export class Game {
                 }
             }
 
-            const cowAhead: Cow | undefined = this.findCowByCoordinates({x: cow.coordinates.x, y: cow.coordinates.y});
+            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y });
             if (cowAhead && cowAhead !== cow) {
                 switch (cow.direction) {
                     case 'Up':
