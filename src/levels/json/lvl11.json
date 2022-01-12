@@ -1,0 +1,109 @@
+{
+    "MapObjects": {
+        "NonInteractive": {
+            "Pillar": [
+                [1, 1], [7, 1], [19, 1],
+                [7, 8], [7, 10],
+                [1, 14], [7, 14], [19, 14]
+            ],
+            "FenceH": [
+                [2, 1], [3, 1], [4, 1], [5, 1], [6, 1],
+                [8, 1], [9, 1], [10, 1], [11, 1], [12, 1],
+                [13, 1], [14, 1], [15, 1], [16, 1], [17, 1],
+                [18, 1], [20, 1],
+                [2, 14], [3, 14], [4, 14], [5, 14], [6, 14],
+                [8, 14], [9, 14], [10, 14], [11, 14], [12, 14],
+                [13, 14], [14, 14], [15, 14], [16, 14], [17, 14],
+                [18, 14], [20, 14]
+            ],
+            "FenceV": [
+                [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7],
+                [1, 8], [1, 9], [1, 10], [1, 11], [1, 12], [1, 13],
+                [7, 2], [7, 3], [7, 4], [7, 5], [7, 6], [7, 7],
+                [7, 11], [7, 12], [7, 13],
+                [19, 2], [19, 3], [19, 4], [19, 5], [19, 6], [19, 7],
+                [19, 12], [19, 13]
+            ],
+            "Tree": [
+                [8, 2], [9, 2], [10, 2], [11, 2], [12, 2],
+                [13, 2], [14, 2], [15, 2], [16, 2], [17, 2],
+                [18, 2]
+            ],
+            "BlockTile": [
+                [7, 9]
+            ]
+        },
+        "Interactive": {
+            "Slide": {
+                "Up": [],
+                "Right": [
+                    { "x": 6, "y": 9 }
+                ],
+                "Down": [],
+                "Left": [
+                    { "x": 11, "y": 9 }
+                ]
+            },
+            "HayBale": [
+                { "x": 9, "y": 7 },
+                { "x": 8, "y": 11 },
+                { "x": 10, "y": 11 }
+            ],
+            "Goblet": {
+                "coordinates": { "x": 20, "y": 13 }
+            }
+        }
+    },
+    "GameObjects": {
+        "Cows": [
+            {
+                "coordinates": { "x": 2, "y": 3 },
+                "direction": "Down",
+                "color": "Grey"
+            },
+            {
+                "coordinates": { "x": 8, "y": 12 },
+                "direction": "Down",
+                "color": "Brown"
+            },
+            {
+                "coordinates": { "x": 10, "y": 12 },
+                "direction": "Down",
+                "color": "Brown"
+            },
+            {
+                "coordinates": { "x": 9, "y": 6 },
+                "direction": "Up",
+                "color": "Brown"
+            }
+        ],
+        "Arrows": {
+            "Red": {
+                "Up": [
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Right": [
+                    { "coordinates": null },
+                    { "coordinates": null },
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Down": [
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Left": []
+              },
+              "Blue": {
+                "Up": [
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Right": [],
+                "Down": [],
+                "Left": []
+              }
+        }
+    }
+}

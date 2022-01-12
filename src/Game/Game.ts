@@ -171,6 +171,10 @@ export class Game {
     }
 
     restartGame(): void {
+        if (this._loop) {
+            clearInterval(this._loop);
+            this._loop = 0;
+        }
         this._pastArrows = [];
         this._currentLevel = 1;
         window.localStorage.setItem('level', `${this._currentLevel}`);
@@ -334,19 +338,18 @@ export class Game {
             let nextCoordinates: Coordinates;
             switch (cow.direction) {
                 case "Up":
-                    nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y - 1 };
+                    nextCoordinates = {x: cow.coordinates.x, y: cow.coordinates.y - 1};
                     break;
                 case "Right":
-                    nextCoordinates = { x: cow.coordinates.x + 1, y: cow.coordinates.y };
+                    nextCoordinates = {x: cow.coordinates.x + 1, y: cow.coordinates.y};
                     break;
                 case "Down":
-                    nextCoordinates = { x: cow.coordinates.x, y: cow.coordinates.y + 1 };
+                    nextCoordinates = {x: cow.coordinates.x, y: cow.coordinates.y + 1};
                     break;
                 case "Left":
-                    nextCoordinates = { x: cow.coordinates.x - 1, y: cow.coordinates.y };
+                    nextCoordinates = {x: cow.coordinates.x - 1, y: cow.coordinates.y};
                     break;
             }
-            // TODO: remove coordinates checking for integer only
             const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
             if (nextField?.impassable) {
                 if (cow.layer === 2) cow.move();
@@ -384,6 +387,7 @@ export class Game {
                         cow.move();
                         break;
                 }
+
                 const fieldUnderHayBale = this.findStaticFieldByCoordinates(nextField.coordinates);
                 if (fieldUnderHayBale instanceof Pit && fieldUnderHayBale.activated) {
                     this._movableObjects.splice(this._movableObjects.indexOf(nextField), 1);
@@ -393,7 +397,7 @@ export class Game {
                     this._interactiveFields.splice(this._interactiveFields.indexOf(fieldUnderHayBale), 1);
                     this._staticObjects.push(
                         new Field(
-                            { x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y},
+                            {x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y},
                             false,
                             MAPPED_SPRITES.HayBaleInPit,
                             fieldUnderHayBale.linkedHtmlElement
@@ -401,7 +405,7 @@ export class Game {
                     );
                     this._nonInteractiveFields.push(
                         new Field(
-                            { x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y},
+                            {x: fieldUnderHayBale.coordinates.x, y: fieldUnderHayBale.coordinates.y},
                             false,
                             MAPPED_SPRITES.HayBaleInPit,
                             fieldUnderHayBale.linkedHtmlElement
@@ -409,7 +413,8 @@ export class Game {
                     );
                 }
             }
-            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y });
+
+            const cowAhead: Cow | undefined = this.findCowByCoordinates({x: cow.coordinates.x, y: cow.coordinates.y});
             if (cowAhead && cowAhead !== cow) {
                 switch (cow.direction) {
                     case 'Up':
