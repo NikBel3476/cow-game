@@ -20,8 +20,7 @@ export interface ILevel {
             }[],
             Key?: Coordinates[],
             LockDoor?: {
-                Horizontal: Coordinates[],
-                Vertical: Coordinates[]
+                [k in DoorOrientation]: Coordinates[]
             }
             Button?: {
                 coordinates: Coordinates,

@@ -1,0 +1,75 @@
+{
+    "MapObjects": {
+      "NonInteractive": {
+        "Pillar": [
+          [13, 1], [13, 6], [13, 8],
+          [13, 14]
+        ],
+        "FenceV": [
+          [13, 2], [13, 3], [13, 4], [13, 5], [13, 9], [13, 10], [13, 11], [13, 12], [13, 13]
+        ],
+        "BlockTile": [
+          [9, 7], [13, 7]
+        ]
+      },
+      "Interactive": {
+        "Slide": {
+            "Up": [],
+            "Right": [
+              { "x": 8, "y": 7 }
+            ],
+            "Down": [],
+            "Left": [
+              { "x": 14, "y": 7 }
+            ]
+        },
+        "HayBale": [
+            { "x": 10, "y": 3 }, { "x": 12, "y": 3}, { "x": 11, "y": 11 }
+        ],
+        "Goblet": {
+          "coordinates": { "x": 18, "y": 7 }
+        }
+      }
+    },
+    "GameObjects": {
+      "Cows": [
+        {
+          "coordinates": { "x": 1, "y": 7 },
+          "direction": "Right",
+          "color": "Grey"
+        }
+      ],
+      "Arrows": {
+        "Red": {
+            "Up": [
+              { "coordinates": null }, 
+              { "coordinates": null }, 
+              { "coordinates": null }
+            ],
+            "Right": [
+              { "coordinates": null },
+              { "coordinates": null }, 
+              { "coordinates": null }
+            ],
+            "Down": [
+              { "coordinates": null }, 
+              { "coordinates": null }, 
+              { "coordinates": null },
+              { "coordinates": null }
+            ],
+            "Left": [
+              { "coordinates": null }, 
+              { "coordinates": null }, 
+              { "coordinates": null }, 
+              { "coordinates": null }
+            ]
+        },
+        "Blue": {
+          "Up": [],
+          "Right": [],
+          "Down": [],
+          "Left": []
+        }
+      }
+    }
+  }
