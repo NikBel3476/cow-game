@@ -1,6 +1,5 @@
 import { Coordinates, Direction, CowColor, MAPPED_SPRITES } from "../../../../types";
 import { ICow } from "./ICow";
-import { MAPPED_LEVELS } from "../../../../levels";
 import { CONF } from "../../../../Conf";
 
 export class Cow implements ICow {

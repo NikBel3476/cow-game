@@ -370,22 +370,38 @@ export class Game {
             // FIXME: HayBale moving through walls
             if (nextField instanceof HayBale && cow.layer === 1) {
                 switch (cow.direction) {
-                    case "Up":
-                        nextField.coordinates.y = Math.round((nextCoordinates.y - 1) * 100) / 100;
-                        cow.move();
+                    case "Up": {
+                        const fieldInFrontOfHayBale = this.findFieldByCoordinates({ x: nextCoordinates.x, y: nextCoordinates.y - 1 });
+                        if (!fieldInFrontOfHayBale) {
+                            nextField.coordinates.y = Math.round((nextCoordinates.y - 1) * 100) / 100;
+                            cow.move();
+                        }
                         break;
-                    case "Right":
-                        nextField.coordinates.x = Math.round((nextCoordinates.x + 1) * 100) / 100;
-                        cow.move();
+                    }
+                    case "Right": {
+                        const fieldInFrontOfHayBale = this.findFieldByCoordinates({ x: nextCoordinates.x + 1, y: nextCoordinates.y });
+                        if (!fieldInFrontOfHayBale) {
+                            nextField.coordinates.x = Math.round((nextCoordinates.x + 1) * 100) / 100;
+                            cow.move();
+                        }
                         break;
-                    case "Down":
-                        nextField.coordinates.y = Math.round((nextCoordinates.y + 1) * 100) / 100;
-                        cow.move();
+                    }
+                    case "Down": {
+                        const fieldInFrontOfHayBale = this.findFieldByCoordinates({ x: nextCoordinates.x, y: nextCoordinates.y + 1 });
+                        if (!fieldInFrontOfHayBale) {
+                            nextField.coordinates.y = Math.round((nextCoordinates.y + 1) * 100) / 100;
+                            cow.move();
+                        }
                         break;
-                    case "Left":
-                        nextField.coordinates.x = Math.round((nextCoordinates.x - 1) * 100) / 100;
-                        cow.move();
+                    }
+                    case "Left": {
+                        const fieldInFrontOfHayBale = this.findFieldByCoordinates({ x: nextCoordinates.x - 1, y: nextCoordinates.y});
+                        if (!fieldInFrontOfHayBale) {
+                            nextField.coordinates.x = Math.round((nextCoordinates.x - 1) * 100) / 100;
+                            cow.move();
+                        }
                         break;
+                    }
                 }
 
                 const fieldUnderHayBale = this.findStaticFieldByCoordinates(nextField.coordinates);
