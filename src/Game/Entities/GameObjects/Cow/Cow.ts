@@ -1,5 +1,7 @@
 import { Coordinates, Direction, CowColor, MAPPED_SPRITES } from "../../../../types";
 import { ICow } from "./ICow";
+import { MAPPED_LEVELS } from "../../../../levels";
+import { CONF } from "../../../../Conf";
 
 export class Cow implements ICow {
     private _coordinates: Coordinates;
@@ -72,25 +74,25 @@ export class Cow implements ICow {
     move(direction: Direction = this._direction) {
         switch (direction) {
             case "Up":
-                this._coordinates.y = Math.round((this._coordinates.y - 1) * 100) / 100;
+                this._coordinates.y = this._coordinates.y > 1 ? Math.round((this._coordinates.y - 1) * 100) / 100 : this._coordinates.y;
                 if (this._direction !== "Up") {
                     this._direction = "Up";
                 }
                 break;
             case "Right":
-                this._coordinates.x = Math.round((this._coordinates.x + 1) * 100) / 100;
+                this._coordinates.x = this._coordinates.x < CONF.Map.width ? Math.round((this._coordinates.x + 1) * 100) / 100 : this._coordinates.x;
                 if (this._direction !== "Right") {
                     this._direction = "Right";
                 }
                 break;
             case "Down":
-                this._coordinates.y = Math.round((this._coordinates.y + 1) * 100) / 100;
+                this._coordinates.y = this._coordinates.y < CONF.Map.height ? Math.round((this._coordinates.y + 1) * 100) / 100 : this._coordinates.y;
                 if (this._direction !== "Down") {
                     this._direction = "Down";
                 }
                 break;
             case "Left":
-                this._coordinates.x = Math.round((this._coordinates.x - 1) * 100) / 100;
+                this._coordinates.x = this._coordinates.x > 1 ? Math.round((this._coordinates.x - 1) * 100) / 100 : this._coordinates.x;
                 if (this._direction !== "Left") {
                     this._direction = "Left";
                 }

@@ -15,10 +15,13 @@ import * as lvl13 from './json/lvl13.json';
 import * as lvl14 from './json/lvl14.json';
 import * as lvl15 from './json/lvl15.json';
 import * as lvl16 from './json/lvl16.json';
-import * as lvl17 from './json/lvl16.json';
+import * as lvl17 from './json/lvl17.json';
 import * as lvl18 from './json/lvl18.json';
 import * as lvl19 from './json/lvl19.json';
 import * as lvl20 from './json/lvl20.json';
+import * as lvl21 from './json/lvl21.json';
+import * as lvl22 from './json/lvl22.json';
+import * as lvl23 from './json/lvl23.json';
 
 export const MAPPED_LEVELS: ILevel[] = [
     lvl1 as ILevel,
@@ -40,5 +43,8 @@ export const MAPPED_LEVELS: ILevel[] = [
     lvl17 as ILevel,
     lvl18 as ILevel,
     lvl19 as ILevel,
-    lvl20 as ILevel
+    lvl20 as ILevel,
+    lvl21 as ILevel,
+    lvl22 as ILevel,
+    lvl23 as ILevel
 ];

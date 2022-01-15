@@ -39,7 +39,6 @@ body {
 
 #game-table-wrapper {
     position: relative;
-    width: 100%;
     padding: 0;
     border-spacing: 0;
     margin: auto;
@@ -71,7 +70,8 @@ body {
 #game-table td {
     position: relative;
     width: 5%;
-    height: 100%;
+    height: calc((80vw) / 20);
+    max-height: calc((100vh) / 14);
     padding: 0;
     margin: 0;
     overflow: visible;

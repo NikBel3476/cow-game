@@ -1,0 +1,186 @@
+{
+  "MapObjects": {
+    "NonInteractive": {
+      "Pillar": [
+        [18, 1], [19, 1], [20, 1],
+        [18, 2], [19, 2], [20, 2],
+        [18, 3], [19, 3], [20, 3],
+        [2, 8], [7, 8],
+        [15, 10], [15, 10],
+        [2, 11], [7, 11], [14, 11], [15, 11],
+        [14, 12], [15, 12],
+        [14, 13], [15, 13]
+      ],
+      "FenceH": [
+        [3, 8], [4, 8], [5, 8], [6, 8],
+        [3, 11], [4, 11], [5, 11], [6, 11]
+      ],
+      "FenceV": [
+        [2, 9],
+        [2, 10], [7, 10]
+      ],
+      "BlockTile": [
+        [18, 10],
+        [18, 11],
+        [18, 12],
+        [19, 13], [20, 13],
+        [17, 14]
+      ]
+    },
+    "Interactive": {
+      "Slide": {
+        "Up": [
+          { "x": 18, "y": 13 }
+        ],
+        "Right": [
+          { "x": 10, "y": 3 }
+        ],
+        "Down": [
+          { "x": 18, "y": 9 }
+        ],
+        "Left": [
+          { "x": 12, "y": 3 }
+        ]
+      },
+      "HayBale": [
+        { "x": 4, "y": 9 }
+      ],
+      "Goblet": {
+        "coordinates": { "x": 20, "y": 14 }
+      },
+      "Button": [
+        {
+          "coordinates": { "x": 5, "y": 1 },
+          "linkedElementsIds": [1]
+        },
+        {
+          "coordinates": { "x": 14, "y": 9 },
+          "linkedElementsIds": [2]
+        }
+      ],
+      "AutoDoor": {
+        "Horizontal": [
+          { "id": 2, "coordinates": { "x": 17, "y": 12 } }
+        ],
+        "Vertical": [
+          { "id": 1, "coordinates": { "x": 7, "y": 9 } }
+        ]
+      },
+      "Pit": [
+        {
+          "coordinates": { "x": 11, "y": 1 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 2 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 3 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 4 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 5 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 6 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 7 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 8 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 9 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 10 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 11 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 12 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 13 },
+          "activated": true
+        },
+        {
+          "coordinates": { "x": 11, "y": 14 },
+          "activated": true
+        }
+      ]
+    }
+  },
+  "GameObjects": {
+    "Cows": [
+      {
+        "coordinates": { "x": 3, "y": 5 },
+        "direction": "Up",
+        "color": "Grey"
+      },
+      {
+        "coordinates": { "x": 17, "y": 13 },
+        "direction": "Up",
+        "color": "Brown"
+      },
+      {
+        "coordinates": { "x": 6, "y": 9 },
+        "direction": "Right",
+        "color": "Brown"
+      }
+    ],
+    "Arrows": {
+      "Red": {
+        "Up": [
+          { "coordinates": null }
+        ],
+        "Right": [
+          { "coordinates": { "x": 18, "y":  14 } },
+          { "coordinates": null },
+          { "coordinates": null },
+          { "coordinates": null }
+        ],
+        "Down": [
+          { "coordinates": null },
+          { "coordinates": null },
+          { "coordinates": null },
+          { "coordinates": null },
+          { "coordinates": null }
+        ],
+        "Left": [
+          { "coordinates": null },
+          { "coordinates": null }
+        ]
+      },
+      "Blue": {
+        "Up": [
+          { "coordinates": null }
+        ],
+        "Right": [
+          { "coordinates": null }
+        ],
+        "Down": [
+          { "coordinates": null }
+        ],
+        "Left": [
+          { "coordinates": null }
+        ]
+      }
+    }
+  }
+}
