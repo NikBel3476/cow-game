@@ -120,11 +120,11 @@
         "Blue": {
           "Up": [],
           "Right": [
-            { "coordinates": { "x": 7, "y": 9 } }
+            { "coordinates": { "x": 7, "y": 9 } },
+            { "coordinates": null }
           ],
           "Down": [
-            { "coordinates": { "x": 7, "y": 4 } },
-            { "coordinates": null }
+            { "coordinates": { "x": 7, "y": 4 } }
           ],
           "Left": []
         }

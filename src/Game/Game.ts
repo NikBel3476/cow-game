@@ -278,6 +278,7 @@ export class Game {
             if (currentField instanceof Slide) {
                 cow.layer = cow.layer === 1 ? 2 : 1;
             }
+
             if (currentField instanceof Arrow) {
                 if (cow.coordinates.x === currentField?.coordinates?.x && cow.coordinates.y === currentField.coordinates.y) {
                     cow.direction = currentField.direction;
@@ -289,6 +290,7 @@ export class Game {
                     }
                 }
             }
+
             if (currentField instanceof Key) {
                 if (cow.coordinates.x === currentField.coordinates.x && cow.coordinates.y === currentField.coordinates.y) {
                     this._CowKeysMap.get(cow)?.push(currentField);
@@ -298,19 +300,20 @@ export class Game {
                     this._interactiveFields.splice(this._interactiveFields.indexOf(currentField), 1);
                 }
             }
-            if (currentField instanceof Goblet) {
-                if (
-                    cow.color === "Grey" &&
-                    this._goblet.coordinates.x === cow.coordinates.x &&
-                    this._goblet.coordinates.y === cow.coordinates.y)
-                {
-                    this.endGame();
-                    return alert("YOU WIN!!!");
-                }
+
+            if (
+                cow.color === "Grey" &&
+                this._goblet.coordinates.x === cow.coordinates.x &&
+                this._goblet.coordinates.y === cow.coordinates.y)
+            {
+                this.endGame();
+                return alert("YOU WIN!!!");
             }
+
             if (currentField instanceof Pit) {
                 currentField.activate();
             }
+
             if (currentField instanceof Button) {
                 currentField.activate();
                 this._cows.forEach(cow => {
@@ -350,6 +353,7 @@ export class Game {
                     nextCoordinates = { x: cow.coordinates.x - 1, y: cow.coordinates.y };
                     break;
             }
+
             const nextField: IField | Arrow | undefined = this.findFieldByCoordinates(nextCoordinates);
             if (nextField?.impassable) {
                 if (cow.layer === 2) cow.move();
@@ -365,14 +369,65 @@ export class Game {
                 }
                 if (nextField instanceof Slide && nextField.direction === cow.direction) cow.move();
             } else { // passable field
-                if (cow.layer === 1) cow.move();
+                if (cow.layer === 1) {
+                    switch (cow.direction) {
+                        case 'Up': {
+                            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 1 });
+                            if (cowAhead) {
+                                if (!this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y - 2 })?.impassable) {
+                                    cowAhead.coordinates.y--;
+                                    cow.move();
+                                }
+                            } else {
+                                cow.move();
+                            }
+                            break;
+                        }
+                        case 'Right': {
+                            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x + 1, y: cow.coordinates.y });
+                            if (cowAhead) {
+                                if (!this.findFieldByCoordinates({ x: cow.coordinates.x + 2, y: cow.coordinates.y })?.impassable) {
+                                    cowAhead.coordinates.x++;
+                                    cow.move();
+                                }
+                            } else {
+                                cow.move();
+                            }
+                            break;
+                        }
+                        case 'Down': {
+                            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 1 });
+                            if (cowAhead) {
+                                if (!this.findFieldByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y + 2 })?.impassable) {
+                                    cowAhead.coordinates.y++;
+                                    cow.move();
+                                }
+                            } else {
+                                cow.move();
+                            }
+                            break;
+                        }
+                        case 'Left': {
+                            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x - 1, y: cow.coordinates.y });
+                            if (cowAhead) {
+                                if (!this.findFieldByCoordinates({ x: cow.coordinates.x - 2, y: cow.coordinates.y })?.impassable) {
+                                    cowAhead.coordinates.x--;
+                                    cow.move();
+                                }
+                            } else {
+                                cow.move();
+                            }
+                            break;
+                        }
+                    }
+                }
             }
-            // FIXME: HayBale moving through walls
+
             if (nextField instanceof HayBale && cow.layer === 1) {
                 switch (cow.direction) {
                     case "Up": {
                         const fieldInFrontOfHayBale = this.findFieldByCoordinates({ x: nextCoordinates.x, y: nextCoordinates.y - 1 });
-                        if (!fieldInFrontOfHayBale) {
+                        if (!fieldInFrontOfHayBale?.impassable || fieldInFrontOfHayBale instanceof Pit) {
                             nextField.coordinates.y = Math.round((nextCoordinates.y - 1) * 100) / 100;
                             cow.move();
                         }
@@ -380,7 +435,7 @@ export class Game {
                     }
                     case "Right": {
                         const fieldInFrontOfHayBale = this.findFieldByCoordinates({ x: nextCoordinates.x + 1, y: nextCoordinates.y });
-                        if (!fieldInFrontOfHayBale) {
+                        if (!fieldInFrontOfHayBale?.impassable || fieldInFrontOfHayBale instanceof Pit) {
                             nextField.coordinates.x = Math.round((nextCoordinates.x + 1) * 100) / 100;
                             cow.move();
                         }
@@ -388,7 +443,7 @@ export class Game {
                     }
                     case "Down": {
                         const fieldInFrontOfHayBale = this.findFieldByCoordinates({ x: nextCoordinates.x, y: nextCoordinates.y + 1 });
-                        if (!fieldInFrontOfHayBale) {
+                        if (!fieldInFrontOfHayBale?.impassable || fieldInFrontOfHayBale instanceof Pit) {
                             nextField.coordinates.y = Math.round((nextCoordinates.y + 1) * 100) / 100;
                             cow.move();
                         }
@@ -396,7 +451,7 @@ export class Game {
                     }
                     case "Left": {
                         const fieldInFrontOfHayBale = this.findFieldByCoordinates({ x: nextCoordinates.x - 1, y: nextCoordinates.y});
-                        if (!fieldInFrontOfHayBale) {
+                        if (!fieldInFrontOfHayBale?.impassable || fieldInFrontOfHayBale instanceof Pit) {
                             nextField.coordinates.x = Math.round((nextCoordinates.x - 1) * 100) / 100;
                             cow.move();
                         }
@@ -427,24 +482,6 @@ export class Game {
                             fieldUnderHayBale.linkedHtmlElement
                         )
                     );
-                }
-            }
-
-            const cowAhead: Cow | undefined = this.findCowByCoordinates({ x: cow.coordinates.x, y: cow.coordinates.y });
-            if (cowAhead && cowAhead !== cow) {
-                switch (cow.direction) {
-                    case 'Up':
-                        if (!nextField) cowAhead.coordinates.y -= 1;
-                        break;
-                    case 'Right':
-                        if (!nextField) cowAhead.coordinates.x += 1;
-                        break;
-                    case 'Down':
-                        if (!nextField) cowAhead.coordinates.y += 1;
-                        break;
-                    case 'Left':
-                        if (!nextField) cowAhead.coordinates.x -= 1;
-                        break;
                 }
             }
         });

@@ -28,7 +28,7 @@
     "GameObjects": {
       "Cows": [
         {
-          "coordinates": { "x": 7, "y": 13 },
+          "coordinates": { "x": 2, "y": 2 },
           "direction": "Right",
           "color": "Grey"
         },
