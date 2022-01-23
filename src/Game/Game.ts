@@ -152,6 +152,7 @@ export class Game {
     }
 
     private loadNextLevel() {
+        window.localStorage.setItem(`save_level_${this._currentLevel}`, `${this._currentLevel}`);
         ++this._currentLevel;
         window.localStorage.setItem('level', `${this._currentLevel}`);
         if (this._currentLevel < MAPPED_LEVELS.length) {

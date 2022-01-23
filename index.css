@@ -45,3 +45,15 @@ a {
     width: 100px;
     height: 100px;
 }
+
+#screensaver {
+    background: #05eb05;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    visibility: visible;
+}
+
+#button-on-screensaver {
+    
+}

@@ -13,5 +13,21 @@
         <a class="game-menu-link" href="pages/game/game.html">Начать игру</a>
         <a class="game-menu-link" href="pages/levels/levels.html">Выбрать уровень</a>
     </div>
+
+    <div id="screensaver">
+        <button id="button-on-screensaver">
+            <h1>Тык меня!!!</h1>
+        </button>
+    </div>
+
+    <script>
+        const button = document.getElementById("button-on-screensaver");
+        if(button instanceof HTMLButtonElement) {
+            button.addEventListener("click", () => {
+                document.getElementById("screensaver").style.visibility = "hidden";
+            });
+        }
+    </script>
+
 </body>
 </html>

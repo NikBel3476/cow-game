@@ -11,14 +11,17 @@ export class EventHandler {
     constructor(game: Game) {
         this.game = game;
 
+        if(document.getElementById('start-game-button') !== null)
         (document.getElementById('start-game-button') as HTMLElement).addEventListener('click', (e: MouseEvent) => {
             startGame();
         });
 
+        if(document.getElementById('end-game-button') !== null)
         (document.getElementById('end-game-button') as HTMLElement).addEventListener('click', (e: MouseEvent) => {
             endGame();
         });
 
+        if(document.getElementById('restart-game-button') !== null)
         (document.getElementById('restart-game-button') as HTMLElement).addEventListener('click', (e: MouseEvent) => {
             restartGame();
         });

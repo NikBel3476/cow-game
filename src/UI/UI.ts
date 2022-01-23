@@ -15,6 +15,7 @@ class UI {
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
         this._modalWindow = document.getElementById('modal-wrapper') as HTMLElement;
+        if(document.getElementById('modal-button') !== null)
         (document.getElementById('modal-button') as HTMLButtonElement).addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
             this.hideModalWindow();
@@ -88,8 +89,10 @@ class UI {
     }
 
     showModalWindow(): void {
-        (document.getElementById('modal-text') as HTMLElement).innerText = `Уровень ${window.localStorage.getItem('level')}`;
+        if(document.getElementById('modal-text') !== null) {
+            (document.getElementById('modal-text') as HTMLElement).innerText = `Уровень ${window.localStorage.getItem('level')}`;
         this._modalWindow.style.visibility = 'visible';
+        };
     }
 
     hideModalWindow(): void {
