@@ -5,6 +5,7 @@ class UI {
     htmlArrowsTable: HTMLTableElement;
     gameTable: HTMLTableCellElement[][];
     arrowsTable: HTMLTableCellElement[][];
+    _modalWindow: HTMLElement;
 
     constructor(gameContainerCssSelector: string, arrowsTableCssSelector: string) {
         this.htmlGameTable = this.createGameTable();
@@ -13,6 +14,11 @@ class UI {
         document.querySelector(arrowsTableCssSelector)?.appendChild(this.htmlArrowsTable);
         this.gameTable = this.htmlTableToArray(this.htmlGameTable);
         this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
+        this._modalWindow = document.getElementById('modal-wrapper') as HTMLElement;
+        (document.getElementById('modal-button') as HTMLButtonElement).addEventListener('click', (e: MouseEvent) => {
+            e.preventDefault();
+            this.hideModalWindow();
+        });
     }
 
     htmlTableToArray(htmlTable: HTMLTableElement): HTMLTableCellElement[][] {
@@ -79,6 +85,15 @@ class UI {
                 }
             }
         }
+    }
+
+    showModalWindow(): void {
+        (document.getElementById('modal-text') as HTMLElement).innerText = `Уровень ${window.localStorage.getItem('level')}`;
+        this._modalWindow.style.visibility = 'visible';
+    }
+
+    hideModalWindow(): void {
+        this._modalWindow.style.visibility = 'hidden';
     }
 }
 

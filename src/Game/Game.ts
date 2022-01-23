@@ -148,10 +148,12 @@ export class Game {
             ...this._cows,
             ...this._hayBales
         ];
+        ui.showModalWindow();
     }
 
     private loadNextLevel() {
         ++this._currentLevel;
+        window.localStorage.setItem('level', `${this._currentLevel}`);
         if (this._currentLevel < MAPPED_LEVELS.length) {
             this._pastArrows = [];
             this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
@@ -500,6 +502,5 @@ export class Game {
             this._loop = 0;
         }
         this.loadNextLevel();
-        window.localStorage.setItem('level', `${this._currentLevel}`);
     }
 }
