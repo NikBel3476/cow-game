@@ -310,7 +310,7 @@ export class Game {
                 this._goblet.coordinates.y === cow.coordinates.y)
             {
                 this.endGame();
-                return alert("YOU WIN!!!");
+                return alert(`Вы прошли уровень ${this._currentLevel - 1}`);
             }
 
             if (currentField instanceof Pit) {
