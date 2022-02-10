@@ -1,4 +1,7 @@
 import { CONF } from '../Conf';
+import screensaver1 from '../../assets/sprites/png/screensaverStartGame.png';
+import screensaver2 from '../../assets/sprites/png/cowScreensaver2.png';
+import screensaver3 from '../../assets/sprites/png/cowScreensaver3.png';
 
 class UI {
     htmlGameTable: HTMLTableElement;
@@ -90,9 +93,23 @@ class UI {
 
     showModalWindow(): void {
         if(document.getElementById('modal-text') !== null) {
-            (document.getElementById('modal-text') as HTMLElement).innerText = `Уровень ${window.localStorage.getItem('level')}`;
-        this._modalWindow.style.visibility = 'visible';
-        };
+            (document.getElementById('modal-text') as HTMLElement).innerText = `Уровень ${window.localStorage.getItem('level') || 1}`;
+            const randomNum = Math.floor(Math.random() * 3); // 3 is pictures amount
+            let img;
+            switch(randomNum) {
+                case(0):
+                    img = screensaver1;
+                    break;
+                case(1):
+                    img = screensaver2;
+                    break;
+                default:
+                    img = screensaver3;
+                    break;
+            }
+            (document.getElementById('modal-img') as HTMLImageElement).src = img;
+            this._modalWindow.style.visibility = 'visible';
+        }
     }
 
     hideModalWindow(): void {
