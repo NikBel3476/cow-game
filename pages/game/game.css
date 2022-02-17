@@ -17,6 +17,12 @@ button {
     background-size: contain;
 }
 
+#start-game-button, #end-game-button, #restart-game-button {
+    width: 10vw;
+    height: 5vh;
+    font-size: 1.3vh;
+}
+
 #game-container {
     display: flex;
     position: absolute;
@@ -137,9 +143,14 @@ button {
     border-radius: 30px;
 }
 
+#modal-text {
+    font-size: 3vh;
+}
+
 #modal-img {
+    display: block;
     max-width: 100%;
-    max-height: 60%;
+    max-height: 50%;
 }
 
 #modal-button {
@@ -150,7 +161,50 @@ button {
     border: 3px solid blue;
     border-radius: 10px;
     background: transparent;
-    font-size: 1.5rem;
+    font-size: 2vh;
+}
+
+#end-level-modal-wrapper {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    visibility: hidden;
+    z-index: 100;
+}
+
+#end-level-modal {
+    position: relative;
+    width: 50vw;
+    height: 50vh;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 30px;
+}
+
+#end-level-modal-text {
+    font-size: 3vh;
+}
+
+#end-level-modal-img {
+    max-width: 100%;
+    max-height: 50%;
+}
+
+#end-level-modal-button {
+    margin-bottom: 5%;
+    width: 12%;
+    height: 10%;
+    min-width: 50px;
+    border: 3px solid blue;
+    border-radius: 10px;
+    background: transparent;
+    font-size: 2vh;
 }
 
 #ui-table td div {

@@ -9,6 +9,7 @@ class UI {
     gameTable: HTMLTableCellElement[][];
     arrowsTable: HTMLTableCellElement[][];
     _modalWindow: HTMLElement;
+    _endLevelModalWindow: HTMLElement;
 
     constructor(gameContainerCssSelector: string, arrowsTableCssSelector: string) {
         this.htmlGameTable = this.createGameTable();
@@ -22,6 +23,12 @@ class UI {
         (document.getElementById('modal-button') as HTMLButtonElement).addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
             this.hideModalWindow();
+        });
+        this._endLevelModalWindow = document.getElementById('end-level-modal-wrapper') as HTMLElement;
+        if(document.getElementById('end-level-modal-button') !== null)
+            (document.getElementById('end-level-modal-button') as HTMLButtonElement).addEventListener('click', (e: MouseEvent) => {
+            e.preventDefault();
+            this.hideEndLevelModalWindow();
         });
     }
 
@@ -92,8 +99,9 @@ class UI {
     }
 
     showModalWindow(): void {
-        if(document.getElementById('modal-text') !== null) {
-            (document.getElementById('modal-text') as HTMLElement).innerText = `Уровень ${window.localStorage.getItem('level') || 1}`;
+        const modalLabel = document.getElementById('modal-text');
+        if(modalLabel !== null) {
+            (modalLabel as HTMLElement).innerText = `Уровень ${window.localStorage.getItem('level') || 1}`;
             const randomNum = Math.floor(Math.random() * 3); // 3 is pictures amount
             let img;
             switch(randomNum) {
@@ -114,6 +122,32 @@ class UI {
 
     hideModalWindow(): void {
         this._modalWindow.style.visibility = 'hidden';
+    }
+
+    showEndLevelModalWindow(): void {
+        const modalLabel = document.getElementById('end-level-modal-text');
+        if(modalLabel !== null) {
+            (modalLabel as HTMLElement).innerText = `Поздравляем! Уровень ${window.localStorage.getItem('level') || 1} пройден`;
+            const randomNum = Math.floor(Math.random() * 3); // 3 is pictures amount
+            let img;
+            switch(randomNum) {
+                case(0):
+                    img = screensaver1;
+                    break;
+                case(1):
+                    img = screensaver2;
+                    break;
+                default:
+                    img = screensaver3;
+                    break;
+            }
+            (document.getElementById('end-level-modal-img') as HTMLImageElement).src = img;
+            this._endLevelModalWindow.style.visibility = 'visible';
+        }
+    }
+
+    hideEndLevelModalWindow(): void {
+        this._endLevelModalWindow.style.visibility = 'hidden';
     }
 }
 

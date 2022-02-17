@@ -309,8 +309,8 @@ export class Game {
                 this._goblet.coordinates.x === cow.coordinates.x &&
                 this._goblet.coordinates.y === cow.coordinates.y)
             {
-                this.endGame();
-                return alert(`Вы прошли уровень ${this._currentLevel - 1}`);
+                ui.showEndLevelModalWindow();
+                return this.endGame();
             }
 
             if (currentField instanceof Pit) {
@@ -497,7 +497,7 @@ export class Game {
         }
     }
 
-    private endGame() {
+    endGame() {
         if (this._loop) {
             clearInterval(this._loop);
             this._loop = 0;
