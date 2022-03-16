@@ -1,57 +1,59 @@
 body {
-    margin: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #006400 url("assets/MainMenuBackground.svg") no-repeat fixed center center;
-    background-size: contain;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #006400 url("assets/MainMenuBackground.svg") no-repeat fixed
+    center center;
+  background-size: contain;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 #menu-container {
-    display: block;
-    position: absolute;
-    width: 25vw;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    text-align: center;
+  display: block;
+  position: absolute;
+  width: 25vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 #game-container {
-    display: none;
-    position: absolute;
-    width: 20vw;
-    height: 20vh;
+  display: none;
+  position: absolute;
+  width: 20vw;
+  height: 20vh;
 }
 
 .game-menu-link {
-    display: block;
-    background: none;
-    margin: 3%;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-size: calc(1.25vw + 1.25vh);
+  display: block;
+  background: none;
+  margin: 3%;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: calc(1.25vw + 1.25vh);
 }
 
 #start-game-button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #cow-object {
-    position: absolute;
-    width: 100px;
-    height: 100px;
+  position: absolute;
+  width: 100px;
+  height: 100px;
 }
 
 #screensaver {
-    margin: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #000000 url("assets/sprites/png/screensaverStartGame.png") no-repeat fixed center center;
-    background-size: contain;
-    position: absolute;
-    visibility: visible;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000 url("assets/sprites/png/screensaverStartGame.png")
+    no-repeat fixed center center;
+  background-size: contain;
+  position: absolute;
+  visibility: visible;
 }

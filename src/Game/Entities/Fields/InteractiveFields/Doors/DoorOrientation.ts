@@ -1,1 +1,1 @@
-export type DoorOrientation = 'Horizontal' | 'Vertical';
+export type DoorOrientation = "Horizontal" | "Vertical";

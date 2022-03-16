@@ -1,4 +1,4 @@
 export interface IEntity {
-    img: string;
-    linkedHtmlElement: HTMLElement;
+  img: string;
+  linkedHtmlElement: HTMLElement;
 }
