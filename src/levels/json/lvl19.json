@@ -1,0 +1,125 @@
+{
+  "MapObjects": {
+    "NonInteractive": {
+      "Pillar": [
+        [1,1], [10, 1], [10, 6], [20, 1], [20, 5], [1,9], [1, 14], [11, 9], [20, 14],
+        [1, 4], [5, 1], [5, 4], [18, 14], [18, 11], [18, 1], [18, 5]
+      ],
+      "FenceH": [
+        [2, 1], [3, 1], [4, 1], [6, 1], [7, 1], [8, 1], [9, 1], [11, 1],
+        [12, 1], [13, 1], [14, 1], [15, 1], [16, 1], [17, 1], [19, 1],
+        [19, 5], [2, 9], [3, 9], [4, 9], [5, 9], [6, 9], [7, 9], [8, 9], [9, 9], [10, 9],
+        [2, 14], [3, 14], [4, 14], [5, 14], [6, 14], [7, 14], [8, 14], [9, 14], [10, 14], [11, 14], [12, 14],
+        [13, 14],[14, 14], [15, 14], [16, 14], [17, 14], [19, 14],
+        [2, 4], [4, 4]
+      ],
+      "FenceV": [
+        [1, 2], [1, 3], [1, 5], [1, 6], [1, 7], [1, 8], [1, 10], [1, 11], [1, 12], [1, 13],
+        [10, 2], [10, 3], [10, 4], [10, 5],
+        [20, 2], [20, 3], [20, 4], [20, 6], [20, 7], [20, 8],
+        [20, 9], [20, 10], [20, 11], [20, 12], [20, 13],
+        [5, 2], [5, 3], [18, 13], [18, 12], [18, 2], [18, 4]
+      ],
+      "Block": [
+        [11, 6]
+      ]
+    },
+    "Interactive": {
+      "Goblet": {
+        "coordinates": { "x": 19, "y": 13 }
+      },
+      "Pit": [
+        {
+          "coordinates": { "x": 11, "y": 8 },
+          "activated": false
+        }
+      ],
+      "HayBale": [
+        { "x": 14, "y": 7 }
+      ],
+      "Button": [
+        {
+          "coordinates": { "x": 3, "y": 5 },
+          "linkedElementsIds": [3]
+        },
+        {
+          "coordinates": { "x": 14, "y": 8 },
+          "linkedElementsIds": [2]
+        },
+        {
+          "coordinates": { "x": 12, "y": 3 },
+          "linkedElementsIds": [1]
+        }
+      ],
+      "AutoDoor": {
+        "Horizontal": [
+          {
+            "id": 1,
+            "coordinates": { "x": 3, "y": 4 }
+          }
+        ],
+        "Vertical": [
+          {
+            "id": 2,
+            "coordinates": { "x": 18, "y": 7 }
+          }
+        ]
+      },
+      "Piston": {
+        "Up": [],
+        "Right": [],
+        "Down": [
+          {
+            "id": 3,
+            "coordinates": { "x": 11, "y": 7 },
+            "activated": false
+          }
+        ],
+        "Left": []
+      }
+    }
+  },
+  "GameObjects": {
+    "Cows": [
+      {
+        "coordinates": { "x": 3, "y": 2 },
+        "direction": "Down",
+        "color": "Grey"
+      },
+      {
+        "coordinates": { "x": 19, "y": 7 },
+        "direction": "Left",
+        "color": "Brown"
+      },
+      {
+        "coordinates": { "x": 2, "y": 8 },
+        "direction": "Right",
+        "color": "Brown"
+      }
+    ],
+    "Arrows": {
+      "Red": {
+        "Up": [
+          { "coordinates": null }
+        ],
+        "Right": [
+          { "coordinates": null }
+        ],
+        "Down": [
+          { "coordinates": null}
+        ],
+        "Left": []
+      },
+      "Blue": {
+        "Up": [
+          { "coordinates": null }
+        ],
+        "Right": [
+          { "coordinates": null }
+        ],
+        "Down": [],
+        "Left": []
+      }
+    }
+  }
+}

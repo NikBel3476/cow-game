@@ -1,32 +1,29 @@
-import { Game } from './Game';
-import { MAPPED_LEVELS } from "./levels";
+import { Game } from "./Game";
 import { render } from "./Render";
 
-export let currentLevel: keyof typeof MAPPED_LEVELS = 13;
+export const game = new Game();
 
-const game = new Game();
-
-document.ondragstart = function() {
-    return false;
-}
+document.ondragstart = function () {
+  return false;
+};
 
 export function startGame() {
-    game.startGame();
+  game.startGame();
 }
 
 export function endGame() {
-    game.reloadLevel();
+  game.reloadLevel();
 }
 
 export function restartGame() {
-    game.restartGame();
+  game.restartGame();
 }
 
 window.onload = () => {
-    game.renderScene();
-}
+  game.renderScene();
+};
 
 window.onresize = () => {
-    game.renderScene();
-    render.scaleArrowsTable();
-}
+  game.renderScene();
+  render.scaleArrowsTable();
+};

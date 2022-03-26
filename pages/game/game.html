@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="game.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="game.css" />
     <title>Game</title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="game-container">
-        <div id="game-table-wrapper">
-        </div>
+      <div id="game-table-wrapper"></div>
     </div>
     <div id="ui-container">
-        <div id="ui-button-wrapper">
-            <button id="start-game-button">Начать игру</button>
-            <button id="end-game-button">Перезагрузить уровень</button>
-            <button id="restart-game-button">Начать заново</button>
-        </div>
-        <div id="ui-table-wrapper"></div>
-        <div id="low-background-wrapper"></div>
+      <div id="ui-button-wrapper">
+        <button id="start-game-button">Старт</button>
+        <button id="end-game-button">Перезагрузить уровень</button>
+        <button id="restart-game-button">Начать игру заново</button>
+        <button id="completed-levels-button">Выбрать уровень</button>
+      </div>
+      <div id="ui-table-wrapper"></div>
+      <div id="low-background-wrapper"></div>
+    </div>
+    <div id="modal-wrapper">
+      <div id="modal">
+        <h1 id="modal-text"></h1>
+        <img id="modal-img" />
+        <button id="modal-button">Ок</button>
+      </div>
+    </div>
+    <div id="end-level-modal-wrapper">
+      <div id="end-level-modal">
+        <h1 id="end-level-modal-text"></h1>
+        <img id="end-level-modal-img" />
+        <button id="end-level-modal-button">Ок</button>
+      </div>
+    </div>
+    <div id="completed-levels-modal-wrapper">
+      <div id="completed-levels-modal">
+        <div id="completed-levels-list-wrapper"></div>
+        <button id="completed-levels-modal-button">Закрыть</button>
+      </div>
     </div>
     <script type="text/javascript" src="../../dist/bundle.js"></script>
-</body>
+  </body>
 </html>

@@ -1,0 +1,124 @@
+{
+    "MapObjects": {
+        "NonInteractive": {
+            "Pillar": [
+                [8, 14], [20, 14],
+                [8, 12], [20, 9]
+            ],
+            "FenceH": [
+                [9, 9], [10, 9], [11, 9],[12, 9], [13, 9],
+                [15, 9], [16, 9], [17, 9],[18, 9], [19, 9],
+                [1, 12], [2, 12], [3, 12], [4, 12], [5, 12], [6, 12], [7, 12],
+                [1, 14], [2, 14], [3, 14], [4, 14], [5, 14], [6, 14], [7, 14],
+                [9, 14], [10, 14], [11, 14], [12, 14], [13, 14], [14, 14],
+                [15, 14], [16, 14], [17, 14], [18, 14], [19, 14]
+            ],
+            "FenceV": [
+                [8, 13], [8, 11], [8, 10],
+                [20, 13], [20, 12], [20, 11], [20, 10]
+            ],
+            "Tree": [
+                [12, 1], [5, 2], [19, 2], [2, 3],
+                [13, 3], [3, 5], [18, 7], [5, 9],
+                [1, 11], [17, 11], [12, 13]
+            ],
+            "Bush": [
+                [8, 1], [8, 2], [8, 3],
+                [8, 4], [8, 5], [8, 6],
+                [8, 7], [8, 8], [8, 9] 
+            ]
+        },
+        "Interactive": {
+            "Slide": {
+                "Up": [],
+                "Right": [
+                    { "x": 7, "y": 5 }
+                ],
+                "Down": [],
+                "Left": [
+                    { "x": 9, "y": 5 }
+                ]
+            },
+            "HayBale": [
+                { "x": 12, "y": 2 }
+            ],
+            "Button": [
+                {
+                  "coordinates": { "x": 16, "y": 3 },
+                  "linkedElementsIds": [1]
+                },
+                {
+                    "coordinates": { "x": 6, "y": 13 },
+                    "linkedElementsIds": [2]
+                }
+              ],
+            "AutoDoor": {
+                "Horizontal": [
+                    {
+                        "id": 2,
+                        "coordinates": { "x": 14, "y": 9 }
+                    }
+                ],
+                "Vertical": [
+                    {
+                        "id": 1,
+                        "coordinates": { "x": 3, "y": 13 }
+                    }                    
+                ]
+            },
+            "Goblet": {
+                "coordinates": { "x": 19, "y": 12 }
+            },
+            "Pit": [
+                {
+                    "coordinates": { "x": 14, "y": 5},
+                    "activated": false
+                }
+            ]
+        }
+    },
+    "GameObjects": {
+        "Cows": [
+            {
+                "coordinates": { "x": 2, "y": 8 },
+                "direction": "Right",
+                "color": "Grey"
+            },
+            {
+                "coordinates": { "x": 2, "y": 13 },
+                "direction": "Right",
+                "color": "Brown"
+            }
+        ],
+        "Arrows": {
+            "Red": {
+                "Up": [
+                    { "coordinates": null },
+                    { "coordinates": null },
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Right": [
+                    { "coordinates": null },
+                    { "coordinates": null },
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Down": [
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Left": [
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ]
+              },
+              "Blue": {
+                "Up": [],
+                "Right": [],
+                "Down": [],
+                "Left": []
+              }
+        }
+    }
+}

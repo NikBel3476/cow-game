@@ -1,0 +1,124 @@
+{
+  "MapObjects": {
+    "Interactive": {
+      "Goblet": {
+        "coordinates": { "x": 2, "y": 6 }
+      }
+    }
+  },
+  "GameObjects": {
+    "Cows": [
+      {
+        "coordinates": { "x": 2, "y": 11 },
+        "direction": "Right",
+        "color": "Grey"
+      }
+    ],
+    "Arrows": {
+      "Red": {
+        "Up": [
+          { "coordinates": null },
+          { "coordinates": null },
+          { "coordinates": null }
+        ],
+        "Right": [],
+        "Down": [],
+        "Left": [
+          { "coordinates": null }
+        ]
+      },
+      "Blue": {
+        "Up": [],
+        "Right": [
+          { "coordinates": { "x": 3, "y": 1 } },
+          { "coordinates": { "x": 4, "y": 1 } },
+          { "coordinates": { "x": 5, "y": 1 } },
+          { "coordinates": { "x": 6, "y": 1 } },
+          { "coordinates": { "x": 7, "y": 1 } },
+          { "coordinates": { "x": 8, "y": 1 } },
+          { "coordinates": { "x": 3, "y": 2 } },
+          { "coordinates": { "x": 4, "y": 2 } },
+          { "coordinates": { "x": 5, "y": 2 } },
+          { "coordinates": { "x": 6, "y": 2 } },
+          { "coordinates": { "x": 7, "y": 2 } },
+          { "coordinates": { "x": 8, "y": 2 } },
+          { "coordinates": { "x": 3, "y": 3 } },
+          { "coordinates": { "x": 4, "y": 3 } },
+          { "coordinates": { "x": 5, "y": 3 } },
+          { "coordinates": { "x": 6, "y": 3 } },
+          { "coordinates": { "x": 7, "y": 3 } },
+          { "coordinates": { "x": 8, "y": 3 } },
+          { "coordinates": { "x": 3, "y": 4 } },
+          { "coordinates": { "x": 4, "y": 4 } },
+          { "coordinates": { "x": 5, "y": 4 } },
+          { "coordinates": { "x": 6, "y": 4 } },
+          { "coordinates": { "x": 7, "y": 4 } },
+          { "coordinates": { "x": 8, "y": 4 } },
+          { "coordinates": { "x": 3, "y": 5 } },
+          { "coordinates": { "x": 4, "y": 5 } },
+          { "coordinates": { "x": 5, "y": 5 } },
+          { "coordinates": { "x": 6, "y": 5 } },
+          { "coordinates": { "x": 7, "y": 5 } },
+          { "coordinates": { "x": 8, "y": 5 } },
+          { "coordinates": { "x": 6, "y": 6 } },
+          { "coordinates": { "x": 7, "y": 6 } },
+          { "coordinates": { "x": 8, "y": 6 } },
+          { "coordinates": { "x": 7, "y": 7 } },
+          { "coordinates": { "x": 8, "y": 7 } },
+          { "coordinates": { "x": 3, "y": 8 } },
+          { "coordinates": { "x": 8, "y": 8 } },
+          { "coordinates": { "x": 3, "y": 9 } },
+          { "coordinates": { "x": 4, "y": 9 } },
+          { "coordinates": { "x": 3, "y": 10 } },
+          { "coordinates": { "x": 4, "y": 10 } },
+          { "coordinates": { "x": 5, "y": 10 } },
+          { "coordinates": { "x": 3, "y": 11 } },
+          { "coordinates": { "x": 4, "y": 11 } },
+          { "coordinates": { "x": 5, "y": 11 } },
+          { "coordinates": { "x": 6, "y": 11 } },
+          { "coordinates": { "x": 7, "y": 11 } },
+          { "coordinates": { "x": 8, "y": 11 } },
+          { "coordinates": { "x": 3, "y": 12 } },
+          { "coordinates": { "x": 4, "y": 12 } },
+          { "coordinates": { "x": 5, "y": 12 } },
+          { "coordinates": { "x": 6, "y": 12 } },
+          { "coordinates": { "x": 7, "y": 12 } },
+          { "coordinates": { "x": 8, "y": 12 } },
+          { "coordinates": { "x": 3, "y": 13 } },
+          { "coordinates": { "x": 4, "y": 13 } },
+          { "coordinates": { "x": 5, "y": 13 } },
+          { "coordinates": { "x": 6, "y": 13 } },
+          { "coordinates": { "x": 7, "y": 13 } },
+          { "coordinates": { "x": 8, "y": 13 } },
+          { "coordinates": { "x": 3, "y": 14 } },
+          { "coordinates": { "x": 4, "y": 14 } },
+          { "coordinates": { "x": 5, "y": 14 } },
+          { "coordinates": { "x": 6, "y": 14 } },
+          { "coordinates": { "x": 7, "y": 14 } },
+          { "coordinates": { "x": 8, "y": 14 } }
+        ],
+        "Down": [],
+        "Left": [
+          { "coordinates": { "x": 20, "y": 1 } },
+          { "coordinates": { "x": 20, "y": 2 } },
+          { "coordinates": { "x": 20, "y": 3 } },
+          { "coordinates": { "x": 20, "y": 4 } },
+          { "coordinates": { "x": 20, "y": 5 } },
+          { "coordinates": { "x": 20, "y": 6 } },
+          { "coordinates": { "x": 5, "y": 6 } },
+          { "coordinates": { "x": 20, "y": 7 } },
+          { "coordinates": { "x": 6, "y": 7 } },
+          { "coordinates": { "x": 20, "y": 8 } },
+          { "coordinates": { "x": 7, "y": 8 } },
+          { "coordinates": { "x": 20, "y": 9 } },
+          { "coordinates": { "x": 8, "y": 9 } },
+          { "coordinates": { "x": 20, "y": 10 } },
+          { "coordinates": { "x": 20, "y": 11} },
+          { "coordinates": { "x": 20, "y": 12 } },
+          { "coordinates": { "x": 20, "y": 13 } },
+          { "coordinates": { "x": 20, "y": 14 } }
+        ]
+      }
+    }
+  }
+}

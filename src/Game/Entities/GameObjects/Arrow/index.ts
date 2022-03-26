@@ -1,2 +1,2 @@
-export * from './Arrow';
-export * from './IArrow';
+export * from "./Arrow";
+export * from "./IArrow";

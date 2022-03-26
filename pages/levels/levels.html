@@ -1,13 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="levels.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="levels.css" />
     <title>Levels</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Levels</h1>
-</body>
+
+    <a href="pages/game/game.html"></a>
+
+    <a href="../game/game.html"
+      ><button id="level1" class="levels-buttons"><h3>№1</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level2" class="levels-buttons"><h3>№2</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level3" class="levels-buttons"><h3>№3</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level4" class="levels-buttons"><h3>№4</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level5" class="levels-buttons"><h3>№5</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level6" class="levels-buttons"><h3>№6</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level7" class="levels-buttons"><h3>№7</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level8" class="levels-buttons"><h3>№8</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level9" class="levels-buttons"><h3>№9</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level10" class="levels-buttons"><h3>№10</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level11" class="levels-buttons"><h3>№11</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level12" class="levels-buttons"><h3>№12</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level13" class="levels-buttons"><h3>№13</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level14" class="levels-buttons"><h3>№14</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level15" class="levels-buttons"><h3>№15</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level16" class="levels-buttons"><h3>№16</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level17" class="levels-buttons"><h3>№17</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level18" class="levels-buttons"><h3>№18</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level19" class="levels-buttons"><h3>№19</h3></button></a
+    >
+    <a href="../game/game.html"
+      ><button id="level20" class="levels-buttons"><h3>№20</h3></button></a
+    >
+    <script type="text/javascript" src="../../dist/bundle.js"></script>
+    <script>
+      const quantity_levels = 20;
+      window.onload = () => {
+        for (i = 1; i <= quantity_levels; i++) {
+          if (localStorage.getItem(`save_level_${i}`) !== null) {
+            const level_num = localStorage.getItem(`save_level_${i}`);
+            if (document.getElementById(`level${level_num}`) !== null) {
+              const level = document.getElementById(`level${level_num}`);
+              level.style.visibility = "visible";
+              level.addEventListener("click", () =>
+                localStorage.setItem("level", `${level_num}`)
+              );
+            }
+          }
+        }
+      };
+    </script>
+  </body>
 </html>

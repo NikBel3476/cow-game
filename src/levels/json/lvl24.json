@@ -1,0 +1,258 @@
+{
+    "MapObjects": {
+        "NonInteractive": {
+            "Pillar": [
+                [1, 1], [20, 1], [17, 3], [20, 3],
+                [1, 11], [3, 11], [1, 14], [3, 14], [20, 14]
+            ],
+            "FenceH": [
+                [2, 1], [3, 1], [4, 1], [5, 1], [6, 1],
+                [7, 1], [8, 1], [9, 1], [10, 1], [11, 1],
+                [12, 1], [13, 1], [14, 1], [15, 1], [16, 1],
+                [17, 1], [18, 1], [19, 1], [18, 3], [19, 3],
+                [2, 14], [4, 14], [5, 14], [6, 14], [7, 14],
+                [8, 14], [9, 14], [10, 14], [11, 14], [12, 14],
+                [13, 14], [14, 14], [15, 14], [16, 14], [17, 14],
+                [18, 14], [19, 14]
+            ],
+            "FenceV": [
+                [1, 2], [1, 3], [1, 4], [1, 5], [1, 6],
+                [1, 8], [1, 9], [1, 10], [1, 12], [1, 13],
+                [3, 12], [3, 13], [20, 2], [20, 4], [20, 5],
+                [20, 6], [20, 8], [20, 9], [20, 10], [20, 11],
+                [20, 12], [20, 13]
+            ],
+            "BlockTile": [
+                [11, 7], [10, 8], [12, 8]
+            ],
+            "Tree": [
+                [5, 4], [7, 5], [13, 4], [18, 5], [4, 8],
+                [18, 9], [7, 10], [4, 11], [11, 12],
+                [6, 13], [17, 13]
+            ]
+        },
+        "Interactive": {
+            "Slide": {
+                "Up": [
+                    { "x": 6, "y": 8 }
+                ],
+                "Right": [
+                    { "x": 9, "y": 8 }
+                ],
+                "Down": [
+                    { "x": 6, "y": 6 },
+                    { "x": 11, "y": 6 }
+                ],
+                "Left": [
+                    { "x": 13, "y": 8 }
+                ]
+            },
+            "HayBale": [
+                { "x": 11, "y": 10 }
+            ],
+            "Goblet": {
+                "coordinates": { "x": 19, "y": 2 }
+            },
+            "Button": [
+                {
+                    "coordinates": { "x": 3, "y": 3 },
+                    "linkedElementsIds": [1]
+                }
+            ],
+            "AutoDoor": {
+                "Horizontal": [
+                    {
+                        "id": 1,
+                        "coordinates": { "x": 2, "y": 11 }
+                    }
+                ],
+                "Vertical": []
+            },
+            "Key": [
+                { "x": 2, "y": 12 }
+            ],
+            "LockDoor":{
+                "Horizontal": [],
+                "Vertical": [
+                    { "x": 17, "y": 2 }
+                ]
+            },
+            "Pit": [
+                {
+                    "coordinates": {
+                        "x": 1,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 2,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 3,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 4,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 5,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 6,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 7,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 8,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 9,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 10,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 12,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 13,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 14,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 15,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 16,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 17,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 18,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 19,
+                        "y": 7
+                    },
+                    "activated": false
+                },
+                {
+                    "coordinates": {
+                        "x": 20,
+                        "y": 7
+                    },
+                    "activated": false
+                }
+            ]
+        }
+    },
+    "GameObjects": {
+        "Cows": [
+            {
+                "coordinates": {
+                    "x": 15,
+                    "y": 13
+                },
+                "direction": "Left",
+                "color": "Grey"
+            }
+        ],
+        "Arrows": {
+            "Red": {
+                "Up": [
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Right": [
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Down": [
+                    { "coordinates": null },
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ],
+                "Left": [
+                    { "coordinates": null },
+                    { "coordinates": null }
+                ]
+            },
+            "Blue": {
+                "Up": [
+                    { "coordinates": null }
+                ],
+                "Right": [],
+                "Down": [],
+                "Left": []
+            }
+        }
+    }
+}
