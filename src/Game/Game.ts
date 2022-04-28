@@ -47,7 +47,7 @@ export class Game {
 
   private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
-  private _loop!: number;
+  loop: number = 0;
   private levelLoader: LevelLoader;
 
   private eventHandler: EventHandler;
@@ -176,9 +176,9 @@ export class Game {
   }
 
   reloadLevel(): void {
-    if (this._loop) {
-      clearInterval(this._loop);
-      this._loop = 0;
+    if (this.loop) {
+      clearInterval(this.loop);
+      this.loop = 0;
     }
     this._pastArrows = this._arrows.slice();
     this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
@@ -187,9 +187,9 @@ export class Game {
   }
 
   restartGame(): void {
-    if (this._loop) {
-      clearInterval(this._loop);
-      this._loop = 0;
+    if (this.loop) {
+      clearInterval(this.loop);
+      this.loop = 0;
     }
     this._pastArrows = [];
     this._currentLevel = 1;
@@ -638,15 +638,15 @@ export class Game {
   }
 
   startGame(): void {
-    if (!this._loop) {
-      this._loop = window.setInterval(() => this.mainLoopFunc(), CONF.loopTime);
+    if (!this.loop) {
+      this.loop = window.setInterval(() => this.mainLoopFunc(), CONF.loopTime);
     }
   }
 
   endGame() {
-    if (this._loop) {
-      clearInterval(this._loop);
-      this._loop = 0;
+    if (this.loop) {
+      clearInterval(this.loop);
+      this.loop = 0;
     }
     this.loadNextLevel();
   }

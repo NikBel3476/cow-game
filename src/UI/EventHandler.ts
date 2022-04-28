@@ -11,6 +11,8 @@ export class EventHandler {
   constructor(game: Game) {
     this.game = game;
 
+    this.onArrowMousedown = this.onArrowMousedown.bind(this);
+
     if (document.getElementById("start-game-button") !== null)
       (
         document.getElementById("start-game-button") as HTMLElement
@@ -34,7 +36,7 @@ export class EventHandler {
 
     if (document.getElementById("completed-levels-button") !== null)
       (
-          document.getElementById("completed-levels-button") as HTMLElement
+        document.getElementById("completed-levels-button") as HTMLElement
       ).addEventListener("click", (e: MouseEvent) => {
         ui.showCompletedLevelsModalWindow();
       });
@@ -98,8 +100,10 @@ export class EventHandler {
   }
 
   onArrowMousedown(e: Event) {
-    EventHandler.selectedItem = e.target as HTMLElement;
-    EventHandler.selectedItem.style.pointerEvents = "none";
+    if (!this.game.loop) {
+      EventHandler.selectedItem = e.target as HTMLElement;
+      EventHandler.selectedItem.style.pointerEvents = "none";
+    }
   }
 
   addArrowEventListener(arrow: Arrow, event: string, func: (e: Event) => void) {
