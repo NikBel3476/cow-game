@@ -1,12 +1,12 @@
 {
   "name": "cow-game",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Задача в игре: с помощью стрелок довести корову коричневого цвета до кубка",
   "main": "dist/scripts/index.js",
   "scripts": {
-    "build:watch": "webpack --mode=development --watch",
-    "build": "webpack --mode=development",
-    "build:production": "webpack --mode=production",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "format": "prettier --write ."
   },
   "repository": {
@@ -15,19 +15,15 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/NikBel3476/cow-game/issues"
   },
   "homepage": "https://github.com/NikBel3476/cow-game#readme",
-  "dependencies": {
-    "ts-loader": "^9.2.6",
-    "typescript": "^4.4.4",
-    "url-loader": "^4.1.1",
-    "webpack": "^5.62.2",
-    "webpack-cli": "^4.9.1"
-  },
   "devDependencies": {
-    "prettier": "^2.6.0"
+    "@types/node": "^18.7.8",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4",
+    "vite": "^3.0.9"
   }
 }
