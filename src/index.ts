@@ -1,5 +1,8 @@
 import { Game } from "./Game";
 import { render } from "./Render";
+import rescriptString from "./Demo.gen";
+
+console.log(rescriptString);
 
 export const game = new Game();
 

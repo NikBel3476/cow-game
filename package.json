@@ -1,11 +1,14 @@
 {
   "name": "cow-game",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Задача в игре: с помощью стрелок довести корову коричневого цвета до кубка",
   "main": "dist/scripts/index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "concurrently \"npm run re:start\" \"vite\"",
+    "build": "npm run re:build && tsc && vite build",
+    "re:build": "rescript",
+    "re:start": "rescript build -w",
+    "clean": "rescript clean -with-deps",
     "preview": "vite preview",
     "format": "prettier --write ."
   },
@@ -22,7 +25,10 @@
   "homepage": "https://github.com/NikBel3476/cow-game#readme",
   "devDependencies": {
     "@types/node": "^18.7.8",
+    "concurrently": "^7.3.0",
+    "gentype": "^4.5.0",
     "prettier": "^2.7.1",
+    "rescript": "^9.1.4",
     "typescript": "^4.7.4",
     "vite": "^3.0.9"
   }

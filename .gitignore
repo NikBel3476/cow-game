@@ -7,6 +7,9 @@
 
 node_modules/
 
+.merlin
+lib/
+
 # Local History for Visual Studio Code
 .history/
 
