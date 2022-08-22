@@ -1,10 +1,9 @@
-import { ui } from "../UI";
 import { ILevel } from "../levels";
-import { Arrow, HayBale, Cow, IField, Piston, IGameObject } from "../Game";
+import { Arrow, HayBale, Cow, IField, Piston, IGameObject, Game } from "../Game";
 import { Coordinates } from "../types";
 import { CONF } from "../Conf";
 
-class Render {
+export class Render {
   htmlGameTable: HTMLElement;
   htmlArrowsTable: HTMLElement;
   gameTable: HTMLElement[][];
@@ -12,11 +11,11 @@ class Render {
   cowHtmlElements: HTMLElement[] = [];
   movableFields: HTMLElement[] = [];
 
-  constructor() {
-    this.htmlGameTable = ui.htmlGameTable;
-    this.htmlArrowsTable = ui.htmlArrowsTable;
-    this.gameTable = ui.gameTable;
-    this.arrowsTable = ui.arrowsTable;
+  constructor(game: Game) {
+    this.htmlGameTable = game.ui.htmlGameTable;
+    this.htmlArrowsTable = game.ui.htmlArrowsTable;
+    this.gameTable = game.ui.gameTable;
+    this.arrowsTable = game.ui.arrowsTable;
   }
 
   createCowHtmlElements(cows: ILevel["GameObjects"]["Cows"]): void {
@@ -209,5 +208,3 @@ class Render {
     this.drawNonStaticElements(movableElements);
   }
 }
-
-export const render = new Render();

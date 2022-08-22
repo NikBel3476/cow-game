@@ -1,10 +1,11 @@
 import { CONF } from "../Conf";
-import { game } from "../index";
 import screensaver1 from "../../assets/sprites/png/screensaverStartGame.png";
 import screensaver2 from "../../assets/sprites/png/cowScreensaver2.png";
 import screensaver3 from "../../assets/sprites/png/cowScreensaver3.png";
+import { Game } from "../Game";
 
-class UI {
+export class UI {
+  private game;
   htmlGameTable: HTMLTableElement;
   htmlArrowsTable: HTMLTableElement;
   gameTable: HTMLTableCellElement[][];
@@ -14,9 +15,11 @@ class UI {
   _completedLevelsModalWindow: HTMLElement;
 
   constructor(
+    game: Game,
     gameContainerCssSelector: string,
     arrowsTableCssSelector: string
   ) {
+    this.game = game;
     this.htmlGameTable = this.createGameTable();
     document
       .querySelector(gameContainerCssSelector)
@@ -201,7 +204,7 @@ class UI {
 
       divNode.addEventListener('click', (e: MouseEvent) => {
         localStorage.setItem('level', String(i + 1));
-        game.loadLevelByLevelNum(i + 1);
+        this.game.loadLevelByLevelNum(i + 1);
         this.hideCompletedLevelsModalWindow();
       });
 
@@ -216,5 +219,3 @@ class UI {
     this._completedLevelsModalWindow.style.visibility = "hidden";
   }
 }
-
-export const ui = new UI("#game-table-wrapper", "#ui-table-wrapper");

@@ -1,5 +1,5 @@
-import { render } from "../Render";
-import { EventHandler, ui } from "../UI";
+import { Render } from "../Render";
+import { EventHandler, UI } from "../UI";
 import { ILevel, MAPPED_LEVELS } from "../levels";
 import { Coordinates, MAPPED_SPRITES } from "../types";
 import {
@@ -23,6 +23,9 @@ import { LevelLoader } from "./LevelLoader";
 import { CONF } from "../Conf";
 
 export class Game {
+  ui: UI;
+  render: Render;
+
   private _currentLevel: number;
 
   private _nonInteractiveFields: Field[] = [];
@@ -53,9 +56,11 @@ export class Game {
   private eventHandler: EventHandler;
 
   constructor() {
+    this.ui = new UI(this, "#game-table-wrapper", "#ui-table-wrapper");
+    this.render = new Render(this);
     const levelFromStorage = window.localStorage.getItem("level");
     this._currentLevel = levelFromStorage ? Number(levelFromStorage) : 1;
-    this.levelLoader = new LevelLoader();
+    this.levelLoader = new LevelLoader(this);
     this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
     this.eventHandler = new EventHandler(this);
   }
@@ -82,9 +87,9 @@ export class Game {
       },
       GameObjects: { Cows, Arrows },
     } = level;
-    render.deleteScene();
-    render.createCowHtmlElements(Cows);
-    render.createMovableHtmlElements(HayBale);
+    this.render.deleteScene();
+    this.render.createCowHtmlElements(Cows);
+    this.render.createMovableHtmlElements(HayBale);
     this._nonInteractiveFields =
       this.levelLoader.initNonInteractiveFields(NonInteractive);
     this._goblet = this.levelLoader.initGoblet(Goblet);
@@ -147,7 +152,7 @@ export class Game {
       ...this._pistons,
     ];
     this._movableObjects = [...this._cows, ...this._hayBales];
-    ui.showModalWindow();
+    this.ui.showModalWindow();
   }
 
   loadLevelByLevelNum(levelNum: number) {
@@ -221,7 +226,7 @@ export class Game {
   }
 
   getFieldCoordinates(htmlElement: HTMLElement): Coordinates | undefined {
-    const indexes = ui.getMapElementIndex(htmlElement);
+    const indexes = this.ui.getMapElementIndex(htmlElement);
     if (indexes) return { x: indexes[1] + 1, y: indexes[0] + 1 };
   }
 
@@ -301,11 +306,11 @@ export class Game {
   // -------------------- RENDER --------------------
 
   clearScene(): void {
-    render.clearScene();
+    this.render.clearScene();
   }
 
   renderScene(): void {
-    render.drawScene(this._staticObjects, this._movableObjects);
+    this.render.drawScene(this._staticObjects, this._movableObjects);
   }
 
   // -------------------- GAME --------------------
@@ -363,7 +368,7 @@ export class Game {
         this._goblet.coordinates.x === cow.coordinates.x &&
         this._goblet.coordinates.y === cow.coordinates.y
       ) {
-        ui.showEndLevelModalWindow();
+        this.ui.showEndLevelModalWindow();
         return this.endGame();
       }
 
@@ -649,5 +654,9 @@ export class Game {
       this.loop = 0;
     }
     this.loadNextLevel();
+  }
+
+  scaleArrowsTable() {
+    this.render.scaleArrowsTable();
   }
 }

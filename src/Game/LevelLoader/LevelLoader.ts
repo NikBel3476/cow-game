@@ -15,10 +15,19 @@ import {
   Slide,
 } from "../Entities";
 import { ArrowColor, Direction, MAPPED_SPRITES, SpriteName } from "../../types";
-import { render } from "../../Render";
-import { ui } from "../../UI";
+import { Game } from "../Game";
+import { UI } from "../../UI";
+import { Render } from "../../Render";
 
 export class LevelLoader {
+  ui: UI;
+  render: Render;
+
+  constructor(game: Game) {
+    this.ui = game.ui;
+    this.render = game.render;
+  }
+
   initNonInteractiveFields(
     staticFields?: ILevel["MapObjects"]["NonInteractive"]
   ): Field[] {
@@ -31,7 +40,7 @@ export class LevelLoader {
               { x: fieldCoordinates[0], y: fieldCoordinates[1] },
               true,
               MAPPED_SPRITES[fieldName],
-              render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1]
+              this.render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1]
                 .firstChild as HTMLElement
             )
           )
@@ -44,7 +53,7 @@ export class LevelLoader {
   initGoblet(goblet: ILevel["MapObjects"]["Interactive"]["Goblet"]): Goblet {
     return new Goblet(
       goblet.coordinates,
-      ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1]
+      this.ui.gameTable[goblet.coordinates.y - 1][goblet.coordinates.x - 1]
         .firstChild as HTMLElement
     );
   }
@@ -58,7 +67,7 @@ export class LevelLoader {
             new Slide(
               { x: coordinates.x, y: coordinates.y },
               slideDirection,
-              render.gameTable[coordinates.y - 1][coordinates.x - 1]
+              this.render.gameTable[coordinates.y - 1][coordinates.x - 1]
                 .firstChild as HTMLElement
             )
           );
@@ -76,7 +85,7 @@ export class LevelLoader {
       (coordinates) =>
         new HayBale(
           { x: coordinates.x, y: coordinates.y },
-          render.movableFields[count++]
+          this.render.movableFields[count++]
         )
     );
   }
@@ -88,7 +97,7 @@ export class LevelLoader {
         pitsArr.push(
           new Pit(
             pit.coordinates,
-            render.gameTable[pit.coordinates.y - 1][pit.coordinates.x - 1]
+            this.render.gameTable[pit.coordinates.y - 1][pit.coordinates.x - 1]
               .firstChild as HTMLElement,
             pit.activated
           )
@@ -105,7 +114,7 @@ export class LevelLoader {
         keysArr.push(
           new Key(
             coordinates,
-            render.gameTable[coordinates.y - 1][coordinates.x - 1]
+            this.render.gameTable[coordinates.y - 1][coordinates.x - 1]
               .firstChild as HTMLElement
           )
         )
@@ -126,7 +135,7 @@ export class LevelLoader {
               new LockDoor(
                 coordinates,
                 lockDoorOrientation,
-                render.gameTable[coordinates.y - 1][coordinates.x - 1]
+                this.render.gameTable[coordinates.y - 1][coordinates.x - 1]
                   .firstChild as HTMLElement
               )
             );
@@ -149,7 +158,7 @@ export class LevelLoader {
               door.id,
               door.coordinates,
               orientation,
-              render.gameTable[door.coordinates.y - 1][door.coordinates.x - 1]
+              this.render.gameTable[door.coordinates.y - 1][door.coordinates.x - 1]
                 .firstChild as HTMLElement
             )
           )
@@ -172,7 +181,7 @@ export class LevelLoader {
               piston.id,
               direction,
               piston.activated,
-              render.gameTable[piston.coordinates.y - 1][
+              this.render.gameTable[piston.coordinates.y - 1][
                 piston.coordinates.x - 1
               ].firstChild as HTMLElement
             )
@@ -191,7 +200,7 @@ export class LevelLoader {
         return new Button(
           button.coordinates,
           button.linkedElementsIds,
-          render.gameTable[button.coordinates.y - 1][button.coordinates.x - 1]
+          this.render.gameTable[button.coordinates.y - 1][button.coordinates.x - 1]
             .firstChild as HTMLElement
         );
       }) ?? []
@@ -210,7 +219,7 @@ export class LevelLoader {
               new Arrow(
                 direction,
                 color,
-                render.gameTable[coordinates.y - 1][coordinates.x - 1]
+                this.render.gameTable[coordinates.y - 1][coordinates.x - 1]
                   .firstChild as HTMLElement,
                 coordinates
               )
@@ -220,7 +229,7 @@ export class LevelLoader {
               new Arrow(
                 direction,
                 color,
-                ui.arrowsTable.flat(1)[count++].firstChild as HTMLElement
+                this.ui.arrowsTable.flat(1)[count++].firstChild as HTMLElement
               )
             );
           }
@@ -238,7 +247,7 @@ export class LevelLoader {
           { x: cow.coordinates.x, y: cow.coordinates.y },
           cow.direction,
           cow.color,
-          render.cowHtmlElements[count++]
+          this.render.cowHtmlElements[count++]
         )
     );
   }

@@ -1,6 +1,4 @@
-import { endGame, startGame, restartGame } from "../index";
 import { Arrow, Game } from "../Game";
-import { ui } from "./UI";
 
 export class EventHandler {
   game: Game;
@@ -11,34 +9,41 @@ export class EventHandler {
   constructor(game: Game) {
     this.game = game;
 
-    this.onArrowMousedown = this.onArrowMousedown.bind(this);
+    document.ondragstart = _ => false;
+    window.onload = _ => this.game.renderScene();
+    window.onresize = _ => {
+      this.game.renderScene();
+      this.game.scaleArrowsTable();
+    }
+
+    this.onArrowMousedown = this.onArrowMousedown.bind(this); 
 
     if (document.getElementById("start-game-button") !== null)
       (
         document.getElementById("start-game-button") as HTMLElement
       ).addEventListener("click", (e: MouseEvent) => {
-        startGame();
+        this.game.startGame();
       });
 
     if (document.getElementById("end-game-button") !== null)
       (
         document.getElementById("end-game-button") as HTMLElement
       ).addEventListener("click", (e: MouseEvent) => {
-        endGame();
+        this.game.reloadLevel();
       });
 
     if (document.getElementById("restart-game-button") !== null)
       (
         document.getElementById("restart-game-button") as HTMLElement
       ).addEventListener("click", (e: MouseEvent) => {
-        restartGame();
+        this.game.restartGame();
       });
 
     if (document.getElementById("completed-levels-button") !== null)
       (
         document.getElementById("completed-levels-button") as HTMLElement
       ).addEventListener("click", (e: MouseEvent) => {
-        ui.showCompletedLevelsModalWindow();
+        this.game.ui.showCompletedLevelsModalWindow();
       });
 
     document.addEventListener("mousedown", (e: MouseEvent) => {
@@ -71,7 +76,7 @@ export class EventHandler {
               this.onArrowMousedown
             );
           }
-          const isArrowTableElement = ui.getArrowTableElement(targetElement);
+          const isArrowTableElement = this.game.ui.getArrowTableElement(targetElement);
           if (isArrowTableElement && arrow) {
             targetElement.addEventListener("mousedown", this.onArrowMousedown);
             this.game.placeArrowToTable(arrow, targetElement);
