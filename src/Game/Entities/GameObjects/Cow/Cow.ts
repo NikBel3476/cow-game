@@ -5,7 +5,7 @@ import {
   MAPPED_SPRITES,
 } from "../../../../types";
 import { ICow } from "./ICow";
-import { CONF } from "../../../../Conf";
+import { gameConfig } from "../../../../Config.gen";
 
 export class Cow implements ICow {
   private _coordinates: Coordinates;
@@ -96,7 +96,7 @@ export class Cow implements ICow {
         break;
       case "Right":
         this._coordinates.x =
-          this._coordinates.x < CONF.Map.width
+          this._coordinates.x < gameConfig.map.width
             ? Math.round((this._coordinates.x + 1) * 100) / 100
             : this._coordinates.x;
         if (this._direction !== "Right") {
@@ -105,7 +105,7 @@ export class Cow implements ICow {
         break;
       case "Down":
         this._coordinates.y =
-          this._coordinates.y < CONF.Map.height
+          this._coordinates.y < gameConfig.map.height
             ? Math.round((this._coordinates.y + 1) * 100) / 100
             : this._coordinates.y;
         if (this._direction !== "Down") {

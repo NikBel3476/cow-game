@@ -20,7 +20,7 @@ import {
   IGameObject,
 } from "./Entities";
 import { LevelLoader } from "./LevelLoader";
-import { CONF } from "../Conf";
+import { gameConfig } from "../Config.gen";
 
 export class Game {
   ui: UI;
@@ -644,7 +644,7 @@ export class Game {
 
   startGame(): void {
     if (!this.loop) {
-      this.loop = window.setInterval(() => this.mainLoopFunc(), CONF.loopTime);
+      this.loop = window.setInterval(() => this.mainLoopFunc(), gameConfig.loopTime);
     }
   }
 

@@ -1,4 +1,4 @@
-import { CONF } from "../Conf";
+import { gameConfig } from "../Config.gen";
 import screensaver1 from "../../assets/sprites/png/screensaverStartGame.png";
 import screensaver2 from "../../assets/sprites/png/cowScreensaver2.png";
 import screensaver3 from "../../assets/sprites/png/cowScreensaver3.png";
@@ -82,9 +82,9 @@ export class UI {
     const table = document.createElement("table");
     table.id = "game-table";
     const tBody = document.createElement("tbody");
-    for (let i = 0; i < CONF.Map.height; i++) {
+    for (let i = 0; i < gameConfig.map.height; i++) {
       const tr = document.createElement("tr");
-      for (let j = 0; j < CONF.Map.width; j++) {
+      for (let j = 0; j < gameConfig.map.width; j++) {
         const td = document.createElement("td");
         const div = document.createElement("div");
         div.className = `game-field x-${j + 1} y-${i + 1}`;
@@ -101,9 +101,9 @@ export class UI {
     const table = document.createElement("table");
     table.id = "ui-table";
     const tBody = document.createElement("tbody");
-    for (let i = 0; i < CONF.ArrowsTable.height; i++) {
+    for (let i = 0; i < gameConfig.arrowsTable.height; i++) {
       const tr = document.createElement("tr");
-      for (let j = 0; j < CONF.ArrowsTable.width; j++) {
+      for (let j = 0; j < gameConfig.arrowsTable.width; j++) {
         const td = document.createElement("td");
         td.style.width = `${
           this.htmlGameTable.querySelector("td")?.clientWidth
@@ -126,8 +126,8 @@ export class UI {
   }
 
   getMapElementIndex(htmlElement: HTMLElement): [number, number] | undefined {
-    for (let i = 0; i < CONF.Map.height; i++) {
-      for (let j = 0; j < CONF.Map.width; j++) {
+    for (let i = 0; i < gameConfig.map.height; i++) {
+      for (let j = 0; j < gameConfig.map.width; j++) {
         if (this.gameTable[i][j].firstChild === htmlElement) {
           return [i, j];
         }

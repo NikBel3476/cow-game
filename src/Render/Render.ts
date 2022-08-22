@@ -1,7 +1,7 @@
 import { ILevel } from "../levels";
 import { Arrow, HayBale, Cow, IField, Piston, IGameObject, Game } from "../Game";
 import { Coordinates } from "../types";
-import { CONF } from "../Conf";
+import { gameConfig } from "../Config.gen";
 
 export class Render {
   htmlGameTable: HTMLElement;
@@ -31,7 +31,7 @@ export class Render {
         this.htmlGameTable.querySelector("td")?.clientHeight
       }px`;
       divCow.style.zIndex = "30";
-      divCow.style.transition = `all ${CONF.loopTime / 1000}s linear`;
+      divCow.style.transition = `all ${gameConfig.loopTime / 1000}s linear`;
       htmlElements.push(divCow);
       document.getElementById("game-table-wrapper")?.appendChild(divCow);
     });
@@ -53,7 +53,7 @@ export class Render {
           this.htmlGameTable.querySelector("td")?.clientHeight
         }px`;
         divField.style.zIndex = "20";
-        divField.style.transition = `all ${CONF.loopTime / 1000}s linear`;
+        divField.style.transition = `all ${gameConfig.loopTime / 1000}s linear`;
         htmlElements.push(divField);
         document.getElementById("game-table-wrapper")?.appendChild(divField);
       });
