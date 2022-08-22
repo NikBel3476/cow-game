@@ -46,14 +46,3 @@ a {
   width: 100px;
   height: 100px;
 }
-
-#screensaver {
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #000000 url("assets/sprites/png/screensaverStartGame.png")
-    no-repeat fixed center center;
-  background-size: contain;
-  position: absolute;
-  visibility: visible;
-}

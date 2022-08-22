@@ -10,14 +10,20 @@
     "in-source": true
   },
   "suffix": ".bs.js",
-  "bs-dependencies": [],
   "bsc-flags": ["-bs-super-errors"],
   "warnings": {
     "error" : "+101"
   },
+  "reason": { "react-jsx": 3 },
+  "bs-dependencies": ["@rescript/react"],
   "gentypeconfig": {
     "language": "typescript",
-    "shims": {},
+    "shims": {
+      "Js": "Js",
+      "ReactEvent": "ReactEvent",
+      "RescriptPervasives": "RescriptPervasives",
+      "ReasonReact": "ReactShim"
+    },
     "generatedFileExtension": ".gen.ts",
     "module": "es6",
     "debug": {
