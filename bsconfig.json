@@ -1,34 +1,33 @@
 {
-  "name": "cow-game",
-  "version": "0.0.1",
-  "sources": {
-    "dir" : "src",
-    "subdirs" : true
-  },
-  "package-specs": {
-    "module": "es6",
-    "in-source": true
-  },
-  "suffix": ".bs.js",
-  "bsc-flags": ["-bs-super-errors"],
-  "warnings": {
-    "error" : "+101"
-  },
-  "reason": { "react-jsx": 3 },
-  "bs-dependencies": ["@rescript/react"],
-  "gentypeconfig": {
-    "language": "typescript",
-    "shims": {
-      "Js": "Js",
-      "ReactEvent": "ReactEvent",
-      "RescriptPervasives": "RescriptPervasives",
-      "ReasonReact": "ReactShim"
-    },
-    "generatedFileExtension": ".gen.ts",
-    "module": "es6",
-    "debug": {
-      "all": false,
-      "basic": false
-    }
-  }
+	"name": "cow-game",
+	"version": "0.0.1",
+	"sources": {
+		"dir" : "src",
+		"subdirs" : true
+	},
+	"package-specs": {
+		"module": "es6",
+		"in-source": true
+	},
+	"suffix": ".bs.js",
+	"bsc-flags": ["-bs-super-errors"],
+	"warnings": {
+		"error" : "+101"
+	},
+	"reason": { "react-jsx": 3 },
+	"bs-dependencies": ["@rescript/react"],
+	"gentypeconfig": {
+		"language": "typescript",
+		"module": "es6",
+		"shims": {
+			"Js": "Js",
+			"ReactEvent": "ReactEvent",
+			"RescriptPervasives": "RescriptPervasives",
+			"ReasonReact": "ReactShim"
+		},
+		"debug": {
+			"all": false,
+			"basic": false
+		}
+	}
 }
