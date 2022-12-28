@@ -11,7 +11,7 @@
 		"re:start": "rescript build -w",
 		"clean": "rescript clean -with-deps",
 		"preview": "vite preview",
-		"format": "prettier --write .",
+		"format:write": "pretty-quick",
 		"format:check": "pretty-quick --check",
 		"lint": "npx eslint ."
 	},
