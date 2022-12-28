@@ -1,0 +1,6 @@
+node_modules/
+dist/
+
+*.bs.js
+*.gen.ts*
+vite.config.ts
