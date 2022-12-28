@@ -1,0 +1,27 @@
+.menu-container {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background: #006400 url('../../../assets/MainMenuBackground.svg') no-repeat fixed
+		center center;
+	background-size: contain;
+}
+
+.link-list {
+	margin-top: 70px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.game-menu-link {
+	text-decoration: none;
+	margin: 1rem;
+	color: #fff;
+	font-family: Arial, sans-serif;
+	font-size: 2rem;
+}

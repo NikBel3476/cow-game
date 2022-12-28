@@ -4,6 +4,9 @@ import * as App from "./App.bs.js";
 import * as React from "react";
 import * as Client from "react-dom/client";
 
+import './main.css'
+;
+
 var rootElement = document.querySelector("#root");
 
 if (!(rootElement == null)) {
@@ -14,4 +17,4 @@ if (!(rootElement == null)) {
 export {
   
 }
-/* rootElement Not a pure module */
+/*  Not a pure module */

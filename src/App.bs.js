@@ -2,6 +2,7 @@
 
 import * as Game from "./pages/Game.bs.js";
 import * as React from "react";
+import * as MainPage from "./pages/MainPage/MainPage.bs.js";
 import * as AppModuleCss from "./App.module.css";
 import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.bs.js";
 
@@ -13,17 +14,8 @@ function App(Props) {
   var tmp;
   tmp = match ? (
       match.hd === "game" && !match.tl ? React.createElement(Game.make, {}) : React.createElement("div", undefined, "page not found")
-    ) : React.createElement("div", undefined, "main page");
-  return React.createElement("div", undefined, React.createElement("a", {
-                  className: styles.gameMenuLink,
-                  href: "pages/game/game.html"
-                }, "Начать игру"), React.createElement("a", {
-                  className: styles.gameMenuLink,
-                  href: "pages/levels/levels.html"
-                }, "Выбрать уровень"), React.createElement("a", {
-                  className: "game-menu-link",
-                  href: "/game"
-                }, "Начать игру(react)"), tmp);
+    ) : React.createElement(MainPage.make, {});
+  return React.createElement("div", undefined, tmp);
 }
 
 var make = App;

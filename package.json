@@ -31,10 +31,10 @@
     "react-dom": "^18.2.0"
   },
   "lint-staged": {
-    "*.js": [
+    "!(*.bs).js": [
       "prettier --write"
     ],
-    "*.ts": [
+    "!(*.gen).ts": [
       "prettier --write"
     ],
     "*.jsx": [
