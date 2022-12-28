@@ -10,6 +10,5 @@ var make = Game;
 
 export {
   make ,
-  
 }
 /* react Not a pure module */

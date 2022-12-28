@@ -2,15 +2,16 @@
 
 import * as App from "./App.bs.js";
 import * as React from "react";
-import * as ReactDom from "react-dom";
+import * as Client from "react-dom/client";
 
-var root = document.querySelector("#root");
+var rootElement = document.querySelector("#root");
 
-if (!(root == null)) {
-  ReactDom.render(React.createElement(App.make, {}), root);
+if (!(rootElement == null)) {
+  var root = Client.createRoot(rootElement);
+  root.render(React.createElement(App.make, {}));
 }
 
 export {
   
 }
-/* root Not a pure module */
+/* rootElement Not a pure module */

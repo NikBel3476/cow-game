@@ -6,8 +6,8 @@ let make = () => {
 	let url = RescriptReactRouter.useUrl()
 
 	<div>
-		<a href="pages/game/game.html" className={styles["game-menu-link"]}>{React.string(`Начать игру`)}</a>
-		<a href="pages/levels/levels.html" className={styles["game-menu-link"]}>{React.string(`Выбрать уровень`)}</a>
+		<a href="pages/game/game.html" className={styles["gameMenuLink"]}>{React.string(`Начать игру`)}</a>
+		<a href="pages/levels/levels.html" className={styles["gameMenuLink"]}>{React.string(`Выбрать уровень`)}</a>
 		<a href="/game" className="game-menu-link"> {React.string(`Начать игру(react)`)} </a>
 
 		{switch url.path {

@@ -15,10 +15,10 @@ function App(Props) {
       match.hd === "game" && !match.tl ? React.createElement(Game.make, {}) : React.createElement("div", undefined, "page not found")
     ) : React.createElement("div", undefined, "main page");
   return React.createElement("div", undefined, React.createElement("a", {
-                  className: styles["game-menu-link"],
+                  className: styles.gameMenuLink,
                   href: "pages/game/game.html"
                 }, "Начать игру"), React.createElement("a", {
-                  className: styles["game-menu-link"],
+                  className: styles.gameMenuLink,
                   href: "pages/levels/levels.html"
                 }, "Выбрать уровень"), React.createElement("a", {
                   className: "game-menu-link",
@@ -31,6 +31,5 @@ var make = App;
 export {
   styles ,
   make ,
-  
 }
 /* styles Not a pure module */
