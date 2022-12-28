@@ -1,3 +1,3 @@
-export * from "./Entities";
-export * from "./LevelLoader";
-export * from "./Game";
+export * from './Entities';
+export * from './LevelLoader';
+export * from './Game';

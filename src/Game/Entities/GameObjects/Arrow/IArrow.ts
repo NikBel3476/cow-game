@@ -1,7 +1,7 @@
-import { ArrowColor, Coordinates } from "../../../../types";
-import { IGameObject } from "../IGameObject";
+import { ArrowColor, Coordinates } from '../../../../types';
+import { IGameObject } from '../IGameObject';
 
 export interface IArrow extends IGameObject {
-  coordinates?: Coordinates;
-  color: ArrowColor;
+	coordinates?: Coordinates;
+	color: ArrowColor;
 }

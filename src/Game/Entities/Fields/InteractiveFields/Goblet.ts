@@ -1,35 +1,35 @@
-import { IField } from "../IField";
-import { Coordinates, MAPPED_SPRITES } from "../../../../types";
+import { IField } from '../IField';
+import { Coordinates, MAPPED_SPRITES } from '../../../../types';
 
 export class Goblet implements IField {
-  private _coordinates: Coordinates;
-  private _linkedHtmlElement: HTMLElement;
-  private _img: string = MAPPED_SPRITES.Goblet;
-  private _impassable: boolean = false;
-  private _movable: boolean = false;
+	private _coordinates: Coordinates;
+	private _linkedHtmlElement: HTMLElement;
+	private _img: string = MAPPED_SPRITES.Goblet;
+	private _impassable: boolean = false;
+	private _movable: boolean = false;
 
-  constructor(coordinates: Coordinates, linkedHtmlElement: HTMLElement) {
-    this._coordinates = coordinates;
-    this._linkedHtmlElement = linkedHtmlElement;
-  }
+	constructor(coordinates: Coordinates, linkedHtmlElement: HTMLElement) {
+		this._coordinates = coordinates;
+		this._linkedHtmlElement = linkedHtmlElement;
+	}
 
-  get coordinates(): Coordinates {
-    return this._coordinates;
-  }
+	get coordinates(): Coordinates {
+		return this._coordinates;
+	}
 
-  get img(): string {
-    return this._img;
-  }
+	get img(): string {
+		return this._img;
+	}
 
-  get impassable(): boolean {
-    return this._impassable;
-  }
+	get impassable(): boolean {
+		return this._impassable;
+	}
 
-  get linkedHtmlElement(): HTMLElement {
-    return this._linkedHtmlElement;
-  }
+	get linkedHtmlElement(): HTMLElement {
+		return this._linkedHtmlElement;
+	}
 
-  get movable(): boolean {
-    return this._movable;
-  }
+	get movable(): boolean {
+		return this._movable;
+	}
 }
