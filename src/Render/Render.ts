@@ -23,7 +23,7 @@ export class Render {
 		const htmlElements: HTMLElement[] = [];
 		cows.forEach(cow => {
 			const divCow = document.createElement('div');
-			divCow.className = `cow-wrapper cow-${count++}`;
+			divCow.className = `cow-wrapper cow-${count++} cow-${cow.color.toLowerCase()}-${cow.direction.toLowerCase()}`;
 			divCow.style.width = `${
 				this.htmlGameTable.querySelector('td')?.clientWidth ?? '0'
 			}px`;
@@ -128,7 +128,10 @@ export class Render {
 				object.linkedHtmlElement.style.transform = `translate(${cssTranslateX}px, ${cssTranslateY}px)`;
 				object.linkedHtmlElement.style.width = `${tdElement?.clientWidth}px`;
 				object.linkedHtmlElement.style.height = `${tdElement?.clientHeight}px`;
-				object.linkedHtmlElement.style.background = `url('${object.img}') center center / contain no-repeat`;
+				object.linkedHtmlElement.className = object.linkedHtmlElement.className.replace(
+					/cow-(grey|brown)-(up|right|down|left)/g,
+					`cow-${object.color.toLowerCase()}-${object.direction.toLowerCase()}`
+				);
 			}
 		});
 	}

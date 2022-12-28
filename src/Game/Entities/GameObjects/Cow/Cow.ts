@@ -9,6 +9,12 @@ export class Cow implements ICow {
 	private _layer: 1 | 2;
 	private _img: string;
 	private readonly _linkedHtmlElement: HTMLElement;
+	private readonly images: {
+		Up: string;
+		Right: string;
+		Down: string;
+		Left: string;
+	};
 
 	constructor(
 		coordinates: Coordinates,
@@ -19,7 +25,8 @@ export class Cow implements ICow {
 		this._coordinates = coordinates;
 		this._direction = direction;
 		this._color = color;
-		this._img = this.setImg();
+		this.images = this.getImages();
+		this._img = this.getCurrentImg();
 		this._layer = 1;
 		this._linkedHtmlElement = linkedHtmlElement;
 	}
@@ -34,7 +41,7 @@ export class Cow implements ICow {
 
 	public set direction(direction: Direction) {
 		this._direction = direction;
-		this._img = this.setImg();
+		this._img = this.getCurrentImg();
 	}
 
 	public get color(): CowColor {
@@ -57,24 +64,32 @@ export class Cow implements ICow {
 		return this._linkedHtmlElement;
 	}
 
-	setImg(): string {
+	// TODO: remove this method due to image set via className
+	getImages(): { Up: string; Right: string; Down: string; Left: string } {
+		return {
+			Up: this._color === 'Grey' ? MAPPED_SPRITES.CowGreyUp : MAPPED_SPRITES.CowBrownUp,
+			Right:
+				this._color === 'Grey'
+					? MAPPED_SPRITES.CowGreyRight
+					: MAPPED_SPRITES.CowBrownRight,
+			Down:
+				this._color === 'Grey' ? MAPPED_SPRITES.CowGreyDown : MAPPED_SPRITES.CowBrownDown,
+			Left:
+				this._color === 'Grey' ? MAPPED_SPRITES.CowGreyLeft : MAPPED_SPRITES.CowBrownLeft
+		};
+	}
+
+	// TODO: remove this method due to image set via className
+	getCurrentImg(): string {
 		switch (this._direction) {
 			case 'Up':
-				return this._color === 'Grey'
-					? MAPPED_SPRITES.CowGreyUp
-					: MAPPED_SPRITES.CowBrownUp;
+				return this.images.Up;
 			case 'Right':
-				return this._color === 'Grey'
-					? MAPPED_SPRITES.CowGreyRight
-					: MAPPED_SPRITES.CowBrownRight;
+				return this.images.Right;
 			case 'Down':
-				return this._color === 'Grey'
-					? MAPPED_SPRITES.CowGreyDown
-					: MAPPED_SPRITES.CowBrownDown;
+				return this.images.Down;
 			case 'Left':
-				return this._color === 'Grey'
-					? MAPPED_SPRITES.CowGreyLeft
-					: MAPPED_SPRITES.CowBrownLeft;
+				return this.images.Left;
 		}
 	}
 
