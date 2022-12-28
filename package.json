@@ -6,11 +6,14 @@
 	"scripts": {
 		"dev": "concurrently \"npm run re:start\" \"vite\"",
 		"build": "npm run re:build && tsc && vite build",
+		"prebuild": "npm run format:check && npm run lint",
 		"re:build": "rescript",
 		"re:start": "rescript build -w",
 		"clean": "rescript clean -with-deps",
 		"preview": "vite preview",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"format:check": "pretty-quick --check",
+		"lint": "npx eslint ."
 	},
 	"repository": {
 		"type": "git",
