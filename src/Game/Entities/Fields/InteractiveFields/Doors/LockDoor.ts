@@ -3,12 +3,12 @@ import { Coordinates, MAPPED_SPRITES } from '../../../../../types';
 import { DoorOrientation } from './DoorOrientation';
 
 export class LockDoor implements IField {
-	private _coordinates: Coordinates;
-	private _orientation: DoorOrientation;
-	private _linkedHtmlElement: HTMLElement;
-	private _img: string;
-	private _impassable: boolean = true;
-	private _movable: boolean = false;
+	private readonly _coordinates: Coordinates;
+	private readonly _orientation: DoorOrientation;
+	private readonly _linkedHtmlElement: HTMLElement;
+	private readonly _img: string;
+	private readonly _impassable: boolean = true;
+	private readonly _movable: boolean = false;
 
 	constructor(
 		coordinates: Coordinates,

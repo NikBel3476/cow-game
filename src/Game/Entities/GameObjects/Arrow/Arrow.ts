@@ -4,9 +4,9 @@ import { IArrow } from './IArrow';
 export class Arrow implements IArrow {
 	private _coordinates?: Coordinates;
 	private _direction: Direction;
-	private _impassable: boolean = false;
+	private readonly _impassable: boolean = false;
 	private _color: ArrowColor;
-	private _img: string;
+	private readonly _img: string;
 	private _linkedHtmlElement: HTMLElement;
 
 	constructor(
@@ -62,7 +62,7 @@ export class Arrow implements IArrow {
 		this._linkedHtmlElement = htmlElement;
 	}
 
-	setImg() {
+	setImg(): string {
 		switch (this._direction) {
 			case 'Up':
 				return this._color === 'Red'

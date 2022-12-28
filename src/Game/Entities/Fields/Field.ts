@@ -2,11 +2,11 @@ import { IField } from './IField';
 import { Coordinates } from '../../../types';
 
 export class Field implements IField {
-	private _coordinates: Coordinates;
-	private _img: string;
-	private _linkedHtmlElement: HTMLElement;
-	private _impassable: boolean;
-	private _movable: boolean = false;
+	private readonly _coordinates: Coordinates;
+	private readonly _img: string;
+	private readonly _linkedHtmlElement: HTMLElement;
+	private readonly _impassable: boolean;
+	private readonly _movable: boolean = false;
 
 	constructor(
 		coordinates: Coordinates,

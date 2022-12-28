@@ -2,12 +2,12 @@ import { IField } from '../IField';
 import { Coordinates, Direction, MAPPED_SPRITES } from '../../../../types';
 
 export class Slide implements IField {
-	private _coordinates: Coordinates;
-	private _direction: Direction;
-	private _img: string;
-	private _linkedHtmlElement: HTMLElement;
-	private _impassable: boolean = true;
-	private _movable: boolean = false;
+	private readonly _coordinates: Coordinates;
+	private readonly _direction: Direction;
+	private readonly _img: string;
+	private readonly _linkedHtmlElement: HTMLElement;
+	private readonly _impassable: boolean = true;
+	private readonly _movable: boolean = false;
 
 	constructor(
 		coordinates: Coordinates,
@@ -44,7 +44,7 @@ export class Slide implements IField {
 		return this._movable;
 	}
 
-	getImg() {
+	getImg(): string {
 		switch (this.direction) {
 			case 'Up':
 				return MAPPED_SPRITES.SlideUp;

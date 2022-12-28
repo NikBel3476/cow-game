@@ -29,10 +29,10 @@ export class Game {
 	private _currentLevel: number;
 
 	private _nonInteractiveFields: Field[] = [];
-	private _interactiveFields: (IField | Arrow)[] = [];
-	private _staticObjects: (IField | Arrow)[] = [];
-	private _movableObjects: (Cow | HayBale)[] = [];
-	private _mapObjects: (IField | IGameObject)[] = [];
+	private _interactiveFields: Array<IField | Arrow> = [];
+	private _staticObjects: Array<IField | Arrow> = [];
+	private _movableObjects: Array<Cow | HayBale> = [];
+	private _mapObjects: Array<IField | IGameObject> = [];
 
 	private _goblet!: Goblet;
 	private _slides!: Slide[];
@@ -48,18 +48,18 @@ export class Game {
 	private _arrows!: Arrow[];
 	private _pastArrows: Arrow[] = [];
 
-	private _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
+	private readonly _CowKeysMap: Map<Cow, Key[]> = new Map<Cow, Key[]>();
 
 	loop: number = 0;
-	private levelLoader: LevelLoader;
+	private readonly levelLoader: LevelLoader;
 
-	private eventHandler: EventHandler;
+	private readonly eventHandler: EventHandler;
 
 	constructor() {
 		this.ui = new UI(this, '#game-table-wrapper', '#ui-table-wrapper');
 		this.render = new Render(this);
 		const levelFromStorage = window.localStorage.getItem('level');
-		this._currentLevel = levelFromStorage ? Number(levelFromStorage) : 1;
+		this._currentLevel = levelFromStorage !== null ? Number(levelFromStorage) : 1;
 		this.levelLoader = new LevelLoader(this);
 		this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
 		this.eventHandler = new EventHandler(this);
@@ -69,7 +69,7 @@ export class Game {
 		return this._arrows;
 	}
 
-	loadLevel(level: ILevel) {
+	loadLevel(level: ILevel): void {
 		const {
 			MapObjects: {
 				NonInteractive,
@@ -155,7 +155,7 @@ export class Game {
 		this.ui.showModalWindow();
 	}
 
-	loadLevelByLevelNum(levelNum: number) {
+	loadLevelByLevelNum(levelNum: number): void {
 		localStorage.setItem('level', String(levelNum));
 		this._currentLevel = levelNum;
 		this.loadLevel(MAPPED_LEVELS[levelNum - 1]);
@@ -163,7 +163,7 @@ export class Game {
 		this.renderScene();
 	}
 
-	private loadNextLevel() {
+	private loadNextLevel(): void {
 		const completedLevels = Number(localStorage.getItem('completedLevels'));
 		if (completedLevels < this._currentLevel) {
 			localStorage.setItem('completedLevels', String(this._currentLevel));
@@ -203,7 +203,7 @@ export class Game {
 
 	private linkButtonsWithActiveObjects(buttons: Button[]): void {
 		buttons.forEach(button => {
-			const linkedElems: (AutoDoor | Piston)[] = [];
+			const linkedElems: Array<AutoDoor | Piston> = [];
 			this._autoDoors.forEach(door => {
 				if (button.linkedElementsIds.includes(door.id)) {
 					linkedElems.push(door);
@@ -218,7 +218,7 @@ export class Game {
 		});
 	}
 
-	getGameObjects(): (Arrow | Cow)[] {
+	getGameObjects(): Array<Arrow | Cow> {
 		return [...this._cows, ...this._arrows];
 	}
 
@@ -228,12 +228,10 @@ export class Game {
 	}
 
 	findFieldByCoordinates(coordinates: Coordinates): IField | Arrow | undefined {
-		return [...this._nonInteractiveFields, ...this._interactiveFields].find(field => {
-			if (field.coordinates)
-				return (
-					field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y
-				);
-		});
+		return [...this._nonInteractiveFields, ...this._interactiveFields].find(
+			field =>
+				field?.coordinates?.x === coordinates.x && field.coordinates.y === coordinates.y
+		);
 	}
 
 	findCowByCoordinates(coordinates: Coordinates): Cow | undefined {
@@ -243,12 +241,10 @@ export class Game {
 	}
 
 	findStaticFieldByCoordinates(coordinates: Coordinates): IField | Arrow | undefined {
-		return this._staticObjects.find(field => {
-			if (field.coordinates)
-				return (
-					field.coordinates.x === coordinates.x && field.coordinates.y === coordinates.y
-				);
-		});
+		return this._staticObjects.find(
+			field =>
+				field?.coordinates?.x === coordinates.x && field.coordinates.y === coordinates.y
+		);
 	}
 
 	findMapObjectByHtmlElement(htmlElement: HTMLElement): IEntity | undefined {
@@ -261,7 +257,7 @@ export class Game {
 
 	findGameObjectByHtmlElement(htmlElement: HTMLElement): Arrow | Cow | undefined {
 		return this.getGameObjects().find(
-			(obj: Arrow | Cow) => htmlElement === (obj?.linkedHtmlElement as HTMLElement)
+			(obj: Arrow | Cow) => htmlElement === obj?.linkedHtmlElement
 		);
 	}
 
@@ -299,7 +295,7 @@ export class Game {
 
 	// -------------------- GAME --------------------
 
-	mainLoopFunc() {
+	mainLoopFunc(): void {
 		Object.values(this._cows).forEach((cow: Cow) => {
 			const currentField: IField | Arrow | undefined = this.findFieldByCoordinates(
 				cow.coordinates
@@ -400,7 +396,7 @@ export class Game {
 
 			const nextField: IField | Arrow | undefined =
 				this.findFieldByCoordinates(nextCoordinates);
-			if (nextField?.impassable) {
+			if (nextField?.impassable === true) {
 				if (cow.layer === 2) cow.move();
 				if (nextField instanceof LockDoor) {
 					const keys = this._CowKeysMap.get(cow);
@@ -412,8 +408,9 @@ export class Game {
 						cow.move();
 					}
 				}
-				if (nextField instanceof Slide && nextField.direction === cow.direction)
+				if (nextField instanceof Slide && nextField.direction === cow.direction) {
 					cow.move();
+				}
 			} else {
 				// passable field
 				if (cow.layer === 1) {
@@ -425,10 +422,10 @@ export class Game {
 							});
 							if (cowAhead) {
 								if (
-									!this.findFieldByCoordinates({
+									this.findFieldByCoordinates({
 										x: cow.coordinates.x,
 										y: cow.coordinates.y - 2
-									})?.impassable
+									})?.impassable === false
 								) {
 									cowAhead.coordinates.y--;
 									cow.move();
@@ -445,10 +442,10 @@ export class Game {
 							});
 							if (cowAhead) {
 								if (
-									!this.findFieldByCoordinates({
+									this.findFieldByCoordinates({
 										x: cow.coordinates.x + 2,
 										y: cow.coordinates.y
-									})?.impassable
+									})?.impassable === false
 								) {
 									cowAhead.coordinates.x++;
 									cow.move();
@@ -465,10 +462,10 @@ export class Game {
 							});
 							if (cowAhead) {
 								if (
-									!this.findFieldByCoordinates({
+									this.findFieldByCoordinates({
 										x: cow.coordinates.x,
 										y: cow.coordinates.y + 2
-									})?.impassable
+									})?.impassable === false
 								) {
 									cowAhead.coordinates.y++;
 									cow.move();
@@ -485,10 +482,10 @@ export class Game {
 							});
 							if (cowAhead) {
 								if (
-									!this.findFieldByCoordinates({
+									this.findFieldByCoordinates({
 										x: cow.coordinates.x - 2,
 										y: cow.coordinates.y
-									})?.impassable
+									})?.impassable === false
 								) {
 									cowAhead.coordinates.x--;
 									cow.move();
@@ -510,7 +507,7 @@ export class Game {
 							y: nextCoordinates.y - 1
 						});
 						if (
-							!fieldInFrontOfHayBale?.impassable ||
+							fieldInFrontOfHayBale?.impassable === false ||
 							fieldInFrontOfHayBale instanceof Pit
 						) {
 							nextField.coordinates.y = Math.round((nextCoordinates.y - 1) * 100) / 100;
@@ -524,7 +521,7 @@ export class Game {
 							y: nextCoordinates.y
 						});
 						if (
-							!fieldInFrontOfHayBale?.impassable ||
+							fieldInFrontOfHayBale?.impassable === false ||
 							fieldInFrontOfHayBale instanceof Pit
 						) {
 							nextField.coordinates.x = Math.round((nextCoordinates.x + 1) * 100) / 100;
@@ -538,7 +535,7 @@ export class Game {
 							y: nextCoordinates.y + 1
 						});
 						if (
-							!fieldInFrontOfHayBale?.impassable ||
+							fieldInFrontOfHayBale?.impassable === false ||
 							fieldInFrontOfHayBale instanceof Pit
 						) {
 							nextField.coordinates.y = Math.round((nextCoordinates.y + 1) * 100) / 100;
@@ -552,7 +549,7 @@ export class Game {
 							y: nextCoordinates.y
 						});
 						if (
-							!fieldInFrontOfHayBale?.impassable ||
+							fieldInFrontOfHayBale?.impassable === false ||
 							fieldInFrontOfHayBale instanceof Pit
 						) {
 							nextField.coordinates.x = Math.round((nextCoordinates.x - 1) * 100) / 100;
@@ -608,7 +605,7 @@ export class Game {
 		}
 	}
 
-	endGame() {
+	endGame(): void {
 		if (this.loop) {
 			clearInterval(this.loop);
 			this.loop = 0;
@@ -616,7 +613,7 @@ export class Game {
 		this.loadNextLevel();
 	}
 
-	scaleArrowsTable() {
+	scaleArrowsTable(): void {
 		this.render.scaleArrowsTable();
 	}
 }

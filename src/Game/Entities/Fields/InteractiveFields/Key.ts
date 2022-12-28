@@ -2,11 +2,11 @@ import { IField } from '../IField';
 import { Coordinates, MAPPED_SPRITES } from '../../../../types';
 
 export class Key implements IField {
-	private _coordinates: Coordinates;
-	private _img: string = MAPPED_SPRITES.Key;
-	private _linkedHtmlElement: HTMLElement;
-	private _impassable: boolean = false;
-	private _movable: boolean = false;
+	private readonly _coordinates: Coordinates;
+	private readonly _img: string = MAPPED_SPRITES.Key;
+	private readonly _linkedHtmlElement: HTMLElement;
+	private readonly _impassable: boolean = false;
+	private readonly _movable: boolean = false;
 
 	constructor(coordinates: Coordinates, linkedHtmlElement: HTMLElement) {
 		this._coordinates = coordinates;

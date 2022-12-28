@@ -3,11 +3,11 @@ import { Coordinates, MAPPED_SPRITES } from '../../../../types';
 
 export class Pit implements IField {
 	private _activated: boolean;
-	private _coordinates: Coordinates;
+	private readonly _coordinates: Coordinates;
 	private _img: string;
 	private _impassable: boolean;
-	private _linkedHtmlElement: HTMLElement;
-	private _movable: boolean = false;
+	private readonly _linkedHtmlElement: HTMLElement;
+	private readonly _movable: boolean = false;
 
 	constructor(
 		coordinates: Coordinates,
@@ -53,7 +53,7 @@ export class Pit implements IField {
 		return this._movable;
 	}
 
-	activate() {
+	activate(): void {
 		this.activated = true;
 	}
 }

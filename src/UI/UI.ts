@@ -5,7 +5,7 @@ import screensaver3 from '../../assets/sprites/png/cowScreensaver3.png';
 import { Game } from '../Game';
 
 export class UI {
-	private game;
+	private readonly game;
 	htmlGameTable: HTMLTableElement;
 	htmlArrowsTable: HTMLTableElement;
 	gameTable: HTMLTableCellElement[][];
@@ -27,7 +27,7 @@ export class UI {
 		this.gameTable = this.htmlTableToArray(this.htmlGameTable);
 		this.arrowsTable = this.htmlTableToArray(this.htmlArrowsTable);
 		this._modalWindow = document.getElementById('modal-wrapper') as HTMLElement;
-		if (document.getElementById('modal-button') !== null)
+		if (document.getElementById('modal-button') !== null) {
 			(document.getElementById('modal-button') as HTMLButtonElement).addEventListener(
 				'click',
 				(e: MouseEvent) => {
@@ -35,16 +35,18 @@ export class UI {
 					this.hideModalWindow();
 				}
 			);
+		}
 		this._endLevelModalWindow = document.getElementById(
 			'end-level-modal-wrapper'
 		) as HTMLElement;
-		if (document.getElementById('end-level-modal-button') !== null)
+		if (document.getElementById('end-level-modal-button') !== null) {
 			(
 				document.getElementById('end-level-modal-button') as HTMLButtonElement
 			).addEventListener('click', (e: MouseEvent) => {
 				e.preventDefault();
 				this.hideEndLevelModalWindow();
 			});
+		}
 		this._completedLevelsModalWindow = document.getElementById(
 			'completed-levels-modal-wrapper'
 		) as HTMLElement;
@@ -65,11 +67,11 @@ export class UI {
 		return this.arrowsTable.some(row =>
 			row.some(arrowElement => htmlElement === (arrowElement.firstChild as HTMLElement))
 		);
-		/*for (let i = 0; i < this.arrowsTable.length; i++) {
+		/* for (let i = 0; i < this.arrowsTable.length; i++) {
             for (let j = 0; j < this.arrowsTable[i].length; j++) {
                 if (htmlElement === this.arrowsTable[i][j]) return this.arrowsTable[i][j].firstChild as HTMLDivElement;
             }
-        }*/
+        } */
 	}
 
 	createGameTable(): HTMLTableElement {
@@ -91,7 +93,7 @@ export class UI {
 		return table;
 	}
 
-	createArrowsTable() {
+	createArrowsTable(): HTMLTableElement {
 		const table = document.createElement('table');
 		table.id = 'ui-table';
 		const tBody = document.createElement('tbody');
@@ -99,8 +101,12 @@ export class UI {
 			const tr = document.createElement('tr');
 			for (let j = 0; j < gameConfig.arrowsTable.width; j++) {
 				const td = document.createElement('td');
-				td.style.width = `${this.htmlGameTable.querySelector('td')?.clientWidth}px`;
-				td.style.height = `${this.htmlGameTable.querySelector('td')?.clientHeight}px`;
+				td.style.width = `${
+					this.htmlGameTable.querySelector('td')?.clientWidth ?? '0'
+				}px`;
+				td.style.height = `${
+					this.htmlGameTable.querySelector('td')?.clientHeight ?? '0'
+				}px`;
 				const div = document.createElement('div');
 				div.className = `arrow-field x-${j + 1} y-${i + 1}`;
 				div.style.zIndex = '10';
@@ -128,9 +134,7 @@ export class UI {
 	showModalWindow(): void {
 		const modalLabel = document.getElementById('modal-text');
 		if (modalLabel !== null) {
-			(modalLabel as HTMLElement).innerText = `Уровень ${
-				window.localStorage.getItem('level') || 1
-			}`;
+			modalLabel.innerText = `Уровень ${window.localStorage.getItem('level') ?? 1}`;
 			const randomNum = Math.floor(Math.random() * 3); // 3 is pictures amount
 			let img;
 			switch (randomNum) {
@@ -156,8 +160,8 @@ export class UI {
 	showEndLevelModalWindow(): void {
 		const modalLabel = document.getElementById('end-level-modal-text');
 		if (modalLabel !== null) {
-			(modalLabel as HTMLElement).innerText = `Поздравляем! Уровень ${
-				window.localStorage.getItem('level') || 1
+			modalLabel.innerText = `Поздравляем! Уровень ${
+				window.localStorage.getItem('level') ?? 1
 			} пройден`;
 			const randomNum = Math.floor(Math.random() * 3); // 3 is pictures amount
 			let img;
@@ -181,7 +185,7 @@ export class UI {
 		this._endLevelModalWindow.style.visibility = 'hidden';
 	}
 
-	showCompletedLevelsModalWindow() {
+	showCompletedLevelsModalWindow(): void {
 		const levelsListWrapper = document.getElementById(
 			'completed-levels-list-wrapper'
 		) as HTMLElement;
@@ -206,7 +210,7 @@ export class UI {
 		this._completedLevelsModalWindow.style.visibility = 'visible';
 	}
 
-	hideCompletedLevelsModalWindow() {
+	hideCompletedLevelsModalWindow(): void {
 		this._completedLevelsModalWindow.style.visibility = 'hidden';
 	}
 }

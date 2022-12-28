@@ -3,12 +3,12 @@ import { ICow } from './ICow';
 import { gameConfig } from '../../../../Config.gen';
 
 export class Cow implements ICow {
-	private _coordinates: Coordinates;
+	private readonly _coordinates: Coordinates;
 	private _direction: Direction;
-	private _color: CowColor;
+	private readonly _color: CowColor;
 	private _layer: 1 | 2;
 	private _img: string;
-	private _linkedHtmlElement: HTMLElement;
+	private readonly _linkedHtmlElement: HTMLElement;
 
 	constructor(
 		coordinates: Coordinates,
@@ -78,7 +78,7 @@ export class Cow implements ICow {
 		}
 	}
 
-	move(direction: Direction = this._direction) {
+	move(direction: Direction = this._direction): void {
 		switch (direction) {
 			case 'Up':
 				this._coordinates.y =

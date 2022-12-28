@@ -4,13 +4,13 @@ import { AutoDoor } from './Doors';
 import { Piston } from './Piston';
 
 export class Button implements IField {
-	private _coordinates: Coordinates;
-	private _linkedElementsIds: number[];
-	private _linkedHtmlElement: HTMLElement;
-	private _linkedElements!: (AutoDoor | Piston)[];
-	private _img: string = MAPPED_SPRITES.Button;
-	private _impassable: boolean = false;
-	private _movable: boolean = false;
+	private readonly _coordinates: Coordinates;
+	private readonly _linkedElementsIds: number[];
+	private readonly _linkedHtmlElement: HTMLElement;
+	private _linkedElements!: Array<AutoDoor | Piston>;
+	private readonly _img: string = MAPPED_SPRITES.Button;
+	private readonly _impassable: boolean = false;
+	private readonly _movable: boolean = false;
 
 	constructor(
 		coordinates: Coordinates,
@@ -46,15 +46,15 @@ export class Button implements IField {
 		return this._movable;
 	}
 
-	get linkedElements(): (AutoDoor | Piston)[] {
+	get linkedElements(): Array<AutoDoor | Piston> {
 		return this._linkedElements;
 	}
 
-	set linkedElements(fields: (AutoDoor | Piston)[]) {
+	set linkedElements(fields: Array<AutoDoor | Piston>) {
 		this._linkedElements = fields;
 	}
 
-	activate() {
+	activate(): void {
 		this._linkedElements?.forEach(elem => elem.activate());
 	}
 }

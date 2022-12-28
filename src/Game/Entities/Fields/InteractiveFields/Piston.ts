@@ -2,15 +2,15 @@ import { IField } from '../IField';
 import { Coordinates, Direction, MAPPED_SPRITES } from '../../../../types';
 
 export class Piston implements IField {
-	private _id: number;
-	private _coordinates: Coordinates;
-	private _direction: Direction;
+	private readonly _id: number;
+	private readonly _coordinates: Coordinates;
+	private readonly _direction: Direction;
 	private _img: string;
 
 	private _impassable: boolean;
-	private _linkedHtmlElement: HTMLElement;
+	private readonly _linkedHtmlElement: HTMLElement;
 	private _activated: boolean;
-	private _movable: boolean = false;
+	private readonly _movable: boolean = false;
 
 	constructor(
 		coordinates: Coordinates,
@@ -65,7 +65,7 @@ export class Piston implements IField {
 		this._impassable = activated;
 	}
 
-	getImg() {
+	getImg(): string {
 		switch (this._direction) {
 			case 'Up':
 				return (this._img = MAPPED_SPRITES.PistonUp);

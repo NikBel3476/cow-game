@@ -14,42 +14,42 @@ export interface ILevel {
 				[k in Direction]: Coordinates[];
 			};
 			HayBale?: Coordinates[];
-			Pit?: {
+			Pit?: Array<{
 				coordinates: Coordinates;
 				activated: boolean;
-			}[];
+			}>;
 			Key?: Coordinates[];
 			LockDoor?: {
 				[k in DoorOrientation]: Coordinates[];
 			};
-			Button?: {
+			Button?: Array<{
 				coordinates: Coordinates;
 				linkedElementsIds: number[];
-			}[];
+			}>;
 			AutoDoor?: {
-				[k in DoorOrientation]: {
+				[k in DoorOrientation]: Array<{
 					id: number;
 					coordinates: Coordinates;
-				}[];
+				}>;
 			};
 			Piston?: {
-				[k in Direction]: {
+				[k in Direction]: Array<{
 					id: number;
 					coordinates: Coordinates;
 					activated: boolean;
-				}[];
+				}>;
 			};
 		};
 	};
 	GameObjects: {
-		Cows: {
+		Cows: Array<{
 			coordinates: Coordinates;
 			direction: Direction;
 			color: CowColor;
-		}[];
+		}>;
 		Arrows: {
 			[k in ArrowColor]: {
-				[k in Direction]: { coordinates: Coordinates | null }[];
+				[k in Direction]: Array<{ coordinates: Coordinates | null }>;
 			};
 		};
 	};

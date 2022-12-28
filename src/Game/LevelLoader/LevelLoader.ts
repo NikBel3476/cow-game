@@ -226,7 +226,7 @@ export class LevelLoader {
 		return arrowsArr;
 	}
 
-	initCows(cows: ILevel['GameObjects']['Cows']) {
+	initCows(cows: ILevel['GameObjects']['Cows']): Cow[] {
 		let count = 0;
 		return Object.values(cows).map(
 			cow =>

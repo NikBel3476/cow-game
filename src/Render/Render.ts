@@ -24,8 +24,12 @@ export class Render {
 		cows.forEach(cow => {
 			const divCow = document.createElement('div');
 			divCow.className = `cow-wrapper cow-${count++}`;
-			divCow.style.width = `${this.htmlGameTable.querySelector('td')?.clientWidth}px`;
-			divCow.style.height = `${this.htmlGameTable.querySelector('td')?.clientHeight}px`;
+			divCow.style.width = `${
+				this.htmlGameTable.querySelector('td')?.clientWidth ?? '0'
+			}px`;
+			divCow.style.height = `${
+				this.htmlGameTable.querySelector('td')?.clientHeight ?? '0'
+			}px`;
 			divCow.style.zIndex = '30';
 			divCow.style.transition = `all ${gameConfig.loopTime / 1000}s linear`;
 			htmlElements.push(divCow);
@@ -41,10 +45,12 @@ export class Render {
 			const htmlElements: HTMLElement[] = [];
 			hayBales.forEach((coordinates: Coordinates) => {
 				const divField = document.createElement('div');
-				divField.className = `mobile-field`;
-				divField.style.width = `${this.htmlGameTable.querySelector('td')?.clientWidth}px`;
+				divField.className = 'mobile-field';
+				divField.style.width = `${
+					this.htmlGameTable.querySelector('td')?.clientWidth ?? 0
+				}px`;
 				divField.style.height = `${
-					this.htmlGameTable.querySelector('td')?.clientHeight
+					this.htmlGameTable.querySelector('td')?.clientHeight ?? 0
 				}px`;
 				divField.style.zIndex = '20';
 				divField.style.transition = `all ${gameConfig.loopTime / 1000}s linear`;
@@ -55,7 +61,7 @@ export class Render {
 		}
 	}
 
-	drawStaticElements(fields: (IField | Arrow)[]) {
+	drawStaticElements(fields: Array<IField | Arrow>): void {
 		fields.forEach(object => {
 			if (object instanceof Piston && !object.activated) {
 				switch (object.direction) {
@@ -96,18 +102,13 @@ export class Render {
 		});
 	}
 
-	drawNonStaticElements(objects: (Cow | HayBale)[]) {
+	drawNonStaticElements(objects: Array<Cow | HayBale>): void {
 		objects.forEach(object => {
 			if (object instanceof HayBale) {
 				const tdElement = this.htmlGameTable.querySelector('td') as HTMLElement;
 				object.linkedHtmlElement.style.transform = `translate(
-                    ${
-											tdElement.getBoundingClientRect().width * (object.coordinates.x - 1)
-										}px,
-                    ${
-											tdElement.getBoundingClientRect().height *
-											(object.coordinates.y - 1)
-										}px)`;
+					${tdElement.getBoundingClientRect().width * (object.coordinates.x - 1)}px,
+					${tdElement.getBoundingClientRect().height * (object.coordinates.y - 1)}px)`;
 				object.linkedHtmlElement.style.top = '0px';
 				object.linkedHtmlElement.style.left = '0px';
 				object.linkedHtmlElement.style.width = `${tdElement?.clientWidth}px`;
@@ -132,21 +133,20 @@ export class Render {
 		});
 	}
 
-	drawElements(elems: (IField | IGameObject)[]): void {
+	drawElements(elems: Array<IField | IGameObject>): void {
 		elems.forEach(elem => {
 			elem.linkedHtmlElement.style.transform =
 				elem instanceof Piston && !elem.activated
 					? `translateY(-${
-							(
-								this.htmlGameTable.querySelector('td') as HTMLElement
-							).getBoundingClientRect().height
+							this.htmlGameTable.querySelector('td')?.getBoundingClientRect().height ?? 0
+							// eslint-disable-next-line no-mixed-spaces-and-tabs
 					  }px)`
 					: '';
 			elem.linkedHtmlElement.style.background = `url('${elem.img}') center center / contain no-repeat`;
 		});
 	}
 
-	clearScene() {
+	clearScene(): void {
 		this.gameTable.forEach(row =>
 			row.forEach(
 				(field: HTMLElement) => ((field.firstChild as HTMLElement).style.background = '')
@@ -157,13 +157,13 @@ export class Render {
 		);
 	}
 
-	clearArrowsTable() {
+	clearArrowsTable(): void {
 		this.arrowsTable.forEach(row =>
 			row.forEach(field => ((field.firstChild as HTMLElement).style.background = ''))
 		);
 	}
 
-	deleteScene() {
+	deleteScene(): void {
 		this.clearScene();
 		this.clearArrowsTable();
 		this.cowHtmlElements.forEach(element => element.remove());
@@ -172,16 +172,21 @@ export class Render {
 		this.movableFields = [];
 	}
 
-	scaleArrowsTable() {
+	scaleArrowsTable(): void {
 		this.arrowsTable.forEach(row => {
 			row.forEach(td => {
-				td.style.width = `${this.htmlGameTable.querySelector('td')?.clientWidth}px`;
-				td.style.height = `${this.htmlGameTable.querySelector('td')?.clientHeight}px`;
+				td.style.width = `${this.htmlGameTable.querySelector('td')?.clientWidth ?? 0}px`;
+				td.style.height = `${
+					this.htmlGameTable.querySelector('td')?.clientHeight ?? 0
+				}px`;
 			});
 		});
 	}
 
-	drawScene(staticElements: (IField | Arrow)[], movableElements: (Cow | HayBale)[]) {
+	drawScene(
+		staticElements: Array<IField | Arrow>,
+		movableElements: Array<Cow | HayBale>
+	): void {
 		this.drawStaticElements(staticElements);
 		this.drawNonStaticElements(movableElements);
 	}

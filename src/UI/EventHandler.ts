@@ -18,36 +18,40 @@ export class EventHandler {
 
 		this.onArrowMousedown = this.onArrowMousedown.bind(this);
 
-		if (document.getElementById('start-game-button') !== null)
+		if (document.getElementById('start-game-button') !== null) {
 			(document.getElementById('start-game-button') as HTMLElement).addEventListener(
 				'click',
 				(e: MouseEvent) => {
 					this.game.startGame();
 				}
 			);
+		}
 
-		if (document.getElementById('end-game-button') !== null)
+		if (document.getElementById('end-game-button') !== null) {
 			(document.getElementById('end-game-button') as HTMLElement).addEventListener(
 				'click',
 				(e: MouseEvent) => {
 					this.game.reloadLevel();
 				}
 			);
+		}
 
-		if (document.getElementById('restart-game-button') !== null)
+		if (document.getElementById('restart-game-button') !== null) {
 			(document.getElementById('restart-game-button') as HTMLElement).addEventListener(
 				'click',
 				(e: MouseEvent) => {
 					this.game.restartGame();
 				}
 			);
+		}
 
-		if (document.getElementById('completed-levels-button') !== null)
+		if (document.getElementById('completed-levels-button') !== null) {
 			(
 				document.getElementById('completed-levels-button') as HTMLElement
 			).addEventListener('click', (e: MouseEvent) => {
 				this.game.ui.showCompletedLevelsModalWindow();
 			});
+		}
 
 		document.addEventListener('mousedown', (e: MouseEvent) => {
 			this.mouseX = e.clientX;
@@ -62,8 +66,8 @@ export class EventHandler {
 		});
 
 		document.addEventListener('mouseup', (e: MouseEvent) => {
-			const targetElement = e.target as HTMLElement;
-			if (EventHandler.selectedItem && targetElement) {
+			const targetElement = e.target;
+			if (EventHandler.selectedItem && targetElement instanceof HTMLElement) {
 				const gameObject = this.game.findMapObjectByHtmlElement(targetElement);
 				if (!gameObject) {
 					const coordinates = this.game.getFieldCoordinates(targetElement);
@@ -97,7 +101,7 @@ export class EventHandler {
 		this.addArrowsEventListeners();
 	}
 
-	addArrowsEventListeners() {
+	addArrowsEventListeners(): void {
 		this.game.arrows.forEach(arrow => {
 			if (!arrow.coordinates) {
 				this.addArrowEventListener(arrow, 'mousedown', this.onArrowMousedown);
@@ -105,14 +109,14 @@ export class EventHandler {
 		});
 	}
 
-	onArrowMousedown(e: Event) {
+	onArrowMousedown(e: Event): void {
 		if (!this.game.loop) {
 			EventHandler.selectedItem = e.target as HTMLElement;
 			EventHandler.selectedItem.style.pointerEvents = 'none';
 		}
 	}
 
-	addArrowEventListener(arrow: Arrow, event: string, func: (e: Event) => void) {
+	addArrowEventListener(arrow: Arrow, event: string, func: (e: Event) => void): void {
 		arrow.linkedHtmlElement.addEventListener(event, func);
 	}
 }

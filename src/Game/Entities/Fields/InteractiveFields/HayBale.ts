@@ -2,11 +2,11 @@ import { IField } from '../IField';
 import { Coordinates, MAPPED_SPRITES } from '../../../../types';
 
 export class HayBale implements IField {
-	private _coordinates: Coordinates;
-	private _linkedHtmlElement: HTMLElement;
-	private _img: string = MAPPED_SPRITES.HayBale;
-	private _impassable: boolean = true;
-	private _movable: boolean = true;
+	private readonly _coordinates: Coordinates;
+	private readonly _linkedHtmlElement: HTMLElement;
+	private readonly _img: string = MAPPED_SPRITES.HayBale;
+	private readonly _impassable: boolean = true;
+	private readonly _movable: boolean = true;
 
 	constructor(coordinates: Coordinates, linkedHtmlElement: HTMLElement) {
 		this._coordinates = coordinates;
