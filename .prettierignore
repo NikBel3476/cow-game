@@ -1,8 +1,7 @@
-**/.git
-**/.node_modules
+.git
+node_modules
 
 *.json
 *.md
-.env*
 *.bs.js
 *.gen.ts*

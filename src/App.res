@@ -8,7 +8,7 @@ let make = () => {
 
 		{switch url.path {
 			| list{} => <div> {React.string("main page")} </div>
-			| list{"game"} => <div> {React.string("game page")} </div>
+			| list{"game"} => <Game />
 			| _ => <div> {React.string("page not found")} </div>
 		}}
 	</div>
