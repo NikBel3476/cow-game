@@ -7,10 +7,6 @@ body {
 	background-size: contain;
 }
 
-a {
-	text-decoration: none;
-}
-
 #menu-container {
 	position: absolute;
 	width: 25vw;
@@ -23,6 +19,7 @@ a {
 .game-menu-link {
 	display: block;
 	background: none;
+	text-decoration: none;
 	margin: 3%;
 	color: #fff;
 	font-family: Arial, sans-serif;

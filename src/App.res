@@ -1,10 +1,14 @@
+@module external styles: {..} = "./App.module.css"
+
 @genType
 @react.component
 let make = () => {
 	let url = RescriptReactRouter.useUrl()
 
 	<div>
-		<a href="/game" className="game-menu-link"> {React.string(`Начать игру`)} </a>
+		<a href="pages/game/game.html" className={styles["game-menu-link"]}>{React.string(`Начать игру`)}</a>
+		<a href="pages/levels/levels.html" className={styles["game-menu-link"]}>{React.string(`Выбрать уровень`)}</a>
+		<a href="/game" className="game-menu-link"> {React.string(`Начать игру(react)`)} </a>
 
 		{switch url.path {
 			| list{} => <div> {React.string("main page")} </div>
