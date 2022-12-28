@@ -1,1 +1,1 @@
-export type ArrowColor = "Red" | "Blue";
+export type ArrowColor = 'Red' | 'Blue';
