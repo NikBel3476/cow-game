@@ -1,2 +1,2 @@
-export * from "./UI";
-export * from "./EventHandler";
+export * from './UI';
+export * from './EventHandler';
