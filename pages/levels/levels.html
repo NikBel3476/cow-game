@@ -75,7 +75,7 @@
     <script>
       const quantity_levels = 20;
       window.onload = () => {
-        for (i = 1; i <= quantity_levels; i++) {
+        for (let i = 1; i <= quantity_levels; i++) {
           if (localStorage.getItem(`save_level_${i}`) !== null) {
             const level_num = localStorage.getItem(`save_level_${i}`);
             if (document.getElementById(`level${level_num}`) !== null) {

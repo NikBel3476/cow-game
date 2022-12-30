@@ -1,2 +1,2 @@
-export * from "./Cow";
-export * from "./ICow";
+export * from './Cow';
+export * from './ICow';

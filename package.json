@@ -1,13 +1,19 @@
 {
   "name": "cow-game",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Задача в игре: с помощью стрелок довести корову коричневого цвета до кубка",
   "main": "dist/scripts/index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "concurrently \"npm run re:start\" \"vite\"",
+    "build": "npm run re:build && tsc && vite build",
+    "prebuild": "npm run format:check && npm run lint",
+    "re:build": "rescript",
+    "re:start": "rescript build -w",
+    "clean": "rescript clean -with-deps",
     "preview": "vite preview",
-    "format": "prettier --write ."
+    "format:write": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "npx eslint ."
   },
   "repository": {
     "type": "git",
@@ -20,10 +26,49 @@
     "url": "https://github.com/NikBel3476/cow-game/issues"
   },
   "homepage": "https://github.com/NikBel3476/cow-game#readme",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "lint-staged": {
+    "!(*.bs).js": [
+      "prettier --write"
+    ],
+    "!(*.gen).ts": [
+      "prettier --write"
+    ],
+    "*.jsx": [
+      "prettier --write"
+    ],
+    "!(*.gen).tsx": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
-    "@types/node": "^18.7.8",
-    "prettier": "^2.7.1",
-    "typescript": "^4.7.4",
-    "vite": "^3.0.9"
-  }
+    "@rescript/react": "^0.11.0-rc.3",
+    "@types/node": "^18.11.18",
+    "@types/react": "^18.0.26",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@vitejs/plugin-react": "^3.0.0",
+    "concurrently": "^7.6.0",
+    "eslint": "^8.30.0",
+    "eslint-config-standard-with-typescript": "^24.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.6.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.31.11",
+    "gentype": "^4.5.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.1",
+    "rescript": "^10.1.0",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.3"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

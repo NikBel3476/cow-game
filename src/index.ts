@@ -1,29 +1,4 @@
-import { Game } from "./Game";
-import { render } from "./Render";
+import { Game } from './Game';
 
-export const game = new Game();
-
-document.ondragstart = function () {
-  return false;
-};
-
-export function startGame() {
-  game.startGame();
-}
-
-export function endGame() {
-  game.reloadLevel();
-}
-
-export function restartGame() {
-  game.restartGame();
-}
-
-window.onload = () => {
-  game.renderScene();
-};
-
-window.onresize = () => {
-  game.renderScene();
-  render.scaleArrowsTable();
-};
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const game = new Game();

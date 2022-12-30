@@ -1,3 +1,13 @@
+.git
+node_modules
+dist
+
 *.json
 *.md
-.env*
+*.bs.js
+*.gen.ts*
+*yml
+*.html
+*.css
+
+.prettierrc

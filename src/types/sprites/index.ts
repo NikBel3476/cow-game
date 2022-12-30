@@ -1,1 +1,1 @@
-export * from "./MappedSprites";
+export * from './MappedSprites';
