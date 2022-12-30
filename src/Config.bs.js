@@ -15,6 +15,5 @@ var gameConfig = {
 
 export {
   gameConfig ,
-  
 }
 /* No side effect */

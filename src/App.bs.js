@@ -2,25 +2,26 @@
 
 import * as Game from "./pages/Game.bs.js";
 import * as React from "react";
+import * as MainPage from "./pages/MainPage/MainPage.bs.js";
+import * as AppModuleCss from "./App.module.css";
 import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.bs.js";
 
-function App(Props) {
+var styles = AppModuleCss;
+
+function App(props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
   var match = url.path;
   var tmp;
   tmp = match ? (
       match.hd === "game" && !match.tl ? React.createElement(Game.make, {}) : React.createElement("div", undefined, "page not found")
-    ) : React.createElement("div", undefined, "main page");
-  return React.createElement("div", undefined, React.createElement("a", {
-                  className: "game-menu-link",
-                  href: "/game"
-                }, "Начать игру"), tmp);
+    ) : React.createElement(MainPage.make, {});
+  return React.createElement("div", undefined, tmp);
 }
 
 var make = App;
 
 export {
+  styles ,
   make ,
-  
 }
-/* Game Not a pure module */
+/* styles Not a pure module */

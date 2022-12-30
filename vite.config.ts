@@ -18,5 +18,10 @@ export default defineConfig({
 		// produce sourcemaps for debug builds
 		sourcemap: !!process.env.DEBUG
 	},
-	base: './'
+	base: './',
+	css: {
+		modules: {
+			localsConvention: 'camelCaseOnly'
+		}
+	}
 });
