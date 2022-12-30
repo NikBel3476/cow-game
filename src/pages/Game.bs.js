@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-function Game(Props) {
+function Game(props) {
   return React.createElement("main", undefined, React.createElement("p", undefined, "Страница игры"));
 }
 

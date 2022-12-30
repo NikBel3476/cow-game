@@ -8,7 +8,7 @@ import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.bs
 
 var styles = AppModuleCss;
 
-function App(Props) {
+function App(props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
   var match = url.path;
   var tmp;

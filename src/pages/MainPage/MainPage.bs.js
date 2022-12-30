@@ -6,8 +6,8 @@ import * as MainPageModuleCss from "./MainPage.module.css";
 
 var styles = MainPageModuleCss;
 
-function MainPage(Props) {
-  var children = Props.children;
+function MainPage(props) {
+  var children = props.children;
   return React.createElement("div", {
               className: styles.menuContainer
             }, React.createElement("div", {
