@@ -2,12 +2,17 @@
 
 import * as React from "react";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.bs.js";
 import * as MainPageModuleCss from "./MainPage.module.css";
 
 var styles = MainPageModuleCss;
 
 function MainPage(props) {
   var children = props.children;
+  var handleStartGameLinkClick = function (e) {
+    e.preventDefault();
+    RescriptReactRouter.push("game");
+  };
   return React.createElement("div", {
               className: styles.menuContainer
             }, React.createElement("div", {
@@ -20,7 +25,8 @@ function MainPage(props) {
                       href: "pages/levels/levels.html"
                     }, "Выбрать уровень"), React.createElement("a", {
                       className: styles.gameMenuLink,
-                      href: "/cow-game/game"
+                      href: "/cow-game/game",
+                      onClick: handleStartGameLinkClick
                     }, "Начать игру(react)"), children !== undefined ? Caml_option.valFromOption(children) : null));
 }
 
