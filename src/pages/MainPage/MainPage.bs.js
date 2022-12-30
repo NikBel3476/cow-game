@@ -20,7 +20,7 @@ function MainPage(props) {
                       href: "pages/levels/levels.html"
                     }, "Выбрать уровень"), React.createElement("a", {
                       className: styles.gameMenuLink,
-                      href: "/game"
+                      href: "/cow-game/game"
                     }, "Начать игру(react)"), children !== undefined ? Caml_option.valFromOption(children) : null));
 }
 
