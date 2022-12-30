@@ -12,9 +12,24 @@ function App(props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
   var match = url.path;
   var tmp;
-  tmp = match ? (
-      match.hd === "game" && !match.tl ? React.createElement(Game.make, {}) : React.createElement("div", undefined, "page not found")
-    ) : React.createElement(MainPage.make, {});
+  var exit = 0;
+  if (match && match.hd === "cow-game") {
+    var match$1 = match.tl;
+    if (match$1) {
+      if (match$1.hd === "game" && !match$1.tl) {
+        tmp = React.createElement(Game.make, {});
+      } else {
+        exit = 1;
+      }
+    } else {
+      tmp = React.createElement(MainPage.make, {});
+    }
+  } else {
+    exit = 1;
+  }
+  if (exit === 1) {
+    tmp = React.createElement("div", undefined, "page not found");
+  }
   return React.createElement("div", undefined, tmp);
 }
 
