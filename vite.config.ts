@@ -18,7 +18,7 @@ export default defineConfig({
 		// produce sourcemaps for debug builds
 		sourcemap: !!process.env.DEBUG
 	},
-	base: './',
+	base: '/cow-game/',
 	css: {
 		modules: {
 			localsConvention: 'camelCaseOnly'
