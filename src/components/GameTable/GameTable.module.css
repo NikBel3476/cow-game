@@ -1,0 +1,29 @@
+.container {
+	display: flex;
+	align-items: center;
+	justify-items: center;
+	background: #006400 url("../../assets/sprites/svg/PlayingField.svg") no-repeat center;
+	flex-grow: 1;
+}
+
+.game-table {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1 1 0;
+	border-spacing: 0;
+	max-height: 100vh;
+}
+
+.game-table tr {
+	display: flex;
+}
+
+.cell {
+	height: calc(80vw / 20);
+	width: calc(80vw / 20);
+	max-height: calc(100vh / 14);
+	max-width: calc(100vh / 14);
+	padding: 0;
+	border: 1px solid #e5ff00;
+}

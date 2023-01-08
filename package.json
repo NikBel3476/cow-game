@@ -5,15 +5,16 @@
   "main": "dist/scripts/index.js",
   "scripts": {
     "dev": "concurrently \"npm run re:start\" \"vite\"",
-    "build": "npm run re:build && tsc && vite build",
-    "prebuild": "npm run format:check && npm run lint",
+    "build": "vite build",
+    "prebuild": "npm run re:build && tsc",
     "re:build": "rescript",
     "re:start": "rescript build -w",
     "clean": "rescript clean -with-deps",
     "preview": "vite preview",
     "format:write": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "npx eslint ."
+    "lint": "npx eslint .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
