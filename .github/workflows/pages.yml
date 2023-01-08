@@ -22,28 +22,31 @@ concurrency:
 
 jobs:
   build:
-    - name: Checkout
-      uses: actions/checkout@v3
+    name: build-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Staring Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 'lts/*'
-        cache: 'npm'
+      - name: Staring Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
 
-    - name: Install packages
-      run: npm ci
+      - name: Install packages
+        run: npm ci
 
-    - name: Build project
-      run: npm run build
+      - name: Build project
+        run: npm run build
 
-    - name: Setup Pages
-      uses: actions/configure-pages@v1
+      - name: Setup Pages
+        uses: actions/configure-pages@v1
 
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
-      with:
-        path: './dist'
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: './dist'
 
   deploy:
     needs: build
