@@ -21,33 +21,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 16.* ]
     steps:
-      - uses: actions/checkout@v3
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Staring Node.js ${{ matrix.node-version }}
+
+      - name: Staring Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: install packages
-        run: npm install
-      - name: build project
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install packages
+        run: npm ci
+
+      - name: Build project
         run: npm run build
+
       - name: Setup Pages
         uses: actions/configure-pages@v1
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: './dist'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
