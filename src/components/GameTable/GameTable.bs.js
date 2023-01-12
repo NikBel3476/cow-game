@@ -9,9 +9,12 @@ import * as GameTableModuleCss from "./GameTable.module.css";
 var styles = GameTableModuleCss;
 
 function GameTable(props) {
-  var table = Belt_Array.make(Config.gameConfig.map.height, Belt_Array.make(Config.gameConfig.map.width, React.createElement("td", {
-                className: styles.cell
-              })));
+  var table = Belt_Array.make(Config.gameConfig.map.height, Belt_Array.makeBy(Config.gameConfig.map.width, (function (i) {
+              return React.createElement("td", {
+                          key: String(i),
+                          className: styles.cell
+                        });
+            })));
   return React.createElement("section", {
               className: Belt_Option.mapWithDefault(props.className, styles.container, (function (className) {
                       return "" + className + " " + styles.container + "";

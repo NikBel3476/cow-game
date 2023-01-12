@@ -1,10 +1,22 @@
 open Belt
 
-@module external styles: {..} = "./GameMenu.module.css"
+@module external styles: {
+	"container": string,
+	"menuTable": string,
+	"cell": string
+} = "./GameMenu.module.css"
 
 @genType
 @react.component
 let make = (~className: option<string>=?) => {
+	let table: array<array<React.element>> = Array.make(
+		Config.gameConfig["arrowsTable"]["height"],
+		Array.makeBy(
+			Config.gameConfig["arrowsTable"]["width"],
+			i => <td key={Int.toString(i)} className={styles["cell"]}></td>
+		)
+	)
+
 	<aside
 		className={
 			className->Option.mapWithDefault(
@@ -13,6 +25,14 @@ let make = (~className: option<string>=?) => {
 			)
 		}
 	>
-		{React.string("Game menu")}
+		<table className={styles["menuTable"]}>
+			<tbody>
+				{table->Array.mapWithIndex((i, row) => {
+					<tr key={Int.toString(i)}>
+						{row->React.array}
+					</tr>
+				})->React.array}
+			</tbody>
+		</table>
 	</aside>
 }

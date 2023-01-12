@@ -11,7 +11,10 @@ open Belt
 let make = (~className: option<string>=?) => {
 	let table: array<array<React.element>> = Array.make(
 		Config.gameConfig["map"]["height"],
-		Array.make(Config.gameConfig["map"]["width"], <td className={styles["cell"]}></td>)
+		Array.makeBy(
+			Config.gameConfig["map"]["width"],
+			i => <td key={Int.toString(i)} className={styles["cell"]}></td>
+		)
 	)
 
   <section
@@ -24,8 +27,8 @@ let make = (~className: option<string>=?) => {
 	>
     <table className={styles["gameTable"]}>
 		<tbody>
-			{table->Belt.Array.mapWithIndex((i, row) =>
-				<tr key={Belt.Int.toString(i)}>{row->React.array}</tr>)->React.array}
+			{table->Array.mapWithIndex((i, row) =>
+				<tr key={Int.toString(i)}>{row->React.array}</tr>)->React.array}
 		</tbody>
 		</table>
   </section>

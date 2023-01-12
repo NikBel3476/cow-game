@@ -5,3 +5,22 @@
 	justify-content: flex-start;
 	background: #006480;
 }
+
+.menu-table {
+	margin: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-spacing: 0;
+	max-height: 100vh;
+	background: #5faa00;
+}
+
+.cell {
+	height: calc(80vw / 20);
+	width: calc(80vw / 20);
+	max-height: calc(100vh / 14);
+	max-width: calc(100vh / 14);
+	padding: 0;
+	border: 1px solid #000;
+}
