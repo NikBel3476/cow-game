@@ -1,7 +1,6 @@
-import { Direction, ArrowColor, Coordinates, MAPPED_SPRITES } from '../../../../types';
-import { IArrow } from './IArrow';
+import { Direction, ArrowColor, Coordinates, MAPPED_SPRITES } from '../../../types';
 
-export class Arrow implements IArrow {
+export class Arrow {
 	private _coordinates?: Coordinates;
 	private _direction: Direction;
 	private readonly _impassable: boolean = false;

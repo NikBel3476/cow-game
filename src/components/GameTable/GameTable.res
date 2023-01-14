@@ -4,9 +4,8 @@ open Belt
 type level
 
 @module external mappedLevels: {..} = "../../levels/MappedLevels"
-@module
-external styles: {"container": string, "gameTable": string, "cell": string} =
-	"./GameTable.module.css"
+
+@module external styles: {"container": string, "gameTable": string, "cell": string} = "./GameTable.module.css"
 
 @genType @genType.as("GameTable") @react.component
 let make = (~className: option<string>=?) => {
@@ -38,7 +37,6 @@ let make = (~className: option<string>=?) => {
 							switch cow {
 							| Some(_) =>
 								<td key={Int.toString(j)} className={styles["cell"]}> {React.string("cow")} </td>
-
 							| None => cell
 							}
 						})

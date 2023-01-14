@@ -1,0 +1,1 @@
+export { GameTableTS } from './GameTableTS';

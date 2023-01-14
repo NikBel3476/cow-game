@@ -1,6 +1,7 @@
 import { ILevel } from '../../levels';
 import {
 	Arrow,
+	ArrowReact,
 	AutoDoor,
 	Button,
 	Cow,
@@ -220,6 +221,18 @@ export class LevelLoader {
 							)
 						);
 					}
+				});
+			});
+		});
+		return arrowsArr;
+	}
+
+	static loadArrows(arrows: ILevel['GameObjects']['Arrows']): ArrowReact[] {
+		const arrowsArr: ArrowReact[] = [];
+		(Object.keys(arrows) as ArrowColor[]).forEach(color => {
+			(Object.keys(arrows[color]) as Direction[]).forEach(direction => {
+				arrows[color][direction].forEach(arrow => {
+					arrowsArr.push(new ArrowReact(direction, color, arrow.coordinates));
 				});
 			});
 		});
