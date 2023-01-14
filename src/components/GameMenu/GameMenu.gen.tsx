@@ -9,4 +9,4 @@ const GameMenuBS: any = GameMenuBS__Es6Import;
 // tslint:disable-next-line:interface-over-type-literal
 export type props<className> = { readonly className?: className };
 
-export const make: React.ComponentType<{ readonly className?: string }> = GameMenuBS.make;
+export const GameMenu: React.ComponentType<{ readonly className?: string }> = GameMenuBS.make;

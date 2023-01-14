@@ -5,6 +5,9 @@ import * as Config from "../../Config.bs.js";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as GameTableModuleCss from "./GameTable.module.css";
+import * as MappedLevels from "../../levels/MappedLevels";
+
+var mappedLevels = MappedLevels;
 
 var styles = GameTableModuleCss;
 
@@ -15,6 +18,7 @@ function GameTable(props) {
                           className: styles.cell
                         });
             })));
+  var level1 = Belt_Array.get(mappedLevels.MAPPED_LEVELS, 0);
   return React.createElement("section", {
               className: Belt_Option.mapWithDefault(props.className, styles.container, (function (className) {
                       return "" + className + " " + styles.container + "";
@@ -24,14 +28,31 @@ function GameTable(props) {
                 }, React.createElement("tbody", undefined, Belt_Array.mapWithIndex(table, (function (i, row) {
                             return React.createElement("tr", {
                                         key: String(i)
-                                      }, row);
+                                      }, Belt_Array.mapWithIndex(row, (function (j, cell) {
+                                              var cow = Belt_Array.getBy(level1.GameObjects.Cows, (function (cow) {
+                                                      if (cow.coordinates.x === i) {
+                                                        return cow.coordinates.y === j;
+                                                      } else {
+                                                        return false;
+                                                      }
+                                                    }));
+                                              if (cow !== undefined) {
+                                                return React.createElement("td", {
+                                                            key: String(j),
+                                                            className: styles.cell
+                                                          }, "cow");
+                                              } else {
+                                                return cell;
+                                              }
+                                            })));
                           })))));
 }
 
 var make = GameTable;
 
 export {
+  mappedLevels ,
   styles ,
   make ,
 }
-/* styles Not a pure module */
+/* mappedLevels Not a pure module */

@@ -4,4 +4,3 @@ dist/
 *.bs.js
 *.gen.ts*
 vite.config.ts
-src/gh-pages-404/
