@@ -30,7 +30,7 @@ function App(props) {
   if (exit === 1) {
     tmp = React.createElement("div", undefined, "page not found");
   }
-  return React.createElement("div", undefined, tmp);
+  return React.createElement(React.Fragment, undefined, tmp);
 }
 
 var make = App;
