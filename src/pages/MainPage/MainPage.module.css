@@ -5,8 +5,7 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	background: #006400 url('../../../assets/MainMenuBackground.svg') no-repeat fixed
-		center center;
+	background: #006400 url("../../../assets/MainMenuBackground.svg") no-repeat fixed center center;
 	background-size: contain;
 }
 
