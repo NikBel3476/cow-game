@@ -4,13 +4,13 @@ import * as cn from 'classnames';
 import * as styles from './CowNode.module.css';
 import { CowColor, Direction } from '../../types';
 
-interface CowProps {
+interface CowNodeProps {
 	className?: string;
 	direction: Direction;
 	color: CowColor;
 }
 
-export const CowNode: FC<CowProps> = ({ className, direction, color }) => {
+export const CowNode: FC<CowNodeProps> = ({ className, direction, color }) => {
 	return (
 		<div
 			className={cn(className, styles.container, ...getCowStyle(direction, color))}

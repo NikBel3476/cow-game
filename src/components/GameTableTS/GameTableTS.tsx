@@ -4,14 +4,17 @@ import * as styles from './GameTableTS.module.css';
 import * as PropTypes from 'prop-types';
 import { gameConfig } from '../../Config.gen';
 import { ILevel } from '../../levels';
-import { CowNode } from '../Cow';
+import { CowNode } from '../CowNode';
+import { ArrowReact } from '../../Game';
+import { ArrowNode } from '../ArrowNode';
 
 interface GameTableTSProps {
 	className?: string;
-	level: ILevel;
+	cows: ILevel['GameObjects']['Cows'];
+	arrows: ArrowReact[];
 }
 
-export const GameTableTS: FC<GameTableTSProps> = ({ className, level }) => {
+export const GameTableTS: FC<GameTableTSProps> = ({ className, cows, arrows }) => {
 	return (
 		<section className={cn(className, styles.container)}>
 			<table className={styles.gameTable}>
@@ -19,14 +22,19 @@ export const GameTableTS: FC<GameTableTSProps> = ({ className, level }) => {
 					{Array.from(Array(gameConfig.map.height)).map((_, i) => (
 						<tr key={i}>
 							{Array.from(Array(gameConfig.map.width)).map((_, j) => {
-								const cow = level.GameObjects.Cows.find(
+								const cow = cows.find(
 									cow => cow.coordinates.x === j && cow.coordinates.y === i
 								);
+								const arrow = arrows.find(
+									arrow => arrow.coordinates?.x === j && arrow.coordinates.y === i
+								);
+
 								return (
 									<td className={styles.cell} key={j}>
 										{cow !== undefined && (
 											<CowNode direction={cow.direction} color={cow.color} />
 										)}
+										{arrow !== undefined && <ArrowNode arrow={arrow} />}
 									</td>
 								);
 							})}
