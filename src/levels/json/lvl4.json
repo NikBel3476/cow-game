@@ -56,11 +56,11 @@
     "Arrows": {
       "Red": {
         "Up": [
-          { "coordinates": null, "isStatic": false },
-          { "coordinates": null, "isStatic": false }
+          { "coordinates": null },
+          { "coordinates": null }
         ],
         "Right": [
-          { "coordinates": { "x": 11, "y": 9 }, "isStatic": true }
+          { "coordinates": { "x": 11, "y": 9 } }
         ],
         "Down": [],
         "Left": []
