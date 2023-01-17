@@ -34,3 +34,7 @@
 .arrow-blue.arrow-left {
 	background: url("../../../assets/sprites/svg/ArrowBlueLeft.svg") center center / contain no-repeat;
 }
+
+.draggable {
+	cursor: grab;
+}

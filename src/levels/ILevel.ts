@@ -49,7 +49,7 @@ export interface ILevel {
 		}>;
 		Arrows: {
 			[k in ArrowColor]: {
-				[k in Direction]: Array<{ coordinates: Coordinates | null }>;
+				[k in Direction]: Array<{ coordinates: Coordinates | null; isStatic: boolean }>;
 			};
 		};
 	};

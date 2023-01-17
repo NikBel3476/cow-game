@@ -7,7 +7,8 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:react/jsx-runtime",
-        "standard-with-typescript"
+        "standard-with-typescript",
+        "plugin:prettier/recommended"
     ],
     "overrides": [
     ],
@@ -27,6 +28,7 @@
     "rules": {
       "no-tabs": ["error", { "allowIndentationTabs": true }],
       "@typescript-eslint/semi": ["error", "always"],
+      "no-console": "error",
       "@typescript-eslint/indent": "off",
       "@typescript-eslint/member-delimiter-style": ["error", {}],
       "@typescript-eslint/space-before-function-paren": ["error", "never"],

@@ -7,7 +7,8 @@ export class ArrowReact {
 	constructor(
 		readonly direction: Direction,
 		readonly color: ArrowColor,
-		readonly coordinates: Coordinates | null
+		public coordinates: Coordinates | null,
+		readonly isStatic: boolean
 	) {
 		this.img = this.setImg();
 	}

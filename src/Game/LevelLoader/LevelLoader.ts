@@ -232,7 +232,9 @@ export class LevelLoader {
 		(Object.keys(arrows) as ArrowColor[]).forEach(color => {
 			(Object.keys(arrows[color]) as Direction[]).forEach(direction => {
 				arrows[color][direction].forEach(arrow => {
-					arrowsArr.push(new ArrowReact(direction, color, arrow.coordinates));
+					arrowsArr.push(
+						new ArrowReact(direction, color, arrow.coordinates, arrow.isStatic)
+					);
 				});
 			});
 		});
