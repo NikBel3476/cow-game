@@ -2,7 +2,6 @@
   "name": "cow-game",
   "version": "0.0.1",
   "description": "Задача в игре: с помощью стрелок довести корову коричневого цвета до кубка",
-  "main": "dist/scripts/index.js",
   "scripts": {
     "dev": "concurrently \"npm run re:start\" \"vite\"",
     "build": "vite build",
@@ -34,16 +33,10 @@
     "react-dom": "^18.2.0"
   },
   "lint-staged": {
-    "!(*.bs).js": [
+    "!(*.bs).{js,jsx}": [
       "prettier --write"
     ],
-    "!(*.gen).ts": [
-      "prettier --write"
-    ],
-    "*.jsx": [
-      "prettier --write"
-    ],
-    "!(*.gen).tsx": [
+    "!(*.gen).{ts,tsx}": [
       "prettier --write"
     ]
   },

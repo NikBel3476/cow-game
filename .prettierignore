@@ -6,7 +6,7 @@ dist
 *.md
 *.bs.js
 *.gen.ts*
-*yml
+*.yml
 *.html
 *.css
 

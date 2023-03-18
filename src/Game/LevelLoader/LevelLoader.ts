@@ -19,6 +19,7 @@ import { ArrowColor, Direction, MAPPED_SPRITES, SpriteName } from '../../types';
 import { Game } from '../Game';
 import { UI } from '../../UI';
 import { Render } from '../../Render';
+import { CowReact } from '../Entities/GameObjects/CowReact';
 
 export class LevelLoader {
 	ui: UI;
@@ -256,6 +257,12 @@ export class LevelLoader {
 					cow.color,
 					this.render.cowHtmlElements[count++]
 				)
+		);
+	}
+
+	static loadCows(cows: ILevel['GameObjects']['Cows']): CowReact[] {
+		return Object.values(cows).map(
+			cow => new CowReact(cow.coordinates, cow.direction, cow.color)
 		);
 	}
 }

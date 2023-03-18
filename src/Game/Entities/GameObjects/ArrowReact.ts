@@ -1,7 +1,6 @@
 import { ArrowColor, Coordinates, Direction, MAPPED_SPRITES } from '../../../types';
 
 export class ArrowReact {
-	private readonly impassable = false;
 	private readonly img: string;
 
 	constructor(

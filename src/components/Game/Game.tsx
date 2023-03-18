@@ -20,6 +20,7 @@ const initialState: ContextState = {
 const Game: FC = () => {
 	const level = MAPPED_LEVELS[initialState.level - 1];
 	const levelArrows = LevelLoader.loadArrows(level.GameObjects.Arrows);
+	const cows = LevelLoader.loadCows(level.GameObjects.Cows);
 
 	const [arrowsOnGameTable, setArrowsOnGameTable] = useState(
 		levelArrows.filter(arrow => arrow.coordinates !== null)
@@ -43,18 +44,22 @@ const Game: FC = () => {
 	const dropArrowHandlerGameTable = (e: DragEvent, coordinates: Coordinates): void => {
 		e.preventDefault();
 		e.stopPropagation();
-		const cellIsFree =
-			arrowsOnGameTable.find(
-				arrow =>
-					arrow.coordinates?.x === coordinates.x && arrow.coordinates?.y === coordinates.y
-			) === undefined;
-		if (currentArrow && cellIsFree) {
+		if (currentArrow && isCellFree(coordinates)) {
 			setArrowsOnMenuTable(arrowsOnMenuTable.filter(arrow => arrow !== currentArrow));
 			currentArrow.coordinates = { x: coordinates.x, y: coordinates.y };
 			setArrowsOnGameTable([...arrowsOnGameTable, currentArrow]);
 			setCurrentArrow(null);
 		}
 	};
+
+	const isCellFree = (coordinates: Coordinates): boolean =>
+		arrowsOnGameTable.find(
+			arrow =>
+				arrow.coordinates?.x === coordinates.x && arrow.coordinates?.y === coordinates.y
+		) === undefined &&
+		cows.find(
+			cow => cow.coordinates.x === coordinates.x && cow.coordinates.y === coordinates.y
+		) === undefined;
 
 	const dropArrowHandlerGameMenu: DragEventHandler = e => {
 		e.preventDefault();
@@ -77,7 +82,7 @@ const Game: FC = () => {
 						{Array.from(Array(gameConfig.map.height)).map((_, i) => (
 							<tr key={i}>
 								{Array.from(Array(gameConfig.map.width)).map((_, j) => {
-									const cow = level.GameObjects.Cows.find(
+									const cow = cows.find(
 										cow => cow.coordinates.x === j && cow.coordinates.y === i
 									);
 									const arrow = arrowsOnGameTable.find(
