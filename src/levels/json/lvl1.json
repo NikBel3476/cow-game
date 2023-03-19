@@ -30,7 +30,7 @@
       {
         "coordinates": { "x": 5, "y": 8 },
         "direction": "Right",
-        "color": "Grey"
+        "color": "Gray"
       }
     ],
     "Arrows": {
