@@ -4,7 +4,7 @@ import { DoorOrientation } from '../Game';
 export interface ILevel {
 	MapObjects: {
 		NonInteractive?: {
-			[k in SpriteName]?: number[][];
+			[k in SpriteName]?: Array<[number, number]>;
 		};
 		Interactive: {
 			Goblet: {

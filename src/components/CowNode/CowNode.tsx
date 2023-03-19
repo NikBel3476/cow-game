@@ -44,8 +44,8 @@ const getCowStyle = (direction: Direction, color: CowColor): [string, string] =>
 			cowStyles[1] = styles.cowBrown;
 			break;
 		}
-		case 'Grey': {
-			cowStyles[1] = styles.cowGrey;
+		case 'Gray': {
+			cowStyles[1] = styles.cowGray;
 			break;
 		}
 	}

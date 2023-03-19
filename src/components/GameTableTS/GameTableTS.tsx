@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import * as cn from 'classnames';
-import * as styles from './GameTableTS.module.css';
+import styles from './GameTableTS.module.css';
 import * as PropTypes from 'prop-types';
 import { gameConfig } from '../../Config.gen';
 import { ILevel } from '../../levels';

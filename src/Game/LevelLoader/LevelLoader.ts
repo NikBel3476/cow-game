@@ -7,6 +7,7 @@ import {
 	Cow,
 	DoorOrientation,
 	Field,
+	FieldReact,
 	Goblet,
 	HayBale,
 	Key,
@@ -50,6 +51,26 @@ export class LevelLoader {
 			);
 		}
 		return staticFieldsArray;
+	}
+
+	static loadMapObjects(objects: ILevel['MapObjects']['NonInteractive']): FieldReact[] {
+		if (objects === undefined) {
+			return [];
+		}
+		return Object.entries(objects).reduce<FieldReact[]>(
+			(acc, [key, object]) =>
+				acc.concat(
+					object.map(
+						coordinates =>
+							new FieldReact(
+								{ x: coordinates[0] - 1, y: coordinates[1] - 1 },
+								true,
+								MAPPED_SPRITES[key as SpriteName]
+							)
+					)
+				),
+			[]
+		);
 	}
 
 	initGoblet(goblet: ILevel['MapObjects']['Interactive']['Goblet']): Goblet {
@@ -237,7 +258,12 @@ export class LevelLoader {
 						new ArrowReact(
 							direction,
 							color,
-							arrow.coordinates,
+							arrow.coordinates
+								? {
+										x: arrow.coordinates.x - 1,
+										y: arrow.coordinates.y - 1
+								  }
+								: null,
 							arrow.coordinates !== null
 						)
 					);
@@ -262,7 +288,12 @@ export class LevelLoader {
 
 	static loadCows(cows: ILevel['GameObjects']['Cows']): CowReact[] {
 		return Object.values(cows).map(
-			cow => new CowReact(cow.coordinates, cow.direction, cow.color)
+			cow =>
+				new CowReact(
+					{ x: cow.coordinates.x - 1, y: cow.coordinates.y - 1 },
+					cow.direction,
+					cow.color
+				)
 		);
 	}
 }

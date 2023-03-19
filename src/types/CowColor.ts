@@ -1,1 +1,1 @@
-export type CowColor = 'Brown' | 'Grey';
+export type CowColor = 'Brown' | 'Gray';

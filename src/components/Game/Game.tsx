@@ -21,6 +21,7 @@ const Game: FC = () => {
 	const level = MAPPED_LEVELS[initialState.level - 1];
 	const levelArrows = LevelLoader.loadArrows(level.GameObjects.Arrows);
 	const cows = LevelLoader.loadCows(level.GameObjects.Cows);
+	const mapObjects = LevelLoader.loadMapObjects(level.MapObjects.NonInteractive);
 
 	const [arrowsOnGameTable, setArrowsOnGameTable] = useState(
 		levelArrows.filter(arrow => arrow.coordinates !== null)
@@ -88,6 +89,9 @@ const Game: FC = () => {
 									const arrow = arrowsOnGameTable.find(
 										arrow => arrow.coordinates?.x === j && arrow.coordinates.y === i
 									);
+									const mapObject = mapObjects.find(
+										object => object.coordinates.x === j && object.coordinates.y === i
+									);
 
 									return (
 										<td
@@ -106,6 +110,7 @@ const Game: FC = () => {
 													onDragStart={e => dragStartHandler(e, arrow)}
 												/>
 											)}
+											{mapObject !== undefined && <img src={mapObject.img} />}
 										</td>
 									);
 								})}

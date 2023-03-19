@@ -339,7 +339,7 @@ export class Game {
 			}
 
 			if (
-				cow.color === 'Grey' &&
+				cow.color === 'Gray' &&
 				this._goblet.coordinates.x === cow.coordinates.x &&
 				this._goblet.coordinates.y === cow.coordinates.y
 			) {

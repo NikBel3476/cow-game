@@ -7,6 +7,9 @@
 }
 
 .game-table {
+	--border-color: #e5ff00;
+
+	border: 1px solid var(--border-color);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -20,10 +23,13 @@
 }
 
 .cell {
-	height: calc(80vw / 20);
-	width: calc(80vw / 20);
-	max-height: calc(100vh / 14);
-	max-width: calc(100vh / 14);
+	--rows: 14;
+	--columns: 20;
+
+	height: calc(80vw / var(--rows));
+	width: calc(80vw / var(--rows));
+	max-height: calc(100vh / var(--columns));
+	max-width: calc(100vh / var(--columns));
 	padding: 0;
-	border: 1px solid #e5ff00;
+	border: 1px solid var(--border-color);
 }
