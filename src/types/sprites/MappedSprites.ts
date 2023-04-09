@@ -18,10 +18,10 @@ import CowBrownUp from '../../../assets/sprites/svg/CowBrownUp.svg';
 import CowBrownRight from '../../../assets/sprites/svg/CowBrownRight.svg';
 import CowBrownDown from '../../../assets/sprites/svg/CowBrownDown.svg';
 import CowBrownLeft from '../../../assets/sprites/svg/CowBrownLeft.svg';
-import CowGreyUp from '../../../assets/sprites/svg/CowGreyUp.svg';
-import CowGreyRight from '../../../assets/sprites/svg/CowGreyRight.svg';
-import CowGreyDown from '../../../assets/sprites/svg/CowGreyDown.svg';
-import CowGreyLeft from '../../../assets/sprites/svg/CowGreyLeft.svg';
+import CowGrayUp from '../../../assets/sprites/svg/CowGrayUp.svg';
+import CowGrayRight from '../../../assets/sprites/svg/CowGrayRight.svg';
+import CowGrayDown from '../../../assets/sprites/svg/CowGrayDown.svg';
+import CowGrayLeft from '../../../assets/sprites/svg/CowGrayLeft.svg';
 import FenceH from '../../../assets/sprites/svg/FenceH.svg';
 import FenceV from '../../../assets/sprites/svg/FenceV.svg';
 import Goblet from '../../../assets/sprites/svg/Goblet.svg';
@@ -64,10 +64,10 @@ export const MAPPED_SPRITES = {
 	CowBrownRight,
 	CowBrownDown,
 	CowBrownLeft,
-	CowGreyUp,
-	CowGreyRight,
-	CowGreyDown,
-	CowGreyLeft,
+	CowGrayUp,
+	CowGrayRight,
+	CowGrayDown,
+	CowGrayLeft,
 	FenceH,
 	FenceV,
 	Goblet,

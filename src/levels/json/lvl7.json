@@ -34,7 +34,7 @@
         {
           "coordinates": { "x": 4, "y": 9 },
           "direction": "Right",
-          "color": "Grey"
+          "color": "Gray"
         },
         {
           "coordinates": { "x": 17, "y": 13 },

@@ -41,7 +41,7 @@
       {
         "coordinates": { "x": 5, "y": 3 },
         "direction": "Right",
-        "color": "Grey"
+        "color": "Gray"
       }
     ],
     "Arrows": {

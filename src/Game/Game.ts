@@ -310,7 +310,7 @@ export class Game {
 					cow.coordinates.y === currentField.coordinates.y
 				) {
 					cow.direction = currentField.direction;
-					// FIXME: delete checking staticObjects and interactiveFields at the same time
+					// FIXME: delete check staticObjects and interactiveFields at the same time
 					if (currentField.color === 'Red') {
 						currentField.linkedHtmlElement.style.background = '';
 						this._staticObjects.splice(this._staticObjects.indexOf(currentField), 1);
@@ -421,11 +421,13 @@ export class Game {
 								y: cow.coordinates.y - 1
 							});
 							if (cowAhead) {
+								const fieldAheadByTwoCells = this.findFieldByCoordinates({
+									x: cow.coordinates.x,
+									y: cow.coordinates.y - 2
+								});
 								if (
-									this.findFieldByCoordinates({
-										x: cow.coordinates.x,
-										y: cow.coordinates.y - 2
-									})?.impassable === false
+									fieldAheadByTwoCells === undefined ||
+									!fieldAheadByTwoCells.impassable
 								) {
 									cowAhead.coordinates.y--;
 									cow.move();
@@ -441,11 +443,13 @@ export class Game {
 								y: cow.coordinates.y
 							});
 							if (cowAhead) {
+								const fieldAheadByTwoCells = this.findFieldByCoordinates({
+									x: cow.coordinates.x + 2,
+									y: cow.coordinates.y
+								});
 								if (
-									this.findFieldByCoordinates({
-										x: cow.coordinates.x + 2,
-										y: cow.coordinates.y
-									})?.impassable === false
+									fieldAheadByTwoCells === undefined ||
+									!fieldAheadByTwoCells.impassable
 								) {
 									cowAhead.coordinates.x++;
 									cow.move();
@@ -461,11 +465,13 @@ export class Game {
 								y: cow.coordinates.y + 1
 							});
 							if (cowAhead) {
+								const fieldAheadByTwoCells = this.findFieldByCoordinates({
+									x: cow.coordinates.x,
+									y: cow.coordinates.y + 2
+								});
 								if (
-									this.findFieldByCoordinates({
-										x: cow.coordinates.x,
-										y: cow.coordinates.y + 2
-									})?.impassable === false
+									fieldAheadByTwoCells === undefined ||
+									!fieldAheadByTwoCells.impassable
 								) {
 									cowAhead.coordinates.y++;
 									cow.move();
@@ -481,11 +487,13 @@ export class Game {
 								y: cow.coordinates.y
 							});
 							if (cowAhead) {
+								const fieldAheadByTwoCells = this.findFieldByCoordinates({
+									x: cow.coordinates.x - 2,
+									y: cow.coordinates.y
+								});
 								if (
-									this.findFieldByCoordinates({
-										x: cow.coordinates.x - 2,
-										y: cow.coordinates.y
-									})?.impassable === false
+									fieldAheadByTwoCells === undefined ||
+									!fieldAheadByTwoCells.impassable
 								) {
 									cowAhead.coordinates.x--;
 									cow.move();
@@ -507,7 +515,8 @@ export class Game {
 							y: nextCoordinates.y - 1
 						});
 						if (
-							fieldInFrontOfHayBale?.impassable === false ||
+							fieldInFrontOfHayBale === undefined ||
+							!fieldInFrontOfHayBale.impassable ||
 							fieldInFrontOfHayBale instanceof Pit
 						) {
 							nextField.coordinates.y = Math.round((nextCoordinates.y - 1) * 100) / 100;
@@ -521,7 +530,8 @@ export class Game {
 							y: nextCoordinates.y
 						});
 						if (
-							fieldInFrontOfHayBale?.impassable === false ||
+							fieldInFrontOfHayBale === undefined ||
+							!fieldInFrontOfHayBale.impassable ||
 							fieldInFrontOfHayBale instanceof Pit
 						) {
 							nextField.coordinates.x = Math.round((nextCoordinates.x + 1) * 100) / 100;
@@ -535,7 +545,8 @@ export class Game {
 							y: nextCoordinates.y + 1
 						});
 						if (
-							fieldInFrontOfHayBale?.impassable === false ||
+							fieldInFrontOfHayBale === undefined ||
+							!fieldInFrontOfHayBale.impassable ||
 							fieldInFrontOfHayBale instanceof Pit
 						) {
 							nextField.coordinates.y = Math.round((nextCoordinates.y + 1) * 100) / 100;
@@ -549,7 +560,8 @@ export class Game {
 							y: nextCoordinates.y
 						});
 						if (
-							fieldInFrontOfHayBale?.impassable === false ||
+							fieldInFrontOfHayBale === undefined ||
+							!fieldInFrontOfHayBale.impassable ||
 							fieldInFrontOfHayBale instanceof Pit
 						) {
 							nextField.coordinates.x = Math.round((nextCoordinates.x - 1) * 100) / 100;

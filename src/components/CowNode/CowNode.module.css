@@ -24,17 +24,17 @@
 }
 
 .cow-grey.cow-up {
-	background: url("../../../assets/sprites/svg/CowGreyUp.svg");
+	background: url("../../../assets/sprites/svg/CowGrayUp.svg");
 }
 
 .cow-gray.cow-right {
-	background: url("../../../assets/sprites/svg/CowGreyRight.svg");
+	background: url("../../../assets/sprites/svg/CowGrayRight.svg");
 }
 
 .cow-grey.cow-down {
-	background: url("../../../assets/sprites/svg/CowGreyDown.svg");
+	background: url("../../../assets/sprites/svg/CowGrayDown.svg");
 }
 
 .cow-grey.cow-left {
-	background: url("../../../assets/sprites/svg/CowGreyLeft.svg");
+	background: url("../../../assets/sprites/svg/CowGrayLeft.svg");
 }

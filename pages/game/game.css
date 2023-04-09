@@ -302,18 +302,18 @@ button {
 	background: url("../../assets/sprites/svg/CowBrownLeft.svg") center center / contain no-repeat;
 }
 
-.cow-grey-up {
-	background: url("../../assets/sprites/svg/CowGreyUp.svg") center center / contain no-repeat;
+.cow-gray-up {
+	background: url("../../assets/sprites/svg/CowGrayUp.svg") center center / contain no-repeat;
 }
 
-.cow-grey-right {
-	background: url("../../assets/sprites/svg/CowGreyRight.svg") center center / contain no-repeat;
+.cow-gray-right {
+	background: url("../../assets/sprites/svg/CowGrayRight.svg") center center / contain no-repeat;
 }
 
-.cow-grey-down {
-	background: url("../../assets/sprites/svg/CowGreyDown.svg") center center / contain no-repeat;
+.cow-gray-down {
+	background: url("../../assets/sprites/svg/CowGrayDown.svg") center center / contain no-repeat;
 }
 
-.cow-grey-left {
-	background: url("../../assets/sprites/svg/CowGreyLeft.svg") center center / contain no-repeat;
+.cow-gray-left {
+	background: url("../../assets/sprites/svg/CowGrayLeft.svg") center center / contain no-repeat;
 }
