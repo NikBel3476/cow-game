@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "format:write": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "npx eslint .",
+    "lint:js": "npx eslint .",
     "lint:css": "npx stylelint \"**/*.css\"",
     "prepare": "husky install"
   },
