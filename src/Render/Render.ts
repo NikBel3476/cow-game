@@ -128,8 +128,9 @@ export class Render {
 				object.linkedHtmlElement.style.transform = `translate(${cssTranslateX}px, ${cssTranslateY}px)`;
 				object.linkedHtmlElement.style.width = `${tdElement?.clientWidth}px`;
 				object.linkedHtmlElement.style.height = `${tdElement?.clientHeight}px`;
+				// TODO: replace hardcoded classname value
 				object.linkedHtmlElement.className = object.linkedHtmlElement.className.replace(
-					/cow-(grey|brown)-(up|right|down|left)/g,
+					/cow-(gray|brown)-(up|right|down|left)/g,
 					`cow-${object.color.toLowerCase()}-${object.direction.toLowerCase()}`
 				);
 			}

@@ -59,7 +59,7 @@
             {
                 "coordinates": { "x": 2, "y": 3 },
                 "direction": "Down",
-                "color": "Grey"
+                "color": "Gray"
             },
             {
                 "coordinates": { "x": 8, "y": 12 },

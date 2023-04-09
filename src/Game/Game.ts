@@ -170,7 +170,7 @@ export class Game {
 		}
 		++this._currentLevel;
 		window.localStorage.setItem('level', `${this._currentLevel}`);
-		if (this._currentLevel < MAPPED_LEVELS.length) {
+		if (this._currentLevel <= MAPPED_LEVELS.length) {
 			this._pastArrows = [];
 			this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
 			this.eventHandler.addArrowsEventListeners();
@@ -355,23 +355,79 @@ export class Game {
 				currentField.activate();
 				this._cows.forEach(cow => {
 					this._pistons.forEach(piston => {
-						if (
-							cow.coordinates.x === piston.coordinates.x &&
-							cow.coordinates.y === piston.coordinates.y
-						) {
+						let entityToPush: Cow | HayBale | undefined = this._hayBales.find(
+							hayBale =>
+								hayBale.coordinates.x === piston.coordinates.x &&
+								hayBale.coordinates.y === piston.coordinates.y
+						);
+						if (!entityToPush) {
+							entityToPush = this._cows.find(
+								cow =>
+									cow.coordinates.x === piston.coordinates.x &&
+									cow.coordinates.y === piston.coordinates.y
+							);
+						}
+						if (entityToPush) {
 							switch (piston.direction) {
 								case 'Up':
-									cow.coordinates.y--;
+									entityToPush.coordinates.y--;
 									break;
 								case 'Right':
-									cow.coordinates.x++;
+									entityToPush.coordinates.x++;
 									break;
 								case 'Down':
-									cow.coordinates.y++;
+									entityToPush.coordinates.y++;
 									break;
 								case 'Left':
-									cow.coordinates.x--;
+									entityToPush.coordinates.x--;
 									break;
+							}
+
+							if (entityToPush instanceof HayBale) {
+								const fieldUnderHayBale = this.findStaticFieldByCoordinates(
+									entityToPush.coordinates
+								);
+								if (fieldUnderHayBale instanceof Pit && fieldUnderHayBale.activated) {
+									this._movableObjects.splice(
+										this._movableObjects.indexOf(entityToPush),
+										1
+									);
+									this._interactiveFields.splice(
+										this._interactiveFields.indexOf(entityToPush),
+										1
+									);
+									entityToPush.linkedHtmlElement.style.background = ''; // FIXME: move style changing to render
+									this._staticObjects.splice(
+										this._staticObjects.indexOf(fieldUnderHayBale),
+										1
+									);
+									this._interactiveFields.splice(
+										this._interactiveFields.indexOf(fieldUnderHayBale),
+										1
+									);
+									this._staticObjects.push(
+										new Field(
+											{
+												x: fieldUnderHayBale.coordinates.x,
+												y: fieldUnderHayBale.coordinates.y
+											},
+											false,
+											MAPPED_SPRITES.HayBaleInPit,
+											fieldUnderHayBale.linkedHtmlElement
+										)
+									);
+									this._nonInteractiveFields.push(
+										new Field(
+											{
+												x: fieldUnderHayBale.coordinates.x,
+												y: fieldUnderHayBale.coordinates.y
+											},
+											false,
+											MAPPED_SPRITES.HayBaleInPit,
+											fieldUnderHayBale.linkedHtmlElement
+										)
+									);
+								}
 							}
 						}
 					});

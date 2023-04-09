@@ -84,7 +84,7 @@
       {
         "coordinates": { "x": 3, "y": 2 },
         "direction": "Down",
-        "color": "Grey"
+        "color": "Gray"
       },
       {
         "coordinates": { "x": 19, "y": 7 },

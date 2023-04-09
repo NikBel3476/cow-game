@@ -36,31 +36,31 @@
         {
           "coordinates": { "x": 1, "y": 7 },
           "direction": "Right",
-          "color": "Grey"
+          "color": "Gray"
         }
       ],
       "Arrows": {
         "Red": {
             "Up": [
-              { "coordinates": null }, 
-              { "coordinates": null }, 
+              { "coordinates": null },
+              { "coordinates": null },
               { "coordinates": null }
             ],
             "Right": [
               { "coordinates": null },
-              { "coordinates": null }, 
+              { "coordinates": null },
               { "coordinates": null }
             ],
             "Down": [
-              { "coordinates": null }, 
-              { "coordinates": null }, 
+              { "coordinates": null },
+              { "coordinates": null },
               { "coordinates": null },
               { "coordinates": null }
             ],
             "Left": [
-              { "coordinates": null }, 
-              { "coordinates": null }, 
-              { "coordinates": null }, 
+              { "coordinates": null },
+              { "coordinates": null },
+              { "coordinates": null },
               { "coordinates": null }
             ]
         },

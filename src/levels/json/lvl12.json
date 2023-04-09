@@ -25,7 +25,7 @@
             "Bush": [
                 [8, 1], [8, 2], [8, 3],
                 [8, 4], [8, 5], [8, 6],
-                [8, 7], [8, 8], [8, 9] 
+                [8, 7], [8, 8], [8, 9]
             ]
         },
         "Interactive": {
@@ -63,7 +63,7 @@
                     {
                         "id": 1,
                         "coordinates": { "x": 3, "y": 13 }
-                    }                    
+                    }
                 ]
             },
             "Goblet": {
@@ -82,7 +82,7 @@
             {
                 "coordinates": { "x": 2, "y": 8 },
                 "direction": "Right",
-                "color": "Grey"
+                "color": "Gray"
             },
             {
                 "coordinates": { "x": 2, "y": 13 },

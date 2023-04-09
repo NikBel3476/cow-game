@@ -87,12 +87,12 @@
         {
           "coordinates": { "x": 4, "y": 12 },
           "direction": "Up",
-          "color": "Grey"
+          "color": "Gray"
         },
         {
           "coordinates": { "x": 18, "y": 2},
           "direction": "Down",
-          "color": "Grey"
+          "color": "Gray"
         },
         {
           "coordinates": { "x": 2, "y": 12 },
@@ -103,27 +103,27 @@
       "Arrows": {
         "Red": {
             "Up": [
-              { "coordinates": null }, 
-              { "coordinates": null }, 
-              { "coordinates": null }, 
-              { "coordinates": null }, 
+              { "coordinates": null },
+              { "coordinates": null },
+              { "coordinates": null },
+              { "coordinates": null },
               { "coordinates": null }
             ],
             "Right": [
               { "coordinates": null },
-              { "coordinates": null }, 
-              { "coordinates": null }, 
+              { "coordinates": null },
+              { "coordinates": null },
               { "coordinates": null }
             ],
             "Down": [
-              { "coordinates": null }, 
-              { "coordinates": null }, 
+              { "coordinates": null },
+              { "coordinates": null },
               { "coordinates": null }
             ],
             "Left": [
-              { "coordinates": null }, 
-              { "coordinates": null }, 
-              { "coordinates": null }, 
+              { "coordinates": null },
+              { "coordinates": null },
+              { "coordinates": null },
               { "coordinates": null }
             ]
         },
