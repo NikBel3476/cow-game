@@ -119,7 +119,8 @@ export class Render {
 				const tdElement = this.htmlGameTable.querySelector('td') as HTMLElement;
 				const cssTranslateY =
 					object.layer === 2
-						? tdElement.getBoundingClientRect().height * (object.coordinates.y - 1) - 30
+						? tdElement.getBoundingClientRect().height * (object.coordinates.y - 1) -
+						  this.gameTable[0][0].clientHeight / 3
 						: tdElement.getBoundingClientRect().height * (object.coordinates.y - 1);
 				const cssTranslateX =
 					tdElement.getBoundingClientRect().width * (object.coordinates.x - 1);
