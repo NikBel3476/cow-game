@@ -55,15 +55,15 @@ export class CowReact {
 	// TODO: remove this method due to image set via className
 	getImages(): { Up: string; Right: string; Down: string; Left: string } {
 		return {
-			Up: this._color === 'Gray' ? MAPPED_SPRITES.CowGreyUp : MAPPED_SPRITES.CowBrownUp,
+			Up: this._color === 'Gray' ? MAPPED_SPRITES.CowGrayUp : MAPPED_SPRITES.CowBrownUp,
 			Right:
 				this._color === 'Gray'
-					? MAPPED_SPRITES.CowGreyRight
+					? MAPPED_SPRITES.CowGrayRight
 					: MAPPED_SPRITES.CowBrownRight,
 			Down:
-				this._color === 'Gray' ? MAPPED_SPRITES.CowGreyDown : MAPPED_SPRITES.CowBrownDown,
+				this._color === 'Gray' ? MAPPED_SPRITES.CowGrayDown : MAPPED_SPRITES.CowBrownDown,
 			Left:
-				this._color === 'Gray' ? MAPPED_SPRITES.CowGreyLeft : MAPPED_SPRITES.CowBrownLeft
+				this._color === 'Gray' ? MAPPED_SPRITES.CowGrayLeft : MAPPED_SPRITES.CowBrownLeft
 		};
 	}
 

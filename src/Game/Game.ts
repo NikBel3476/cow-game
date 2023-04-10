@@ -168,9 +168,9 @@ export class Game {
 		if (completedLevels < this._currentLevel) {
 			localStorage.setItem('completedLevels', String(this._currentLevel));
 		}
-		++this._currentLevel;
-		window.localStorage.setItem('level', `${this._currentLevel}`);
-		if (this._currentLevel <= MAPPED_LEVELS.length) {
+		if (this._currentLevel < MAPPED_LEVELS.length) {
+			this._currentLevel++;
+			window.localStorage.setItem('level', `${this._currentLevel}`);
 			this._pastArrows = [];
 			this.loadLevel(MAPPED_LEVELS[this._currentLevel - 1]);
 			this.eventHandler.addArrowsEventListeners();
