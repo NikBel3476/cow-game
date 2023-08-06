@@ -24,11 +24,6 @@
     "url": "https://github.com/NikBel3476/cow-game/issues"
   },
   "homepage": "https://github.com/NikBel3476/cow-game#readme",
-  "dependencies": {
-    "classnames": "^2.3.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
   "lint-staged": {
     "!(*.bs).{js,jsx}": [
       "prettier --write"
@@ -39,6 +34,12 @@
     "*.res": [
       "rescript format"
     ]
+  },
+  "dependencies": {
+    "classnames": "^2.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zustand": "^4.4.0"
   },
   "devDependencies": {
     "@jihchi/vite-plugin-rescript": "^5.3.0",

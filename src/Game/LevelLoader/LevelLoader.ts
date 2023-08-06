@@ -73,6 +73,60 @@ export class LevelLoader {
 		);
 	}
 
+	static loadInteractiveMapObjects(
+		objects: ILevel['MapObjects']['Interactive']
+	): FieldReact[] {
+		if (objects === undefined) {
+			return [];
+		}
+
+		const fields: FieldReact[] = [];
+
+		fields.push(
+			new FieldReact(
+				{
+					x: objects.Goblet.coordinates.x - 1,
+					y: objects.Goblet.coordinates.y - 1
+				},
+				true,
+				MAPPED_SPRITES.Goblet
+			)
+		);
+
+		// TODO: remove repeated code
+		if (objects.Slide) {
+			Object.entries(objects.Slide).forEach(([direction, slides]) => {
+				let sprite = '';
+				if (direction === 'Up') {
+					sprite = MAPPED_SPRITES.SlideUp;
+				} else if (direction === 'Right') {
+					sprite = MAPPED_SPRITES.SlideRight;
+				} else if (direction === 'Down') {
+					sprite = MAPPED_SPRITES.SlideDown;
+				} else if (direction === 'Left') {
+					sprite = MAPPED_SPRITES.SlideLeft;
+				} else {
+					throw new Error(`Unknow slide direction: ${direction}`);
+				}
+
+				slides.forEach(coordinates => {
+					fields.push(
+						new FieldReact(
+							{
+								x: coordinates.x - 1,
+								y: coordinates.y - 1
+							},
+							true,
+							sprite
+						)
+					);
+				});
+			});
+		}
+
+		return fields;
+	}
+
 	initGoblet(goblet: ILevel['MapObjects']['Interactive']['Goblet']): Goblet {
 		return new Goblet(
 			goblet.coordinates,

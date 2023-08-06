@@ -22,6 +22,9 @@ const Game: FC = () => {
 	const levelArrows = LevelLoader.loadArrows(level.GameObjects.Arrows);
 	const cows = LevelLoader.loadCows(level.GameObjects.Cows);
 	const mapObjects = LevelLoader.loadMapObjects(level.MapObjects.NonInteractive);
+	const interactiveMapObjects = LevelLoader.loadInteractiveMapObjects(
+		level.MapObjects.Interactive
+	);
 
 	const [arrowsOnGameTable, setArrowsOnGameTable] = useState(
 		levelArrows.filter(arrow => arrow.coordinates !== null)
@@ -92,6 +95,9 @@ const Game: FC = () => {
 									const mapObject = mapObjects.find(
 										object => object.coordinates.x === j && object.coordinates.y === i
 									);
+									const interactiveMapObject = interactiveMapObjects.find(
+										object => object.coordinates.x === j && object.coordinates.y === i
+									);
 
 									return (
 										<td
@@ -111,6 +117,9 @@ const Game: FC = () => {
 												/>
 											)}
 											{mapObject !== undefined && <img src={mapObject.img} />}
+											{interactiveMapObject !== undefined && (
+												<img src={interactiveMapObject.img} />
+											)}
 										</td>
 									);
 								})}

@@ -1,6 +1,7 @@
 import { ArrowColor, Direction, Coordinates, SpriteName, CowColor } from '../types';
 import { DoorOrientation } from '../Game';
 
+// TODO: change structure
 export interface ILevel {
 	MapObjects: {
 		NonInteractive?: {
