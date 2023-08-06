@@ -3,13 +3,10 @@
   "version": "0.0.1",
   "description": "Задача в игре: с помощью стрелок довести корову коричневого цвета до кубка",
   "scripts": {
-    "dev": "concurrently \"npm run re:start\" \"vite\"",
-    "build": "vite build",
-    "prebuild": "npm run re:build && tsc",
-    "re:build": "rescript",
-    "re:start": "rescript build -w",
-    "clean": "rescript clean -with-deps",
+    "dev": "vite",
+    "build": "tsc && vite build",
     "preview": "vite preview",
+    "clean": "rescript clean -with-deps",
     "format:write": "prettier --write .",
     "format:check": "prettier --check .",
     "lint:js": "npx eslint .",
@@ -21,7 +18,7 @@
     "url": "git+https://github.com/NikBel3476/cow-game.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "NikBel3476",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/NikBel3476/cow-game/issues"
@@ -38,15 +35,18 @@
     ],
     "!(*.gen).{ts,tsx}": [
       "prettier --write"
+    ],
+    "*.res": [
+      "rescript format"
     ]
   },
   "devDependencies": {
+    "@jihchi/vite-plugin-rescript": "^5.3.0",
     "@rescript/react": "^0.11.0-rc.3",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@vitejs/plugin-react": "^3.0.0",
-    "concurrently": "^7.6.0",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard-with-typescript": "^24.0.0",
