@@ -1,4 +1,5 @@
-import { Coordinates, CowColor, Direction, MAPPED_SPRITES } from '../../../types';
+import { MAPPED_SPRITES } from '../../../types';
+import type { Coordinates, CowColor, Direction } from '../../../types';
 import { gameConfig } from '../../../Config.gen';
 
 export class CowReact {

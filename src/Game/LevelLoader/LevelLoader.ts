@@ -107,7 +107,7 @@ export class LevelLoader {
 				} else if (direction === 'Left') {
 					sprite = MAPPED_SPRITES.SlideLeft;
 				} else {
-					throw new Error(`Unknow slide direction: ${direction}`);
+					throw new Error(`Unknown slide direction: ${direction}`);
 				}
 
 				slides.forEach(coordinates => {
@@ -170,6 +170,73 @@ export class LevelLoader {
 						)
 				)
 			);
+		}
+
+		if (objects.LockDoor) {
+			Object.entries(objects.LockDoor).forEach(([orientation, lockDoors]) => {
+				let sprite = '';
+				if (orientation === 'Vertical') {
+					sprite = MAPPED_SPRITES.LockDoorV;
+				} else if (orientation === 'Horizontal') {
+					sprite = MAPPED_SPRITES.LockDoorH;
+				} else {
+					throw new Error('Unknown lock door orientation');
+				}
+
+				fields.push(
+					...lockDoors.map(
+						coordinates =>
+							new FieldReact({ x: coordinates.x - 1, y: coordinates.y - 1 }, true, sprite)
+					)
+				);
+			});
+		}
+
+		if (objects.Button) {
+			fields.push(
+				...objects.Button.map(
+					button =>
+						new FieldReact(
+							{
+								x: button.coordinates.x - 1,
+								y: button.coordinates.y - 1
+							},
+							false,
+							MAPPED_SPRITES.Button
+						)
+				)
+			);
+		}
+
+		if (objects.Piston) {
+			Object.entries(objects.Piston).forEach(([direction, pistons]) => {
+				let sprite = '';
+				if (direction === 'Up') {
+					sprite = MAPPED_SPRITES.PistonUp;
+				} else if (direction === 'Right') {
+					sprite = MAPPED_SPRITES.PistonRight;
+				} else if (direction === 'Down') {
+					sprite = MAPPED_SPRITES.PistonDown;
+				} else if (direction === 'Left') {
+					sprite = MAPPED_SPRITES.PistonLeft;
+				} else {
+					throw new Error(`Unknown slide direction: ${direction}`);
+				}
+
+				fields.push(
+					...pistons.map(
+						piston =>
+							new FieldReact(
+								{
+									x: piston.coordinates.x - 1,
+									y: piston.coordinates.y - 1
+								},
+								true,
+								sprite
+							)
+					)
+				);
+			});
 		}
 
 		return fields;

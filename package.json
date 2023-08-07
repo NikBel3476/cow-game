@@ -9,7 +9,7 @@
     "clean": "rescript clean -with-deps",
     "format:write": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint:js": "npx eslint .",
+    "lint:js": "npx eslint **/*.{js,ts,jsx,tsx}",
     "lint:css": "npx stylelint \"**/*.css\"",
     "prepare": "husky install"
   },
