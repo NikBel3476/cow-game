@@ -1,4 +1,4 @@
-import { ILevel } from '../../levels';
+import { ILevel, MAPPED_LEVELS } from '../../levels';
 import {
 	Arrow,
 	ArrowReact,
@@ -36,18 +36,19 @@ export class LevelLoader {
 	): Field[] {
 		const staticFieldsArray: Field[] = [];
 		if (staticFields) {
-			(Object.keys(staticFields) as SpriteName[]).forEach(fieldName =>
-				staticFields[fieldName]?.forEach(fieldCoordinates =>
-					staticFieldsArray.push(
-						new Field(
-							{ x: fieldCoordinates[0], y: fieldCoordinates[1] },
-							true,
-							MAPPED_SPRITES[fieldName],
-							this.render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1]
-								.firstChild as HTMLElement
+			(Object.keys(staticFields) as SpriteName[]).forEach(
+				fieldName =>
+					staticFields[fieldName]?.forEach(fieldCoordinates =>
+						staticFieldsArray.push(
+							new Field(
+								{ x: fieldCoordinates[0], y: fieldCoordinates[1] },
+								true,
+								MAPPED_SPRITES[fieldName],
+								this.render.gameTable[fieldCoordinates[1] - 1][fieldCoordinates[0] - 1]
+									.firstChild as HTMLElement
+							)
 						)
 					)
-				)
 			);
 		}
 		return staticFieldsArray;
@@ -122,6 +123,53 @@ export class LevelLoader {
 					);
 				});
 			});
+		}
+
+		if (objects.HayBale) {
+			objects.HayBale.forEach(coordinates => {
+				fields.push(
+					new FieldReact(
+						{
+							x: coordinates.x - 1,
+							y: coordinates.y - 1
+						},
+						true,
+						MAPPED_SPRITES.HayBale
+					)
+				);
+			});
+		}
+
+		if (objects.Pit) {
+			fields.push(
+				...objects.Pit.map(
+					pit =>
+						new FieldReact(
+							{
+								x: pit.coordinates.x - 1,
+								y: pit.coordinates.y - 1
+							},
+							pit.activated,
+							pit.activated ? MAPPED_SPRITES.PitActivated : MAPPED_SPRITES.PitNonActivated
+						)
+				)
+			);
+		}
+
+		if (objects.Key) {
+			fields.push(
+				...objects.Key.map(
+					coordinates =>
+						new FieldReact(
+							{
+								x: coordinates.x - 1,
+								y: coordinates.y - 1
+							},
+							false,
+							MAPPED_SPRITES.Key
+						)
+				)
+			);
 		}
 
 		return fields;
