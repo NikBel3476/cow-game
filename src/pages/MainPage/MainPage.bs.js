@@ -27,7 +27,10 @@ function MainPage(props) {
                       className: styles.gameMenuLink,
                       href: "/cow-game/game",
                       onClick: handleStartGameLinkClick
-                    }, "Начать игру(react-demo)"), children !== undefined ? Caml_option.valFromOption(children) : null));
+                    }, "Начать игру(react-demo)"), React.createElement("a", {
+                      className: styles.gameMenuLink,
+                      href: "pages/phaser/phaser.html"
+                    }, "Начать игру(phaser)"), children !== undefined ? Caml_option.valFromOption(children) : null));
 }
 
 var make = MainPage;

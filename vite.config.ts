@@ -8,9 +8,10 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			input: {
-				main: resolve(__dirname, 'index.html'),
+				main: resolve(__dirname, 'phaser.html'),
 				game: resolve(__dirname, 'pages', 'game', 'game.html'),
 				levels: resolve(__dirname, 'pages', 'levels', 'levels.html'),
+				phaser: resolve(__dirname, 'pages', 'phaser', 'phaser.html'),
 				notFound: resolve(__dirname, '404.html')
 			}
 		},
